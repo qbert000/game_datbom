@@ -17,6 +17,7 @@ public class AnimationComponent extends Component {
     public boolean isUp = false;
     public boolean isDown = false;
     public boolean isLeft = false;
+    public boolean isRight = true;
     public double getMyX;
     public double getMyY;
 
@@ -65,7 +66,7 @@ public class AnimationComponent extends Component {
     @Override
     public void onUpdate(double tpf) {
         // ham check di chuyen ben trai
-        if (isLeft && !isDown && !isUp) {
+        if (!isRight && isLeft && !isDown && !isUp && isRight) {
             entity.translateX(speed * tpf);
             getMyX = entity.getPosition().getX() - speed * tpf;
             getMyY = entity.getPosition().getY();
@@ -89,7 +90,7 @@ public class AnimationComponent extends Component {
             }
         }
         // ham check di chuyen ben phai
-        if (!isUp && !isDown && !isLeft) {
+        if (isRight && !isUp && !isDown && !isLeft) {
             entity.translateX(speed * tpf);
             getMyX = entity.getPosition().getX() - speed * tpf;
             getMyY = entity.getPosition().getY();
@@ -113,7 +114,7 @@ public class AnimationComponent extends Component {
             }
         }
         // ham check di chuyen ben tren
-        if (isUp && !isDown && !isLeft) {
+        if (isUp && !isDown && !isLeft && !isRight) {
             entity.translateY(speed * tpf);
             getMyX = entity.getPosition().getX();
             getMyY = entity.getPosition().getY() - speed * tpf;
@@ -137,7 +138,7 @@ public class AnimationComponent extends Component {
             }
         }
         // ham check di chuyen ben duoi
-        if (isDown && !isUp && !isLeft) {
+        if (isDown && !isUp && !isLeft & !isRight) {
             entity.translateY(speed * tpf);
             getMyX = entity.getPosition().getX();
             getMyY = entity.getPosition().getY() - speed * tpf;

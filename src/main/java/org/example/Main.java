@@ -70,6 +70,7 @@ public class Main extends GameApplication {
             protected void onActionBegin() {
                 currentYpos = player.getComponent(AnimationComponent.class).getMyY;
                 currentXpos = player.getComponent(AnimationComponent.class).getMyX;
+                player.getComponent(AnimationComponent.class).isRight = true;
                 player.getComponent(AnimationComponent.class).isUp = false;
                 player.getComponent(AnimationComponent.class).isDown = false;
                 player.getComponent(AnimationComponent.class).isLeft = false;
@@ -99,9 +100,10 @@ public class Main extends GameApplication {
                 currentXpos = player.getComponent(AnimationComponent.class).getMyX;
                 // de goi thuoc tinh co trong class voi "with" sau khi add
                 // ta dung ham getComponent(ten.class).thuoctinh/method
-                player.getComponent(AnimationComponent.class).isUp = false;
-                player.getComponent(AnimationComponent.class).isDown = false;
                 player.getComponent(AnimationComponent.class).isLeft = true;
+                player.getComponent(AnimationComponent.class).isUp = false;
+                player.getComponent(AnimationComponent.class).isRight = false;
+                player.getComponent(AnimationComponent.class).isDown = false;
             }
 
             @Override
@@ -128,6 +130,7 @@ public class Main extends GameApplication {
                 currentYpos = player.getComponent(AnimationComponent.class).getMyY;
                 player.getComponent(AnimationComponent.class).isUp = true;
                 player.getComponent(AnimationComponent.class).isDown = false;
+                player.getComponent(AnimationComponent.class).isRight = false;
                 player.getComponent(AnimationComponent.class).isLeft = false;
             }
 
@@ -154,8 +157,9 @@ public class Main extends GameApplication {
                 // neu dao nguoc chieu cung di chuyen se di xuyen qua vat can :)))))
                 currentXpos = player.getComponent(AnimationComponent.class).getMyX;
                 currentYpos = player.getComponent(AnimationComponent.class).getMyY;
-                player.getComponent(AnimationComponent.class).isUp = false;
                 player.getComponent(AnimationComponent.class).isDown = true;
+                player.getComponent(AnimationComponent.class).isUp = false;
+                player.getComponent(AnimationComponent.class).isRight = false;
                 player.getComponent(AnimationComponent.class).isLeft = false;
             }
 
