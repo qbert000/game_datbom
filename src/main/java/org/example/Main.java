@@ -1,4 +1,4 @@
-package hellofx;
+package org.example;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -37,10 +37,13 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 //  Ham Main cua ban luon phai extend GameApplication
 public class Main extends GameApplication {
     // Luon phai override initsetting
+
+    private static final int TITLE_SIZE = 32;
+
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setWidth(800);
-        settings.setHeight(600);
+        settings.setWidth(32*38);
+        settings.setHeight(32*24);
         settings.setTitle("Basic Game App");
         settings.setAppIcon("icon/icon.png");
         // to chuc file mac dinh la assets/textures/ --> them duong dan dc
@@ -70,6 +73,7 @@ public class Main extends GameApplication {
             protected void onActionBegin() {
                 currentYpos = player.getComponent(AnimationComponent.class).getMyY;
                 currentXpos = player.getComponent(AnimationComponent.class).getMyX;
+                player.getComponent(AnimationComponent.class).isRight = true;
                 player.getComponent(AnimationComponent.class).isUp = false;
                 player.getComponent(AnimationComponent.class).isDown = false;
                 player.getComponent(AnimationComponent.class).isLeft = false;
@@ -99,9 +103,10 @@ public class Main extends GameApplication {
                 currentXpos = player.getComponent(AnimationComponent.class).getMyX;
                 // de goi thuoc tinh co trong class voi "with" sau khi add
                 // ta dung ham getComponent(ten.class).thuoctinh/method
+                player.getComponent(AnimationComponent.class).isLeft = true;
                 player.getComponent(AnimationComponent.class).isUp = false;
                 player.getComponent(AnimationComponent.class).isDown = false;
-                player.getComponent(AnimationComponent.class).isLeft = true;
+                player.getComponent(AnimationComponent.class).isRight = false;
             }
 
             @Override
@@ -129,6 +134,7 @@ public class Main extends GameApplication {
                 player.getComponent(AnimationComponent.class).isUp = true;
                 player.getComponent(AnimationComponent.class).isDown = false;
                 player.getComponent(AnimationComponent.class).isLeft = false;
+                player.getComponent(AnimationComponent.class).isRight = false;
             }
 
             @Override
@@ -154,9 +160,10 @@ public class Main extends GameApplication {
                 // neu dao nguoc chieu cung di chuyen se di xuyen qua vat can :)))))
                 currentXpos = player.getComponent(AnimationComponent.class).getMyX;
                 currentYpos = player.getComponent(AnimationComponent.class).getMyY;
-                player.getComponent(AnimationComponent.class).isUp = false;
                 player.getComponent(AnimationComponent.class).isDown = true;
+                player.getComponent(AnimationComponent.class).isUp = false;
                 player.getComponent(AnimationComponent.class).isLeft = false;
+                player.getComponent(AnimationComponent.class).isRight = false;
             }
 
             @Override
@@ -189,14 +196,8 @@ public class Main extends GameApplication {
     // khoi tao nhung thuc the trong game
     @Override
     protected void initGame() {
-        player = FXGL.entityBuilder()
-                .type(EntityType.PLAYER)
-                .at(200, 200)
-                .with(new AnimationComponent())
-                .with(new CollidableComponent(true))
-                // point2d la chinh vi tri box so vs vi tri ban dau
-                .bbox(new HitBox(new Point2D(6, 0), BoundingShape.box(30, 42)))
-                .buildAndAttach();
+        getGameWorld().addEntityFactory(new Factory());
+        player = spawn("player", 20, 20);
 
         currentXpos = player.getPosition().getX();
         currentYpos = player.getPosition().getY();
@@ -205,36 +206,36 @@ public class Main extends GameApplication {
 
         entityBuilder()
                 .type(EntityType.COIN)
-                .at(420, 200)
-                .viewWithBBox(new Rectangle(60, 60, Color.BLACK))
+                .at(390, 200)
+                .viewWithBBox(new Rectangle(45, 45, Color.BLACK))
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
 
         entityBuilder()
                 .type(EntityType.COIN)
                 .at(300, 200)
-                .viewWithBBox(new Rectangle(60, 60, Color.BLACK))
+                .viewWithBBox(new Rectangle(45, 45, Color.BLACK))
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
 
         entityBuilder()
                 .type(EntityType.COIN)
-                .at(300, 320)
-                .viewWithBBox(new Rectangle(60, 60, Color.BLACK))
+                .at(300, 290)
+                .viewWithBBox(new Rectangle(45, 45, Color.BLACK))
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
 
         entityBuilder()
                 .type(EntityType.COIN)
-                .at(420, 320)
-                .viewWithBBox(new Rectangle(60, 60, Color.BLACK))
+                .at(390, 290)
+                .viewWithBBox(new Rectangle(45, 45, Color.BLACK))
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
 
         // khoi tao bien
     }
 
-    // khoi tao nhung UI
+    // khoi tao nhung UI - trong game la Text
     @Override
     protected void initUI() {
         Text textPixels = new Text();

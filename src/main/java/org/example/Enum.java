@@ -1,5 +1,5 @@
 package org.example;
 
 public enum Enum {
-    WALL, PLAYER, BOOM, BRICK, POWERUP, NPC
+    WALL, PLAYER, BOOM, BRICK, POWERUP, NPC, COIN
 }
