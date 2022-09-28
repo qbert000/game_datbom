@@ -39,12 +39,14 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 public class Main extends GameApplication {
     // Luon phai override initsetting
 
-    private static final int TITLE_SIZE = 32;
+    public static final int TITLE_SIZE = 40;
+    public static final int WIDTH_TITLE = 38;
+    public static final int HEIGHT_TITLE = 24;
 
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setWidth(32*24);
-        settings.setHeight(32*38);
+        settings.setWidth(TITLE_SIZE * WIDTH_TITLE);
+        settings.setHeight(TITLE_SIZE * HEIGHT_TITLE);
         settings.setTitle("Basic Game App");
         settings.setAppIcon("icon/icon.png");
         // to chuc file mac dinh la assets/textures/ --> them duong dan dc
@@ -56,7 +58,7 @@ public class Main extends GameApplication {
 
     public double currentXpos;
     public double currentYpos;
-
+    private Entity player;
     // Xu li input
     @Override
     protected void initInput() {
@@ -189,7 +191,7 @@ public class Main extends GameApplication {
     }
 
     // Tao player cho game
-    private Entity player;
+
 
     // khoi tao nhung thuc the trong game
     @Override
@@ -209,13 +211,14 @@ public class Main extends GameApplication {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        for( int i=0; i< 24; i++) {
-            for(int j=0; j<38; j++) {
-                if(g_map.myMap[i][j].equals("1")) {
-                    spawn("coin", i*32, j*32);
+        for (int i = 0 ; i < HEIGHT_TITLE; i++) {
+            for (int j = 0; j < WIDTH_TITLE; j++) {
+                if (g_map.myMap[i][j].equals("1")) {
+                    spawn("coin", j * TITLE_SIZE, i * TITLE_SIZE);
                 }
             }
         }
+
 
 
 

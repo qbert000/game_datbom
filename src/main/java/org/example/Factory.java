@@ -15,8 +15,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import javax.imageio.plugins.tiff.TIFFDirectory;
+
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 import static org.example.Enum.*;
+import static org.example.Main.TITLE_SIZE;
 
 public class Factory implements EntityFactory {
 
@@ -39,7 +42,7 @@ public class Factory implements EntityFactory {
     public Entity newCoin(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(COIN)
-                .viewWithBBox(new Rectangle(45, 45, Color.BLACK))
+                .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .with(new CollidableComponent(true))
                 .build();
     }
