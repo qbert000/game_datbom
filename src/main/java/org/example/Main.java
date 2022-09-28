@@ -3,7 +3,7 @@ package org.example;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.scene.Scene;
@@ -15,7 +15,6 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.HitBox;
 
@@ -28,6 +27,8 @@ import javafx.scene.shape.Box;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.geometry.Point2D;
+
+import java.io.FileNotFoundException;
 import java.util.Map;
 
 import javax.sound.sampled.SourceDataLine;
@@ -42,8 +43,8 @@ public class Main extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setWidth(32*38);
-        settings.setHeight(32*24);
+        settings.setWidth(32*24);
+        settings.setHeight(32*38);
         settings.setTitle("Basic Game App");
         settings.setAppIcon("icon/icon.png");
         // to chuc file mac dinh la assets/textures/ --> them duong dan dc
@@ -52,9 +53,6 @@ public class Main extends GameApplication {
         settings.setIntroEnabled(false);
     }
 
-    public enum EntityType {
-        PLAYER, COIN, WALL
-    }
 
     public double currentXpos;
     public double currentYpos;
@@ -197,40 +195,29 @@ public class Main extends GameApplication {
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
-        player = spawn("player", 20, 20);
+        player = spawn("player", 200, 200);
 
         currentXpos = player.getPosition().getX();
         currentYpos = player.getPosition().getY();
         player.getComponent(AnimationComponent.class).getMyX = player.getPosition().getX();
         player.getComponent(AnimationComponent.class).getMyY = player.getPosition().getY();
 
-        entityBuilder()
-                .type(EntityType.COIN)
-                .at(390, 200)
-                .viewWithBBox(new Rectangle(45, 45, Color.BLACK))
-                .with(new CollidableComponent(true))
-                .buildAndAttach();
 
-        entityBuilder()
-                .type(EntityType.COIN)
-                .at(300, 200)
-                .viewWithBBox(new Rectangle(45, 45, Color.BLACK))
-                .with(new CollidableComponent(true))
-                .buildAndAttach();
+        Mymap g_map = null;
+        try {
+            g_map = new Mymap();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        for( int i=0; i< 24; i++) {
+            for(int j=0; j<38; j++) {
+                if(g_map.myMap[i][j].equals("1")) {
+                    spawn("coin", i*32, j*32);
+                }
+            }
+        }
 
-        entityBuilder()
-                .type(EntityType.COIN)
-                .at(300, 290)
-                .viewWithBBox(new Rectangle(45, 45, Color.BLACK))
-                .with(new CollidableComponent(true))
-                .buildAndAttach();
 
-        entityBuilder()
-                .type(EntityType.COIN)
-                .at(390, 290)
-                .viewWithBBox(new Rectangle(45, 45, Color.BLACK))
-                .with(new CollidableComponent(true))
-                .buildAndAttach();
 
         // khoi tao bien
     }
@@ -247,17 +234,12 @@ public class Main extends GameApplication {
 
         getGameScene().addUINode(textPixels); // add to the scene graph
 
-        var brickTexture = getAssetLoader().loadTexture("brick.png");
-        brickTexture.setTranslateX(50);
-        brickTexture.setTranslateY(450);
-
-        getGameScene().addUINode(brickTexture); // add brick vao trong the gioi game
     }
 
     // Xu li va cham theo 2 vat the
     @Override
     protected void initPhysics() {
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.PLAYER, EntityType.COIN) {
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(Enum.PLAYER, Enum.COIN) {
             // order of types is the same as passed into the constructor
             @Override
             protected void onCollisionBegin(Entity player, Entity coin) {
@@ -272,7 +254,7 @@ public class Main extends GameApplication {
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         launch(args);
         // Khoi dong
     }

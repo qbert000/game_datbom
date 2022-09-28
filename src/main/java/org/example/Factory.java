@@ -23,7 +23,7 @@ public class Factory implements EntityFactory {
     @Spawns("player")
     public Entity newEnemy(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .type(Main.EntityType.PLAYER)
+                .type(PLAYER)
                 //.at(200, 200)
                 .with(new AnimationComponent())
                 // de va cham phai co ham nay
