@@ -50,7 +50,7 @@ public class Main extends GameApplication {
     }
 
     public enum EntityType {
-        PLAYER, COIN
+        PLAYER, COIN, WALL
     }
 
     public double currentXpos;
