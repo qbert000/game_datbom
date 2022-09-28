@@ -1,4 +1,4 @@
-package hellofx;
+package org.example;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
@@ -66,7 +66,7 @@ public class AnimationComponent extends Component {
     @Override
     public void onUpdate(double tpf) {
         // ham check di chuyen ben trai
-        if (!isRight && isLeft && !isDown && !isUp && isRight) {
+        if (isLeft && !isDown && !isUp && !isRight) {
             entity.translateX(speed * tpf);
             getMyX = entity.getPosition().getX() - speed * tpf;
             getMyY = entity.getPosition().getY();
@@ -90,7 +90,7 @@ public class AnimationComponent extends Component {
             }
         }
         // ham check di chuyen ben phai
-        if (isRight && !isUp && !isDown && !isLeft) {
+        if (isRight &&!isUp && !isDown && !isLeft) {
             entity.translateX(speed * tpf);
             getMyX = entity.getPosition().getX() - speed * tpf;
             getMyY = entity.getPosition().getY();
@@ -138,7 +138,7 @@ public class AnimationComponent extends Component {
             }
         }
         // ham check di chuyen ben duoi
-        if (isDown && !isUp && !isLeft & !isRight) {
+        if (isDown && !isUp && !isLeft && !isRight) {
             entity.translateY(speed * tpf);
             getMyX = entity.getPosition().getX();
             getMyY = entity.getPosition().getY() - speed * tpf;
