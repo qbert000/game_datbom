@@ -15,8 +15,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import javax.imageio.plugins.tiff.TIFFDirectory;
+
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 import static org.example.Enum.*;
+import static org.example.Main.TITLE_SIZE;
 
 public class Factory implements EntityFactory {
 
@@ -26,12 +29,14 @@ public class Factory implements EntityFactory {
                 .type(PLAYER)
                 //.at(200, 200)
                 .with(new AnimationComponent())
+
+                .with(new PlayerComponent())
                 // de va cham phai co ham nay
                 .with(new CollidableComponent(true))
                 // point2d la chinh vi tri box so vs vi tri ban dau
                 // Point la vi tri cua hop so vs ban dau la (0,0)
                 // chieu cao vs chieu rong cua hop
-                .bbox(new HitBox(new Point2D(7, 7), BoundingShape.box(30, 30)))
+                .bbox(new HitBox(new Point2D(7, 7), BoundingShape.box(31, 31)))
                 .build();
     }
 
@@ -39,8 +44,27 @@ public class Factory implements EntityFactory {
     public Entity newCoin(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(COIN)
-                .viewWithBBox(new Rectangle(45, 45, Color.BLACK))
+                //.viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
+                .viewWithBBox("mapTexture/brick.png")
                 .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("grass")
+    public Entity newGrass(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(GRASS)
+                //.viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
+                .viewWithBBox("mapTexture/grass.png")
+                //.with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("boom")
+    public Entity newBoom(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(BOOM)
+                .with(new Boom())
                 .build();
     }
 }
