@@ -1,4 +1,4 @@
-package org.example;
+package hellofx;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
@@ -18,8 +18,8 @@ import javafx.scene.shape.Rectangle;
 import javax.imageio.plugins.tiff.TIFFDirectory;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
-import static org.example.Enum.*;
-import static org.example.Main.TITLE_SIZE;
+import static hellofx.Enum.*;
+import static hellofx.Main.TITLE_SIZE;
 
 public class Factory implements EntityFactory {
 
@@ -27,7 +27,7 @@ public class Factory implements EntityFactory {
     public Entity newEnemy(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(PLAYER)
-                //.at(200, 200)
+                // .at(200, 200)
                 .with(new AnimationComponent())
 
                 .with(new PlayerComponent())
@@ -36,15 +36,25 @@ public class Factory implements EntityFactory {
                 // point2d la chinh vi tri box so vs vi tri ban dau
                 // Point la vi tri cua hop so vs ban dau la (0,0)
                 // chieu cao vs chieu rong cua hop
-                .bbox(new HitBox(new Point2D(7, 7), BoundingShape.box(31, 31)))
+                .bbox(new HitBox(new Point2D(7, 7), BoundingShape.box(26, 26)))
                 .build();
     }
 
-    @Spawns("coin")
+    @Spawns("wall")
     public Entity newCoin(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(COIN)
-                //.viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
+                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
+                .viewWithBBox("mapTexture/wall.png")
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("brick")
+    public Entity newBrick(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(COIN)
+                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("mapTexture/brick.png")
                 .with(new CollidableComponent(true))
                 .build();
@@ -54,9 +64,9 @@ public class Factory implements EntityFactory {
     public Entity newGrass(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(GRASS)
-                //.viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
+                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("mapTexture/grass.png")
-                //.with(new CollidableComponent(true))
+                // .with(new CollidableComponent(true))
                 .build();
     }
 
@@ -69,5 +79,4 @@ public class Factory implements EntityFactory {
     }
 }
 
-//file file = new file(filename);
-
+// file file = new file(filename);

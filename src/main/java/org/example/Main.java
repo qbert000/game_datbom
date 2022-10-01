@@ -1,4 +1,4 @@
-package org.example;
+package hellofx;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -20,12 +20,13 @@ public class Main extends GameApplication {
     // Luon phai override initsetting
 
     public static final int TITLE_SIZE = 40;
-    public static final int WIDTH_TITLE = 38;
-    public static final int HEIGHT_TITLE = 24;
+    public static final int WIDTH_TITLE = 32;
+    public static final int HEIGHT_TITLE = 18;
     public double currentXpos;
     public double currentYpos;
     private Entity player;
     public PlayerComponent playerComponent;
+
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(TITLE_SIZE * WIDTH_TITLE);
@@ -37,7 +38,6 @@ public class Main extends GameApplication {
         settings.setDeveloperMenuEnabled(true);
         settings.setIntroEnabled(false);
     }
-
 
     // Xu li input
     @Override
@@ -58,12 +58,14 @@ public class Main extends GameApplication {
                 player.getComponent(AnimationComponent.class).isDown = false;
                 player.getComponent(AnimationComponent.class).isLeft = false;
             }
+
             @Override
             protected void onAction() {
                 currentYpos = player.getComponent(AnimationComponent.class).getMyY;
                 currentXpos = player.getComponent(AnimationComponent.class).getMyX;
                 player.getComponent(AnimationComponent.class).moveRight();
             }
+
             @Override
             protected void onActionEnd() {
                 currentYpos = player.getComponent(AnimationComponent.class).getMyY;
@@ -162,7 +164,6 @@ public class Main extends GameApplication {
 
     }
 
-
     // puts nhung UI game vao Map nay
     @Override
     protected void initGameVars(Map<String, Object> vars) {
@@ -171,11 +172,13 @@ public class Main extends GameApplication {
 
     // Tao player cho game
 
-
     // khoi tao nhung thuc the trong game
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
+
+        double playerPosX = 200;
+        double playerPosY = 200;
 
         Mymap g_map = null;
         try {
@@ -183,33 +186,33 @@ public class Main extends GameApplication {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        for (int i = 0 ; i < HEIGHT_TITLE; i++) {
+        for (int i = 0; i < HEIGHT_TITLE; i++) {
             for (int j = 0; j < WIDTH_TITLE; j++) {
                 if (g_map.myMap[i][j].equals("1")) {
-                    spawn("coin", j * TITLE_SIZE, i * TITLE_SIZE);
+                    spawn("wall", j * TITLE_SIZE, i * TITLE_SIZE);
                 }
-                if (g_map.myMap[i][j].equals("0")) {
+                if (g_map.myMap[i][j].equals("0") || g_map.myMap[i][j].equals("3")) {
                     spawn("grass", j * TITLE_SIZE, i * TITLE_SIZE);
                 }
+                if (g_map.myMap[i][j].equals("2")) {
+                    spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
+                }
                 // do something here
-
-
-
-
-
-
+                if (g_map.myMap[i][j].equals("3")) {
+                    playerPosX = j * TITLE_SIZE;
+                    playerPosY = i * TITLE_SIZE;
+                }
             }
         }
 
-        player = spawn("player", 200, 200);
+        // spawn nhan vat sau cung de z-index >>>
+        player = spawn("player", playerPosX, playerPosY);
         playerComponent = player.getComponent(PlayerComponent.class);
-
 
         currentXpos = player.getPosition().getX();
         currentYpos = player.getPosition().getY();
         player.getComponent(AnimationComponent.class).getMyX = player.getPosition().getX();
         player.getComponent(AnimationComponent.class).getMyY = player.getPosition().getY();
-
 
         // khoi tao bien
     }
@@ -217,14 +220,6 @@ public class Main extends GameApplication {
     // khoi tao nhung UI - trong game la Text
     @Override
     protected void initUI() {
-        Text textPixels = new Text();
-        textPixels.setTranslateX(50); // x = 50
-        textPixels.setTranslateY(100); // y = 100
-        textPixels.textProperty().bind(getWorldProperties().intProperty("pixelsMoved").asString());
-        // bind bien text voi bien pixeslMoved
-        textPixels.textProperty().bind(getWorldProperties().intProperty("pixelsMoved").asString());
-
-        getGameScene().addUINode(textPixels); // add to the scene graph
 
     }
 
@@ -246,7 +241,7 @@ public class Main extends GameApplication {
         });
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         launch(args);
         // Khoi dong
     }

@@ -1,4 +1,4 @@
-package org.example;
+package hellofx;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
@@ -22,36 +22,38 @@ public class AnimationComponent extends Component {
     public double getMyY;
 
     // Di chuyen len tren
-    AnimationChannel animUp = new AnimationChannel(FXGL.image("character/gold_player_up.png"), 4, 45, 45,
+    AnimationChannel animUp = new AnimationChannel(FXGL.image("character/gold_player_up.png"), 4, 40, 40,
             Duration.seconds(0.5),
             0, 2);
     // Di chuyen xuong duoi
-    AnimationChannel animDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, 45, 45,
-            Duration.seconds(0.5),
+    AnimationChannel animDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, 40, 40,
+            Duration.seconds(0.3),
             0, 2);
     // Dung yen ben tren
-    AnimationChannel IdleUp = new AnimationChannel(FXGL.image("character/gold_player_up.png"), 4, 45, 45,
-            Duration.seconds(0.5),
+    AnimationChannel IdleUp = new AnimationChannel(FXGL.image("character/gold_player_up.png"), 4, 40, 40,
+            Duration.seconds(0.3),
             2, 2);
     // Dung yen ben duoi
-    AnimationChannel IdleDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, 45, 45,
-            Duration.seconds(0.5),
+    AnimationChannel IdleDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, 40, 40,
+            Duration.seconds(0.3),
             2, 2);
     // Di chuyen sang trai
-    AnimationChannel AnimLeft = new AnimationChannel(FXGL.image("character/gold_player_left.png"), 4, 45, 45,
-            Duration.seconds(0.5),
+    AnimationChannel AnimLeft = new AnimationChannel(FXGL.image("character/gold_player_left.png"), 4, 40, 40,
+            Duration.seconds(0.45),
             0, 2);
     // Dung yen ben trai
-    AnimationChannel IdleLeft = new AnimationChannel(FXGL.image("character/gold_player_left.png"), 4, 45, 45,
-            Duration.seconds(0.5),
+    AnimationChannel IdleLeft = new AnimationChannel(FXGL.image("character/gold_player_left.png"), 4, 40, 40,
+            Duration.seconds(0.45),
             2, 2);
 
     public AnimationComponent() {
         // Dung yen ben phai
-        animIdle = new AnimationChannel(FXGL.image("character/gold_player_right.png"), 4, 45, 45, Duration.seconds(0.5),
+        animIdle = new AnimationChannel(FXGL.image("character/gold_player_right.png"), 4, 40, 40,
+                Duration.seconds(0.45),
                 2, 2);
         // Di chuyen ben phai
-        animWalk = new AnimationChannel(FXGL.image("character/gold_player_right.png"), 4, 45, 45, Duration.seconds(0.5),
+        animWalk = new AnimationChannel(FXGL.image("character/gold_player_right.png"), 4, 40, 40,
+                Duration.seconds(0.45),
                 0, 2);
         texture = new AnimatedTexture(animIdle);
     }
@@ -90,7 +92,7 @@ public class AnimationComponent extends Component {
             }
         }
         // ham check di chuyen ben phai
-        if (isRight &&!isUp && !isDown && !isLeft) {
+        if (isRight && !isUp && !isDown && !isLeft) {
             entity.translateX(speed * tpf);
             getMyX = entity.getPosition().getX() - speed * tpf;
             getMyY = entity.getPosition().getY();
@@ -165,19 +167,19 @@ public class AnimationComponent extends Component {
     }
 
     public void moveRight() {
-        speed = 70;
+        speed = 90;
     }
 
     public void moveLeft() {
-        speed = -70;
+        speed = -90;
     }
 
     public void moveUp() {
-        speed = -70;
+        speed = -90;
     }
 
     public void moveDown() {
-        speed = 70;
+        speed = 90;
     }
 
     public void stay() {

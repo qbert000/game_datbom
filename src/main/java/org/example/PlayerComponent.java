@@ -1,4 +1,4 @@
-package org.example;
+package hellofx;
 
 import com.almasb.fxgl.pathfinding.CellMoveComponent;
 import com.almasb.fxgl.pathfinding.astar.AStarMoveComponent;
