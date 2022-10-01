@@ -4,9 +4,12 @@ package org.example;
 import java.io.File;
 import java.util.Scanner;
 
+import static org.example.Main.HEIGHT_TITLE;
+import static org.example.Main.WIDTH_TITLE;
+
 public class Mymap {
 
-    public String myMap[][] = new String[24][38];
+    public String myMap[][] = new String[HEIGHT_TITLE][WIDTH_TITLE];
 
 
     public Mymap() throws Exception {

@@ -3,35 +3,15 @@ package org.example;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.*;
-import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.scene.Scene;
-import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.core.math.Vec2;
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.physics.HitBox;
 
-import javafx.scene.effect.Light.Point;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.geometry.Point2D;
 
-import java.io.FileNotFoundException;
 import java.util.Map;
-
-import javax.sound.sampled.SourceDataLine;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -42,7 +22,10 @@ public class Main extends GameApplication {
     public static final int TITLE_SIZE = 40;
     public static final int WIDTH_TITLE = 38;
     public static final int HEIGHT_TITLE = 24;
-
+    public double currentXpos;
+    public double currentYpos;
+    private Entity player;
+    public PlayerComponent playerComponent;
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(TITLE_SIZE * WIDTH_TITLE);
@@ -56,9 +39,6 @@ public class Main extends GameApplication {
     }
 
 
-    public double currentXpos;
-    public double currentYpos;
-    private Entity player;
     // Xu li input
     @Override
     protected void initInput() {
@@ -78,14 +58,12 @@ public class Main extends GameApplication {
                 player.getComponent(AnimationComponent.class).isDown = false;
                 player.getComponent(AnimationComponent.class).isLeft = false;
             }
-
             @Override
             protected void onAction() {
                 currentYpos = player.getComponent(AnimationComponent.class).getMyY;
                 currentXpos = player.getComponent(AnimationComponent.class).getMyX;
                 player.getComponent(AnimationComponent.class).moveRight();
             }
-
             @Override
             protected void onActionEnd() {
                 currentYpos = player.getComponent(AnimationComponent.class).getMyY;
@@ -184,6 +162,7 @@ public class Main extends GameApplication {
 
     }
 
+
     // puts nhung UI game vao Map nay
     @Override
     protected void initGameVars(Map<String, Object> vars) {
@@ -197,13 +176,6 @@ public class Main extends GameApplication {
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
-        player = spawn("player", 200, 200);
-
-        currentXpos = player.getPosition().getX();
-        currentYpos = player.getPosition().getY();
-        player.getComponent(AnimationComponent.class).getMyX = player.getPosition().getX();
-        player.getComponent(AnimationComponent.class).getMyY = player.getPosition().getY();
-
 
         Mymap g_map = null;
         try {
@@ -216,10 +188,27 @@ public class Main extends GameApplication {
                 if (g_map.myMap[i][j].equals("1")) {
                     spawn("coin", j * TITLE_SIZE, i * TITLE_SIZE);
                 }
+                if (g_map.myMap[i][j].equals("0")) {
+                    spawn("grass", j * TITLE_SIZE, i * TITLE_SIZE);
+                }
+                // do something here
+
+
+
+
+
+
             }
         }
 
+        player = spawn("player", 200, 200);
+        playerComponent = player.getComponent(PlayerComponent.class);
 
+
+        currentXpos = player.getPosition().getX();
+        currentYpos = player.getPosition().getY();
+        player.getComponent(AnimationComponent.class).getMyX = player.getPosition().getX();
+        player.getComponent(AnimationComponent.class).getMyY = player.getPosition().getY();
 
 
         // khoi tao bien
