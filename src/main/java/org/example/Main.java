@@ -1,11 +1,18 @@
 package hellofx;
 
+import com.almasb.fxgl.app.CursorInfo;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.app.scene.Viewport;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.PhysicsWorld;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
@@ -14,6 +21,10 @@ import javafx.geometry.Point2D;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
+
+import hellofx.Menu.GameMenu;
+import hellofx.Menu.MainMenu;
+import hellofx.Menu.MenuButton;
 
 //  Ham Main cua ban luon phai extend GameApplication
 public class Main extends GameApplication {
@@ -31,12 +42,28 @@ public class Main extends GameApplication {
     protected void initSettings(GameSettings settings) {
         settings.setWidth(TITLE_SIZE * WIDTH_TITLE);
         settings.setHeight(TITLE_SIZE * HEIGHT_TITLE);
-        settings.setTitle("Basic Game App");
+        settings.setTitle("Bomberman");
         settings.setAppIcon("icon/icon.png");
         // to chuc file mac dinh la assets/textures/ --> them duong dan dc
         settings.setVersion("1.0");
         settings.setDeveloperMenuEnabled(true);
         settings.setIntroEnabled(false);
+        settings.setIntroEnabled(false);
+        settings.setGameMenuEnabled(true);
+        settings.setMainMenuEnabled(true);
+        settings.setSceneFactory(new SceneFactory() {
+            @Override
+            public FXGLMenu newMainMenu() {
+                return new MainMenu();
+            }
+
+            @Override
+            public FXGLMenu newGameMenu() {
+                return new GameMenu();
+            }
+
+        });
+        settings.setDefaultCursor(new CursorInfo("cursor/cursor1.png", 0.0, 0.0));
     }
 
     // Xu li input
