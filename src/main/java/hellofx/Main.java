@@ -29,6 +29,7 @@ import hellofx.Menu.MenuButton;
 //  Ham Main cua ban luon phai extend GameApplication
 public class Main extends GameApplication {
     // Luon phai override initsetting
+    // bao h ms co ny
 
     public static final int TITLE_SIZE = 40;
     public static final int WIDTH_TITLE = 32;
