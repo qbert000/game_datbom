@@ -2,15 +2,26 @@ package hellofx;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
-public class AnimationComponent extends Component {
+import java.util.Vector;
 
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
+
+
+
+public class AnimationComponent extends Component {
     private int speed = 0;
+
+    private static int amountBoom = 5;
+
+    public static boolean k = true;
 
     public AnimatedTexture texture;
     private AnimationChannel animIdle, animWalk;
@@ -43,7 +54,7 @@ public class AnimationComponent extends Component {
             0, 2);
     // Dung yen ben trai
     AnimationChannel IdleLeft = new AnimationChannel(FXGL.image("character/gold_player_left.png"), 4, 40, 40,
-            Duration.seconds(0.45),
+            Duration.seconds(0.3),
             2, 2);
 
     public AnimationComponent() {
@@ -164,6 +175,36 @@ public class AnimationComponent extends Component {
                 }
             }
         }
+    }
+
+    public void placeBoom() {
+        if (amountBoom < 1) {
+            return;
+        }
+        amountBoom--;
+        k = false;
+        Entity g_boom = spawn("boom", ((int)((entity.getX() + 15) / 40)) * 40, ((int)((entity.getY() + 15) / 40)) * 40);
+        g_boom.getComponent(FlameAnimation.class).AnimationCenter();
+        getGameTimer().runOnceAfter(() -> {
+            Vector<Entity> tex = new Vector<>();
+            g_boom.getComponent(Boom.class).explodeBoom(tex);
+            amountBoom++;
+        }, Duration.seconds(1.5));
+
+    }
+
+    /**.
+     * up amount boom on map.
+     */
+    public void amountBoomUp() {
+        amountBoom++;
+    }
+
+    /**.
+     * down amount boom on map.
+     */
+    public  void amountBoomDown() {
+        amountBoom = 1;
     }
 
     public void moveRight() {

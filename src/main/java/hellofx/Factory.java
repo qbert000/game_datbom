@@ -1,14 +1,11 @@
 package hellofx;
 
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.pathfinding.CellMoveComponent;
-import com.almasb.fxgl.pathfinding.astar.AStarMoveComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
@@ -29,7 +26,7 @@ public class Factory implements EntityFactory {
                 .type(PLAYER)
                 // .at(200, 200)
                 .with(new AnimationComponent())
-
+                .collidable()
                 .with(new PlayerComponent())
                 // de va cham phai co ham nay
                 .with(new CollidableComponent(true))
@@ -74,9 +71,69 @@ public class Factory implements EntityFactory {
     public Entity newBoom(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(BOOM)
+                .with(new FlameAnimation())
                 .with(new Boom())
+                .collidable()
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(40, 40)))
                 .build();
     }
+
+    @Spawns("flame")
+    public  Entity newFlameCenter(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(FLAME)
+                .collidable()
+                .with(new FlameAnimation())
+                //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(40, 40)))
+                .build();
+    }
+
+    @Spawns("flameright")
+    public  Entity newFlameRight(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(FLAMERIGHT)
+                .collidable()
+                .with(new FlameAnimation())
+                //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
+                .build();
+    }
+
+    @Spawns("flameleft")
+    public  Entity newFlameLeft(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(FLAMELEFT)
+                .collidable()
+                .with(new FlameAnimation())
+                //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
+                .build();
+    }
+
+    @Spawns("flameup")
+    public  Entity newFlameUp(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(FLAMEUP)
+                .collidable()
+                .with(new FlameAnimation())
+                //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
+                .build();
+    }
+
+    @Spawns("flamedown")
+    public  Entity newFlameDown(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(FLAMEDOWN)
+                .collidable()
+                .with(new FlameAnimation())
+                //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
+                .build();
+    }
+
+
 }
 
 // file file = new file(filename);
