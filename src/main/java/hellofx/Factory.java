@@ -52,8 +52,10 @@ public class Factory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(COIN)
                 // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
-                .viewWithBBox("mapTexture/brick.png")
+                // .viewWithBBox("")
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(40, 40)))
                 .with(new CollidableComponent(true))
+                .with(new BrickBreakAnimation())
                 .build();
     }
 
@@ -75,6 +77,16 @@ public class Factory implements EntityFactory {
                 .with(new Boom())
                 .collidable()
                 .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(40, 40)))
+                .build();
+    }
+
+    @Spawns("portal")
+    public Entity newPortal(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(PORTAL)
+                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
+                .viewWithBBox("mapTexture/portal.png")
+                .collidable()
                 .build();
     }
 
@@ -136,4 +148,3 @@ public class Factory implements EntityFactory {
 
 }
 
-// file file = new file(filename);

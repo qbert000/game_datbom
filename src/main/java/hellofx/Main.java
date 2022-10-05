@@ -10,9 +10,12 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.app.scene.Viewport;
+import com.almasb.fxgl.dev.editor.EntityInspector;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.physics.PhysicsWorld;
+import com.almasb.fxgl.app.scene.MenuType;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
@@ -30,7 +33,7 @@ import hellofx.Menu.MenuButton;
 //  Ham Main cua ban luon phai extend GameApplication
 public class Main extends GameApplication {
     // Luon phai override initsetting
-    // bao h ms co ny
+
 
     public static final int TITLE_SIZE = 40;
     public static final int WIDTH_TITLE = 32;
@@ -41,6 +44,8 @@ public class Main extends GameApplication {
     public AnimationComponent g_playerComponent;
 
     public static Mymap g_map = null;
+    public boolean playerisAlive = true;
+    
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -78,31 +83,36 @@ public class Main extends GameApplication {
             play("drop.wav"); // play am thanh
             Boom.powerBoomUp();
         });
-
         // Xac dinh su kien di ben phai
         FXGL.getInput().addAction(new UserAction("Right") {
             @Override
             protected void onActionBegin() {
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                g_player.getComponent(AnimationComponent.class).isRight = true;
-                g_player.getComponent(AnimationComponent.class).isUp = false;
-                g_player.getComponent(AnimationComponent.class).isDown = false;
-                g_player.getComponent(AnimationComponent.class).isLeft = false;
+                if (playerisAlive) {
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    g_player.getComponent(AnimationComponent.class).isRight = true;
+                    g_player.getComponent(AnimationComponent.class).isUp = false;
+                    g_player.getComponent(AnimationComponent.class).isDown = false;
+                    g_player.getComponent(AnimationComponent.class).isLeft = false;
+                }
             }
 
             @Override
             protected void onAction() {
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                g_player.getComponent(AnimationComponent.class).moveRight();
+                if (playerisAlive) {
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    g_player.getComponent(AnimationComponent.class).moveRight();
+                }
             }
 
             @Override
             protected void onActionEnd() {
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                g_player.getComponent(AnimationComponent.class).stay();
+                if (playerisAlive) {
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    g_player.getComponent(AnimationComponent.class).stay();
+                }
             }
 
         }, KeyCode.D);
@@ -111,28 +121,34 @@ public class Main extends GameApplication {
         FXGL.getInput().addAction(new UserAction("Left") {
             @Override
             protected void onActionBegin() {
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                // de goi thuoc tinh co trong class voi "with" sau khi add
-                // ta dung ham getComponent(ten.class).thuoctinh/method
-                g_player.getComponent(AnimationComponent.class).isLeft = true;
-                g_player.getComponent(AnimationComponent.class).isUp = false;
-                g_player.getComponent(AnimationComponent.class).isDown = false;
-                g_player.getComponent(AnimationComponent.class).isRight = false;
+                if (playerisAlive) {
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    // de goi thuoc tinh co trong class voi "with" sau khi add
+                    // ta dung ham getComponent(ten.class).thuoctinh/method
+                    g_player.getComponent(AnimationComponent.class).isLeft = true;
+                    g_player.getComponent(AnimationComponent.class).isUp = false;
+                    g_player.getComponent(AnimationComponent.class).isDown = false;
+                    g_player.getComponent(AnimationComponent.class).isRight = false;
+                }
             }
 
             @Override
             protected void onAction() {
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                g_player.getComponent(AnimationComponent.class).moveLeft();
+                if (playerisAlive) {
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    g_player.getComponent(AnimationComponent.class).moveLeft();
+                }
             }
 
             @Override
             protected void onActionEnd() {
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                g_player.getComponent(AnimationComponent.class).stay();
+                if (playerisAlive) {
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    g_player.getComponent(AnimationComponent.class).stay();
+                }
             }
 
         }, KeyCode.A);
@@ -141,26 +157,32 @@ public class Main extends GameApplication {
         FXGL.getInput().addAction(new UserAction("Up") {
             @Override
             protected void onActionBegin() {
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                g_player.getComponent(AnimationComponent.class).isUp = true;
-                g_player.getComponent(AnimationComponent.class).isDown = false;
-                g_player.getComponent(AnimationComponent.class).isLeft = false;
-                g_player.getComponent(AnimationComponent.class).isRight = false;
+                if (playerisAlive) {
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    g_player.getComponent(AnimationComponent.class).isUp = true;
+                    g_player.getComponent(AnimationComponent.class).isDown = false;
+                    g_player.getComponent(AnimationComponent.class).isLeft = false;
+                    g_player.getComponent(AnimationComponent.class).isRight = false;
+                }
             }
 
             @Override
             protected void onAction() {
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                g_player.getComponent(AnimationComponent.class).moveUp();
+                if (playerisAlive) {
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    g_player.getComponent(AnimationComponent.class).moveUp();
+                }
             }
 
             @Override
             protected void onActionEnd() {
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                g_player.getComponent(AnimationComponent.class).stay();
+                if (playerisAlive) {
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    g_player.getComponent(AnimationComponent.class).stay();
+                }
             }
 
         }, KeyCode.W);
@@ -169,40 +191,50 @@ public class Main extends GameApplication {
         FXGL.getInput().addAction(new UserAction("Down") {
             @Override
             protected void onActionBegin() {
-                // neu dao nguoc chieu cung di chuyen se di xuyen qua vat can :)))))
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                g_player.getComponent(AnimationComponent.class).isDown = true;
-                g_player.getComponent(AnimationComponent.class).isUp = false;
-                g_player.getComponent(AnimationComponent.class).isLeft = false;
-                g_player.getComponent(AnimationComponent.class).isRight = false;
+                if (playerisAlive) {
+                    // neu dao nguoc chieu cung di chuyen se di xuyen qua vat can :)))))
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    g_player.getComponent(AnimationComponent.class).isDown = true;
+                    g_player.getComponent(AnimationComponent.class).isUp = false;
+                    g_player.getComponent(AnimationComponent.class).isLeft = false;
+                    g_player.getComponent(AnimationComponent.class).isRight = false;
+                }
             }
 
             @Override
             protected void onAction() {
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                g_player.getComponent(AnimationComponent.class).moveDown();
+                if (playerisAlive) {
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    g_player.getComponent(AnimationComponent.class).moveDown();
+                }
             }
 
             @Override
             protected void onActionEnd() {
-                currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                g_player.getComponent(AnimationComponent.class).stay();
+                if (playerisAlive) {
+                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    g_player.getComponent(AnimationComponent.class).stay();
+                }
             }
 
         }, KeyCode.S);
 
-        /**.
+        /**
+         * .
          * place boom in this place
          */
         getInput().addAction(new UserAction("Place boom") {
             @Override
             protected void onActionBegin() {
-                g_playerComponent.placeBoom();
+                if (playerisAlive) {
+                    g_playerComponent.placeBoom();
+                }
             }
         }, KeyCode.SPACE);
+
     }
 
     // puts nhung UI game vao Map nay
@@ -218,9 +250,12 @@ public class Main extends GameApplication {
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
 
+        playerisAlive = true;
+
+        Boom.setBoomSize();
+
         double playerPosX = 200;
         double playerPosY = 200;
-
 
         try {
             g_map = new Mymap();
@@ -234,8 +269,9 @@ public class Main extends GameApplication {
                 if (g_map.myMap[i][j].equals("1")) {
                     spawn("wall", j * TITLE_SIZE, i * TITLE_SIZE);
                 }
-                if (g_map.myMap[i][j].equals("0") || g_map.myMap[i][j].equals("3")) {
-                    //spawn("grass", j * TITLE_SIZE, i * TITLE_SIZE);
+                if (g_map.myMap[i][j].equals("5")) {
+                    spawn("portal", j * TITLE_SIZE, i * TITLE_SIZE);
+                    spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
                 }
                 if (g_map.myMap[i][j].equals("2")) {
                     spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
@@ -250,6 +286,7 @@ public class Main extends GameApplication {
 
         // spawn nhan vat sau cung de z-index >>>
         g_player = spawn("player", playerPosX, playerPosY);
+        Boom.setBoomSize();
         g_playerComponent = g_player.getComponent(AnimationComponent.class);
 
         currentXpos = g_player.getPosition().getX();
@@ -266,27 +303,33 @@ public class Main extends GameApplication {
 
     }
 
+    private void replay() {
+        playerisAlive = false;
+        g_player.removeFromWorld();
+        FXGL.getGameController().gotoMainMenu();
+    }
+
     // Xu li va cham theo 2 vat the
     @Override
     protected void initPhysics() {
-        onCollisionBegin(PLAYER , FLAME, (player, coin) -> {
-            g_player.removeFromWorld();
+        onCollisionBegin(PLAYER, FLAME, (player, coin) -> {
+            replay();
         });
         // collision flame
-        onCollisionBegin(PLAYER , FLAMERIGHT, (player, coin) -> {
-            g_player.removeFromWorld();
+        onCollisionBegin(PLAYER, FLAMERIGHT, (player, coin) -> {
+            replay();
         });
-        onCollisionBegin(PLAYER , FLAMELEFT, (player, coin) -> {
-            g_player.removeFromWorld();
+        onCollisionBegin(PLAYER, FLAMELEFT, (player, coin) -> {
+            replay();
         });
-        onCollisionBegin(PLAYER , FLAMEUP, (player, coin) -> {
-            g_player.removeFromWorld();
+        onCollisionBegin(PLAYER, FLAMEUP, (player, coin) -> {
+            replay();
         });
-        onCollisionBegin(PLAYER , FLAMEDOWN, (player, coin) -> {
-            g_player.removeFromWorld();
+        onCollisionBegin(PLAYER, FLAMEDOWN, (player, coin) -> {
+            replay();
         });
 
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER,BOOM) {
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, BOOM) {
             // order of types is the same as passed into the constructor
             @Override
             protected void onCollisionBegin(Entity player, Entity coin) {
@@ -295,6 +338,7 @@ public class Main extends GameApplication {
                 }
 
             }
+
             @Override
             protected void onCollision(Entity player, Entity coin) {
                 if (g_playerComponent.k) {
@@ -308,7 +352,16 @@ public class Main extends GameApplication {
             }
         });
 
-        /**.
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, PORTAL) {
+            // order of types is the same as passed into the constructor
+            @Override
+            protected void onCollision(Entity player, Entity coin) {
+                FXGL.getGameController().gotoMainMenu();
+            }
+        });
+
+        /**
+         * .
          * colliision between player with coin.
          */
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, Enum.COIN) {
@@ -317,12 +370,12 @@ public class Main extends GameApplication {
             protected void onCollisionBegin(Entity player, Entity coin) {
                 player.setPosition(new Point2D(currentXpos, currentYpos));
             }
+
             @Override
             protected void onCollision(Entity player, Entity coin) {
                 player.setPosition(new Point2D(currentXpos, currentYpos));
             }
         });
-
 
     }
 

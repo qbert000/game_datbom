@@ -16,7 +16,7 @@ public class FlameAnimation extends Component {
     private final AnimationChannel wingHorizontal;
     private final AnimationChannel wingVertical;
     private final AnimationChannel wingCentral;
-
+    private final AnimationChannel brickBreak;
 
     public FlameAnimation() {
         center = new AnimationChannel(FXGL.image("character\\bomb.png")
@@ -31,6 +31,9 @@ public class FlameAnimation extends Component {
         wingCentral = new AnimationChannel(FXGL.image("flame\\central_flame.png")
                 , 3 , 40, 40
                 , Duration.seconds(0.5), 0,2);
+        brickBreak = new AnimationChannel(FXGL.image("mapTexture\\brick_break.png")
+                , 3, 40, 40
+                , Duration.seconds(0.5), 0, 2);
         texture = new AnimatedTexture(center);
     }
 
@@ -71,5 +74,12 @@ public class FlameAnimation extends Component {
      */
     public void AnimationWingCentral() {
         texture.loopAnimationChannel(wingCentral);
+    }
+
+    /**
+     * brick break animation
+     */
+    public void BrickBreak() {
+        texture.loopAnimationChannel(brickBreak);
     }
 }

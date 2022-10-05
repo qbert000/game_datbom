@@ -59,4 +59,8 @@ public class GameMenu extends FXGLMenu {
         getContentRoot().getChildren().addAll(shape, background, title, menuBox);
     }
 
+    public void myExit() {
+        super.fireExit();
+    }
+
 }

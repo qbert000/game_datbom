@@ -55,7 +55,7 @@ public class AnimationComponent extends Component {
     // Dung yen ben trai
     AnimationChannel IdleLeft = new AnimationChannel(FXGL.image("character/gold_player_left.png"), 4, 40, 40,
             Duration.seconds(0.3),
-            2, 2);
+            0, 0);
 
     public AnimationComponent() {
         // Dung yen ben phai
