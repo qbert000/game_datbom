@@ -89,7 +89,7 @@ public class Factory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("flameright")
+    @Spawns("flameRight")
     public  Entity newFlameRight(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAMERIGHT)
@@ -100,7 +100,7 @@ public class Factory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("flameleft")
+    @Spawns("flameLeft")
     public  Entity newFlameLeft(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAMELEFT)
@@ -111,7 +111,7 @@ public class Factory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("flameup")
+    @Spawns("flameUp")
     public  Entity newFlameUp(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAMEUP)
@@ -122,7 +122,7 @@ public class Factory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("flamedown")
+    @Spawns("flameDown")
     public  Entity newFlameDown(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAMEDOWN)

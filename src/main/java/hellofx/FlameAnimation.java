@@ -12,10 +12,10 @@ public class FlameAnimation extends Component {
     private int speed = 0;
 
     public AnimatedTexture texture;
-    private AnimationChannel center;
-    private AnimationChannel wingHorizontal;
-    private AnimationChannel wingVertical;
-    private AnimationChannel wingCentral;
+    private final AnimationChannel center;
+    private final AnimationChannel wingHorizontal;
+    private final AnimationChannel wingVertical;
+    private final AnimationChannel wingCentral;
 
 
     public FlameAnimation() {

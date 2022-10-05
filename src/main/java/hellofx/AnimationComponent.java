@@ -24,7 +24,7 @@ public class AnimationComponent extends Component {
     public static boolean k = true;
 
     public AnimatedTexture texture;
-    private AnimationChannel animIdle, animWalk;
+    private final AnimationChannel animIdle, animWalk;
     public boolean isUp = false;
     public boolean isDown = false;
     public boolean isLeft = false;
@@ -178,7 +178,7 @@ public class AnimationComponent extends Component {
     }
 
     public void placeBoom() {
-        if (amountBoom < 1) {
+        if (amountBoom < 1 || !k) {
             return;
         }
         amountBoom--;

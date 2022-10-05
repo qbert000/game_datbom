@@ -59,7 +59,7 @@ public class Boom extends Component {
                 setRight();
                 return;
             }
-            tex.add(spawn("flameright", entity.getX() + right * 40,entity.getY()));
+            tex.add(spawn("flameRight", entity.getX() + right * 40,entity.getY()));
             tex.get(tex.size() -1).getComponent(FlameAnimation.class).AnimationWingHorizontal();
             onCollisionBegin(FLAMERIGHT , COIN, (flame, coin ) -> {
                 coin.removeFromWorld();
@@ -81,7 +81,7 @@ public class Boom extends Component {
                 setLeft();
                 return;
             }
-            tex.add(spawn("flameleft", entity.getX() - left * 40, entity.getY()));
+            tex.add(spawn("flameLeft", entity.getX() - left * 40, entity.getY()));
             tex.get(tex.size() -1).getComponent(FlameAnimation.class).AnimationWingHorizontal();
             onCollisionBegin(FLAMELEFT , COIN, (flame, coin ) -> {
                 coin.removeFromWorld();
@@ -102,7 +102,7 @@ public class Boom extends Component {
                 setUp();
                 return;
             }
-            tex.add(spawn("flame", entity.getX(), entity.getY() - up * 40));
+            tex.add(spawn("flameUp", entity.getX(), entity.getY() - up * 40));
             tex.get(tex.size() -1).getComponent(FlameAnimation.class).AnimationWingVertical();
             onCollisionBegin(FLAMEUP, COIN, (flame, coin ) -> {
                 coin.removeFromWorld();
@@ -123,7 +123,7 @@ public class Boom extends Component {
                 setDown();
                 return;
             }
-            tex.add(spawn("flame", entity.getX(), entity.getY() + down * 40));
+            tex.add(spawn("flameDown", entity.getX(), entity.getY() + down * 40));
             tex.get(tex.size() -1).getComponent(FlameAnimation.class).AnimationWingVertical();
             onCollisionBegin(FLAMEDOWN , COIN, (flame, coin ) -> {
                 coin.removeFromWorld();
