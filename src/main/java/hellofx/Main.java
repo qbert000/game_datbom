@@ -22,13 +22,16 @@ import javafx.scene.text.Text;
 import javafx.geometry.Point2D;
 
 import java.util.Map;
+import java.util.Vector;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static hellofx.Enum.*;
 
 import hellofx.Menu.GameMenu;
 import hellofx.Menu.MainMenu;
 import hellofx.Menu.MenuButton;
+import javafx.util.Duration;
 
 //  Ham Main cua ban luon phai extend GameApplication
 public class Main extends GameApplication {
@@ -303,7 +306,9 @@ public class Main extends GameApplication {
     private void replay() {
         playerisAlive = false;
         g_player.removeFromWorld();
-        FXGL.getGameController().gotoMainMenu();
+        getGameTimer().runOnceAfter(() -> {
+            FXGL.getGameController().gotoMainMenu();
+        }, Duration.seconds(1.5));
     }
 
     // Xu li va cham theo 2 vat the
@@ -352,8 +357,11 @@ public class Main extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, PORTAL) {
             // order of types is the same as passed into the constructor
             @Override
-            protected void onCollision(Entity player, Entity coin) {
-                FXGL.getGameController().gotoMainMenu();
+            protected void onCollisionBegin(Entity player, Entity portal) {
+
+                getGameTimer().runOnceAfter(() -> {
+                    FXGL.getGameController().gotoMainMenu();
+                }, Duration.seconds(0.6));
             }
         });
 
