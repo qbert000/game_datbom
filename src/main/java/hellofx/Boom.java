@@ -171,8 +171,8 @@ public class Boom extends Component {
     public static void powerBoomUp() {
         sizeBoom++;
     }
-
-    public static void setBoomSize() {
-        sizeBoom = 1;
-    }
+    // Ham reset boom nhung k hoat dong :))
+    // public static void setBoomSize() {
+    //     sizeBoom = 1;
+    // }
 }

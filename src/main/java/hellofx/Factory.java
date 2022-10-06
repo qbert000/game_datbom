@@ -27,7 +27,6 @@ public class Factory implements EntityFactory {
                 // .at(200, 200)
                 .with(new AnimationComponent())
                 .collidable()
-                .with(new PlayerComponent())
                 // de va cham phai co ham nay
                 .with(new CollidableComponent(true))
                 // point2d la chinh vi tri box so vs vi tri ban dau

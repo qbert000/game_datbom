@@ -252,8 +252,6 @@ public class Main extends GameApplication {
 
         playerisAlive = true;
 
-        Boom.setBoomSize();
-
         double playerPosX = 200;
         double playerPosY = 200;
 
@@ -286,7 +284,6 @@ public class Main extends GameApplication {
 
         // spawn nhan vat sau cung de z-index >>>
         g_player = spawn("player", playerPosX, playerPosY);
-        Boom.setBoomSize();
         g_playerComponent = g_player.getComponent(AnimationComponent.class);
 
         currentXpos = g_player.getPosition().getX();
