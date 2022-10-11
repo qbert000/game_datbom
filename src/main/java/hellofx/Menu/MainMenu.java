@@ -1,21 +1,22 @@
 package hellofx.Menu;
 
-import com.almasb.fxgl.app.MenuItem;
+// import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.input.view.KeyView;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Menu;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.BlurType;
+// import javafx.scene.Node;
+// import javafx.scene.control.Menu;
+// import javafx.scene.effect.Bloom;
+// import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Shadow;
+// import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
+// import javafx.util.Duration;
+import static hellofx.Constant.GameConstant.*;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static javafx.scene.input.KeyCode.*;
@@ -39,13 +40,13 @@ public class MainMenu extends FXGLMenu {
         title.setEffect(dropShadow);
         centerTextBind(title, getAppWidth() / 2.0, 300);
 
-        MenuButton first = new MenuButton("NEW GAME", 36, () -> newGame());
+        MenuButton first = new MenuButton("NEW GAME", fontSize, () -> newGame());
         first.setEffect(dropShadow);
 
-        MenuButton second = new MenuButton("CONTROL", 36, () -> instruct());
+        MenuButton second = new MenuButton("CONTROL", fontSize, () -> instruct());
         second.setEffect(dropShadow);
 
-        MenuButton third = new MenuButton("EXIT", 36, () -> fireExit());
+        MenuButton third = new MenuButton("EXIT", fontSize, () -> fireExit());
         third.setEffect(dropShadow);
 
         var menuBox = new VBox(first, second, third);
@@ -70,7 +71,5 @@ public class MainMenu extends FXGLMenu {
 
     public void newGame() {
         fireNewGame();
-        // getGameTimer().runOnceAfter(() -> {
-        // }, Duration.millis(10));
     }
 }

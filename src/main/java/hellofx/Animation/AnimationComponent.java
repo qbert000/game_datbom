@@ -1,4 +1,4 @@
-package hellofx;
+package hellofx.Animation;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
@@ -6,20 +6,18 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
-import javafx.geometry.Point2D;
+// import javafx.geometry.Point2D;
 import javafx.util.Duration;
+import static hellofx.Constant.GameConstant.*;
 
 import java.util.Vector;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
-
-
+import hellofx.Bomb_Flame.*;
 
 public class AnimationComponent extends Component {
     private int speed = 0;
-
-    private static int amountBoom = 5;
 
     public static boolean k = true;
 
@@ -32,46 +30,64 @@ public class AnimationComponent extends Component {
     public double getMyX;
     public double getMyY;
 
+    // Nhan vat die
+    AnimationChannel animDie = new AnimationChannel(FXGL.image("character/gold_player_dead.png"), 6, TITLE_SIZE,
+            TITLE_SIZE,
+            Duration.seconds(0.7),
+            0, 5);
+    // Nhan vat Win --> next level
+    AnimationChannel animWin = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 3, TITLE_SIZE,
+            TITLE_SIZE,
+            Duration.seconds(0.4),
+            0, 2);
     // Di chuyen len tren
-    AnimationChannel animUp = new AnimationChannel(FXGL.image("character/gold_player_up.png"), 4, 40, 40,
+    AnimationChannel animUp = new AnimationChannel(FXGL.image("character/gold_player_up.png"), 4, TITLE_SIZE,
+            TITLE_SIZE,
             Duration.seconds(0.5),
             0, 2);
     // Di chuyen xuong duoi
-    AnimationChannel animDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, 40, 40,
+    AnimationChannel animDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, TITLE_SIZE,
+            TITLE_SIZE,
             Duration.seconds(0.3),
             0, 2);
     // Dung yen ben tren
-    AnimationChannel IdleUp = new AnimationChannel(FXGL.image("character/gold_player_up.png"), 4, 40, 40,
+    AnimationChannel IdleUp = new AnimationChannel(FXGL.image("character/gold_player_up.png"), 4, TITLE_SIZE,
+            TITLE_SIZE,
             Duration.seconds(0.3),
             2, 2);
     // Dung yen ben duoi
-    AnimationChannel IdleDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, 40, 40,
+    AnimationChannel IdleDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, TITLE_SIZE,
+            TITLE_SIZE,
             Duration.seconds(0.3),
             2, 2);
     // Di chuyen sang trai
-    AnimationChannel AnimLeft = new AnimationChannel(FXGL.image("character/gold_player_left.png"), 4, 40, 40,
-            Duration.seconds(0.45),
+    AnimationChannel AnimLeft = new AnimationChannel(FXGL.image("character/gold_player_left_temp.png"), 4, TITLE_SIZE,
+            TITLE_SIZE,
+            Duration.seconds(0.5),
             0, 2);
     // Dung yen ben trai
-    AnimationChannel IdleLeft = new AnimationChannel(FXGL.image("character/gold_player_left.png"), 4, 40, 40,
-            Duration.seconds(0.3),
-            0, 0);
+    AnimationChannel IdleLeft = new AnimationChannel(FXGL.image("character/gold_player_left_temp.png"), 4, TITLE_SIZE,
+            TITLE_SIZE,
+            Duration.seconds(0.5),
+            2, 2);
 
+    /*
+     * Khoi tao Animation.
+     */
     public AnimationComponent() {
         // Dung yen ben phai
-        animIdle = new AnimationChannel(FXGL.image("character/gold_player_right.png"), 4, 40, 40,
-                Duration.seconds(0.45),
+        animIdle = new AnimationChannel(FXGL.image("character/gold_player_right_temp.png"), 4, TITLE_SIZE, TITLE_SIZE,
+                Duration.seconds(0.5),
                 2, 2);
         // Di chuyen ben phai
-        animWalk = new AnimationChannel(FXGL.image("character/gold_player_right.png"), 4, 40, 40,
-                Duration.seconds(0.45),
+        animWalk = new AnimationChannel(FXGL.image("character/gold_player_right_temp.png"), 4, TITLE_SIZE, TITLE_SIZE,
+                Duration.seconds(0.5),
                 0, 2);
         texture = new AnimatedTexture(animIdle);
     }
 
     @Override
     public void onAdded() {
-        // entity.getTransformComponent().setScaleOrigin(new Point2D(32, 32));
         // entity la 1 component chua class hien tai
         entity.getViewComponent().addChild(texture);
     }
@@ -183,44 +199,56 @@ public class AnimationComponent extends Component {
         }
         amountBoom--;
         k = false;
-        Entity g_boom = spawn("boom", ((int)((entity.getX() + 15) / 40)) * 40, ((int)((entity.getY() + 15) / 40)) * 40);
+        Entity g_boom = spawn("boom", ((int) ((entity.getX() + 15) / TITLE_SIZE)) * TITLE_SIZE,
+                ((int) ((entity.getY() + 15) / TITLE_SIZE)) * TITLE_SIZE);
         g_boom.getComponent(FlameAnimation.class).AnimationCenter();
         getGameTimer().runOnceAfter(() -> {
             Vector<Entity> tex = new Vector<>();
             g_boom.getComponent(Boom.class).explodeBoom(tex);
             amountBoom++;
         }, Duration.seconds(1.5));
-
     }
 
-    /**.
-     * up amount boom on map.
+    public void loadDeadAnim() {
+        texture.loopAnimationChannel(animDie);
+    }
+
+    public void loadWinAnim() {
+        texture.loopAnimationChannel(animWin);
+    }
+
+    /**
+     * Increase amount boom on map.
      */
     public void amountBoomUp() {
         amountBoom++;
     }
 
-    /**.
-     * down amount boom on map.
+    /**
+     * Reset amount boom on map.
      */
-    public  void amountBoomDown() {
+    public void amountBoomDown() {
         amountBoom = 1;
     }
 
+    public void increaseSpeed() {
+        CONST_SPEED += 20;
+    }
+
     public void moveRight() {
-        speed = 90;
+        speed = CONST_SPEED;
     }
 
     public void moveLeft() {
-        speed = -90;
+        speed = -CONST_SPEED;
     }
 
     public void moveUp() {
-        speed = -90;
+        speed = -CONST_SPEED;
     }
 
     public void moveDown() {
-        speed = 90;
+        speed = CONST_SPEED;
     }
 
     public void stay() {

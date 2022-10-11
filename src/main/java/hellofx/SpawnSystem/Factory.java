@@ -1,4 +1,4 @@
-package hellofx;
+package hellofx.SpawnSystem;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -9,14 +9,14 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
-import javax.imageio.plugins.tiff.TIFFDirectory;
-
-import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
-import static hellofx.Enum.*;
-import static hellofx.Main.TITLE_SIZE;
+// import javafx.scene.paint.Color;
+// import javafx.scene.shape.Rectangle;
+// import javax.imageio.plugins.tiff.TIFFDirectory;
+// import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
+import static hellofx.SpawnSystem.Enum.*;
+import static hellofx.Constant.GameConstant.*;
+import hellofx.Bomb_Flame.*;
+import hellofx.Animation.*;
 
 public class Factory implements EntityFactory {
 
@@ -32,14 +32,14 @@ public class Factory implements EntityFactory {
                 // point2d la chinh vi tri box so vs vi tri ban dau
                 // Point la vi tri cua hop so vs ban dau la (0,0)
                 // chieu cao vs chieu rong cua hop
-                .bbox(new HitBox(new Point2D(7, 7), BoundingShape.box(26, 26)))
+                .bbox(new HitBox(new Point2D(5, 7), BoundingShape.box(26, 26)))
                 .build();
     }
 
     @Spawns("wall")
     public Entity newCoin(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .type(COIN)
+                .type(WALL)
                 // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("mapTexture/wall.png")
                 .with(new CollidableComponent(true))
@@ -49,10 +49,10 @@ public class Factory implements EntityFactory {
     @Spawns("brick")
     public Entity newBrick(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .type(COIN)
+                .type(WALL)
                 // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 // .viewWithBBox("")
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(40, 40)))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE, TITLE_SIZE)))
                 .with(new CollidableComponent(true))
                 .with(new BrickBreakAnimation())
                 .build();
@@ -75,7 +75,7 @@ public class Factory implements EntityFactory {
                 .with(new FlameAnimation())
                 .with(new Boom())
                 .collidable()
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(40, 40)))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE, TITLE_SIZE)))
                 .build();
     }
 
@@ -89,6 +89,26 @@ public class Factory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("speedItem")
+    public Entity newSpeedIem(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(SPEED_ITEM)
+                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
+                .viewWithBBox("gameItem/powerup_speed.png")
+                .collidable()
+                .build();
+    }
+
+    @Spawns("flameItem")
+    public Entity newFlameItem(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(FLAME_ITEM)
+                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
+                .viewWithBBox("gameItem/powerup_flames.png")
+                .collidable()
+                .build();
+    }
+
     @Spawns("flame")
     public  Entity newFlameCenter(SpawnData data) {
         return FXGL.entityBuilder(data)
@@ -96,7 +116,7 @@ public class Factory implements EntityFactory {
                 .collidable()
                 .with(new FlameAnimation())
                 //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(40, 40)))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE, TITLE_SIZE)))
                 .build();
     }
 
@@ -107,7 +127,7 @@ public class Factory implements EntityFactory {
                 .collidable()
                 .with(new FlameAnimation())
                 //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
 
@@ -118,7 +138,7 @@ public class Factory implements EntityFactory {
                 .collidable()
                 .with(new FlameAnimation())
                 //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
 
@@ -129,7 +149,7 @@ public class Factory implements EntityFactory {
                 .collidable()
                 .with(new FlameAnimation())
                 //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
 
@@ -140,7 +160,7 @@ public class Factory implements EntityFactory {
                 .collidable()
                 .with(new FlameAnimation())
                 //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
 

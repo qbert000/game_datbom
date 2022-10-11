@@ -16,9 +16,7 @@ public class MenuButton extends Parent {
                         .then(Color.rgb(252, 209, 26))
                         .otherwise(Color.rgb(252, 136, 33))
         );
-
         setOnMouseClicked(e -> action.run());
-
         setPickOnBounds(true);
         getChildren().add(text);
     }

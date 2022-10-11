@@ -1,27 +1,30 @@
-package hellofx;
+package hellofx.Bomb_Flame;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
-import javafx.scene.paint.Color;
+// import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-import java.awt.*;
+// import java.awt.*;
 import java.util.Vector;
 
 import static com.almasb.fxgl.dsl.FXGL.onCollisionBegin;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.component.Component;
-import javafx.util.Duration;
+// import com.almasb.fxgl.entity.Entity;
+// import com.almasb.fxgl.entity.component.Component;
+// import javafx.util.Duration;
 
-import java.util.Vector;
-import java.util.concurrent.atomic.AtomicInteger;
+// import java.util.Vector;
+// import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
-import static hellofx.Enum.*;
+// import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
+// import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
+import static hellofx.SpawnSystem.Enum.*;
+import static hellofx.Constant.GameConstant.*;
+import hellofx.Main;
+import hellofx.Animation.*;
 
 public class Boom extends Component {
 
@@ -55,13 +58,13 @@ public class Boom extends Component {
             setRight();
         } else {
             right++;
-            if (Main.g_map.myMap[(int) ((entity.getY()) / 40)][(int) ((entity.getX() + right * 40) / 40)].equals("1")) {
+            if (Main.g_map.myMap[(int) ((entity.getY()) / TITLE_SIZE)][(int) ((entity.getX() + right * TITLE_SIZE) / TITLE_SIZE)].equals("1")) {
                 setRight();
                 return;
             }
-            tex.add(spawn("flameRight", entity.getX() + right * 40, entity.getY()));
+            tex.add(spawn("flameRight", entity.getX() + right * TITLE_SIZE, entity.getY()));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingHorizontal();
-            onCollisionBegin(FLAMERIGHT, COIN, (flame, coin) -> {
+            onCollisionBegin(FLAMERIGHT, WALL, (flame, coin) -> {
                 coin.setZIndex(1000);
                 coin.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
@@ -81,13 +84,13 @@ public class Boom extends Component {
             setLeft();
         } else {
             left++;
-            if (Main.g_map.myMap[(int) ((entity.getY()) / 40)][(int) ((entity.getX() - left * 40) / 40)].equals("1")) {
+            if (Main.g_map.myMap[(int) ((entity.getY()) / TITLE_SIZE)][(int) ((entity.getX() - left * TITLE_SIZE) / TITLE_SIZE)].equals("1")) {
                 setLeft();
                 return;
             }
-            tex.add(spawn("flameLeft", entity.getX() - left * 40, entity.getY()));
+            tex.add(spawn("flameLeft", entity.getX() - left * TITLE_SIZE, entity.getY()));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingHorizontal();
-            onCollisionBegin(FLAMELEFT, COIN, (flame, coin) -> {
+            onCollisionBegin(FLAMELEFT, WALL, (flame, coin) -> {
                 coin.setZIndex(1000);
                 coin.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
@@ -106,13 +109,13 @@ public class Boom extends Component {
             setUp();
         } else {
             up++;
-            if (Main.g_map.myMap[(int) ((entity.getY() - up * 40) / 40)][(int) ((entity.getX()) / 40)].equals("1")) {
+            if (Main.g_map.myMap[(int) ((entity.getY() - up * TITLE_SIZE) / TITLE_SIZE)][(int) ((entity.getX()) / TITLE_SIZE)].equals("1")) {
                 setUp();
                 return;
             }
-            tex.add(spawn("flameUp", entity.getX(), entity.getY() - up * 40));
+            tex.add(spawn("flameUp", entity.getX(), entity.getY() - up * TITLE_SIZE));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingVertical();
-            onCollisionBegin(FLAMEUP, COIN, (flame, coin) -> {
+            onCollisionBegin(FLAMEUP, WALL, (flame, coin) -> {
                 coin.setZIndex(1000);
                 coin.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
@@ -131,13 +134,13 @@ public class Boom extends Component {
             setDown();
         } else {
             down++;
-            if (Main.g_map.myMap[(int) ((entity.getY() + down * 40) / 40)][(int) ((entity.getX()) / 40)].equals("1")) {
+            if (Main.g_map.myMap[(int) ((entity.getY() + down * TITLE_SIZE) / TITLE_SIZE)][(int) ((entity.getX()) / TITLE_SIZE)].equals("1")) {
                 setDown();
                 return;
             }
-            tex.add(spawn("flameDown", entity.getX(), entity.getY() + down * 40));
+            tex.add(spawn("flameDown", entity.getX(), entity.getY() + down * TITLE_SIZE));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingVertical();
-            onCollisionBegin(FLAMEDOWN, COIN, (flame, coin) -> {
+            onCollisionBegin(FLAMEDOWN, WALL, (flame, coin) -> {
                 coin.setZIndex(1000);
                 coin.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
@@ -171,8 +174,8 @@ public class Boom extends Component {
     public static void powerBoomUp() {
         sizeBoom++;
     }
-    // Ham reset boom nhung k hoat dong :))
-    // public static void setBoomSize() {
-    //     sizeBoom = 1;
-    // }
+
+    public static void resizePowerBoom() {
+        sizeBoom = 1;
+    }
 }
