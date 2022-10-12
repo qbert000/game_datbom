@@ -436,14 +436,12 @@ public class Main extends GameApplication {
                     player.setPosition(new Point2D(currentXpos, currentYpos));
                 }
             }
-
             @Override
             protected void onCollision(Entity player, Entity boom) {
                 if (AnimationComponent.k) {
                     player.setPosition(new Point2D(currentXpos, currentYpos));
                 }
             }
-
             @Override
             protected void onCollisionEnd(Entity player, Entity boom) {
                 AnimationComponent.k = true;

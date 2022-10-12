@@ -198,13 +198,14 @@ public class AnimationComponent extends Component {
             return;
         }
         amountBoom--;
+        int h = Boom.getSizeBoom();
         k = false;
         Entity g_boom = spawn("boom", ((int) ((entity.getX() + 15) / TITLE_SIZE)) * TITLE_SIZE,
                 ((int) ((entity.getY() + 15) / TITLE_SIZE)) * TITLE_SIZE);
         g_boom.getComponent(FlameAnimation.class).AnimationCenter();
         getGameTimer().runOnceAfter(() -> {
             Vector<Entity> tex = new Vector<>();
-            g_boom.getComponent(Boom.class).explodeBoom(tex);
+            g_boom.getComponent(Boom.class).explodeBoom(tex, h);
             amountBoom++;
         }, Duration.seconds(1.5));
     }

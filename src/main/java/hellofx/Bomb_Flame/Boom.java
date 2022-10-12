@@ -37,6 +37,10 @@ public class Boom extends Component {
     public static int up = 0;
     public static int down = 0;
 
+    public static int getSizeBoom() {
+        return sizeBoom;
+    }
+
     public static void setRight() {
         Boom.right = 0;
     }
@@ -53,8 +57,8 @@ public class Boom extends Component {
         Boom.down = 0;
     }
 
-    public void moveRight(Vector<Entity> tex) {
-        if (right == sizeBoom) {
+    public void moveRight(Vector<Entity> tex, int size) {
+        if (right == size) {
             setRight();
         } else {
             right++;
@@ -70,17 +74,17 @@ public class Boom extends Component {
                 getGameTimer().runOnceAfter(() -> {
                     coin.removeFromWorld();
                 }, Duration.seconds(0.7));
-                right = sizeBoom;
+                right = size;
             });
 
             getGameTimer().runOnceAfter(() -> {
-                moveRight(tex);
+                moveRight(tex, size);
             }, Duration.seconds(seconds));
         }
     }
 
-    public void moveLeft(Vector<Entity> tex) {
-        if (left == sizeBoom) {
+    public void moveLeft(Vector<Entity> tex, int size) {
+        if (left == size) {
             setLeft();
         } else {
             left++;
@@ -96,16 +100,16 @@ public class Boom extends Component {
                 getGameTimer().runOnceAfter(() -> {
                     coin.removeFromWorld();
                 }, Duration.seconds(0.7));
-                left = sizeBoom;
+                left = size;
             });
             getGameTimer().runOnceAfter(() -> {
-                moveLeft(tex);
+                moveLeft(tex, size);
             }, Duration.seconds(seconds));
         }
     }
 
-    public void moveUp(Vector<Entity> tex) {
-        if (up == sizeBoom) {
+    public void moveUp(Vector<Entity> tex, int size) {
+        if (up == size) {
             setUp();
         } else {
             up++;
@@ -121,16 +125,16 @@ public class Boom extends Component {
                 getGameTimer().runOnceAfter(() -> {
                     coin.removeFromWorld();
                 }, Duration.seconds(0.7));
-                up = sizeBoom;
+                up = size;
             });
             getGameTimer().runOnceAfter(() -> {
-                moveUp(tex);
+                moveUp(tex, size);
             }, Duration.seconds(seconds));
         }
     }
 
-    public void moveDown(Vector<Entity> tex) {
-        if (down == sizeBoom) {
+    public void moveDown(Vector<Entity> tex, int size) {
+        if (down == size) {
             setDown();
         } else {
             down++;
@@ -141,26 +145,26 @@ public class Boom extends Component {
             tex.add(spawn("flameDown", entity.getX(), entity.getY() + down * TITLE_SIZE));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingVertical();
             onCollisionBegin(FLAMEDOWN, WALL, (flame, coin) -> {
-                coin.setZIndex(1000);
+                //coin.setZIndex(1000);
                 coin.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
                     coin.removeFromWorld();
                 }, Duration.seconds(0.7));
-                down = sizeBoom;
+                down = size;
             });
             getGameTimer().runOnceAfter(() -> {
-                moveDown(tex);
+                moveDown(tex, size);
             }, Duration.seconds(seconds));
         }
     }
 
-    public void explodeBoom(Vector<Entity> tex) {
+    public void explodeBoom(Vector<Entity> tex, int size) {
         Entity center = spawn("flame", entity.getX(), entity.getY());
         center.getComponent(FlameAnimation.class).AnimationWingCentral();
-        moveRight(tex);
-        moveLeft(tex);
-        moveUp(tex);
-        moveDown(tex);
+        moveRight(tex, size);
+        moveLeft(tex, size);
+        moveUp(tex, size);
+        moveDown(tex, size);
         getGameTimer().runOnceAfter(() -> {
             for (int i = 0; i < tex.size(); i++) {
                 tex.get(i).removeFromWorld();
