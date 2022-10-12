@@ -19,6 +19,7 @@ import hellofx.Bomb_Flame.*;
 public class AnimationComponent extends Component {
     private int speed = 0;
 
+    private int amountBoom = 1;
     public static boolean k = true;
 
     public AnimatedTexture texture;

@@ -2,7 +2,6 @@ package hellofx.Constant;
 
 public class GameConstant{
     public static int CONST_SPEED = 90;
-    public static int amountBoom = 5;
     public static final int TITLE_SIZE = 40;
     public static final int WIDTH_TITLE = 32;
     public static final int HEIGHT_TITLE = 18;

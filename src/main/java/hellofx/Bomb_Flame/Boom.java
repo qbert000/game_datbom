@@ -30,7 +30,7 @@ public class Boom extends Component {
 
     private static int sizeBoom = 1;
 
-    private static int sizeBreak = 3;
+    private static int sizeBreak = 1;
 
     private final double seconds = 0.01;
 
@@ -223,11 +223,11 @@ public class Boom extends Component {
         sizeBoom = 1;
     }
 
-    public static void a() {
+    public static void increaseFlameSize() {
         sizeBreak++;
     }
 
-    public static void b() {
+    public static void resetF() {
         sizeBreak = 0;
     }
 }
