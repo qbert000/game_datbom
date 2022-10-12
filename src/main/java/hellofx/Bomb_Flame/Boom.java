@@ -30,6 +30,8 @@ public class Boom extends Component {
 
     private static int sizeBoom = 1;
 
+    private static int sizeBreak = 3;
+
     private final double seconds = 0.01;
 
     public static int right = 0;
@@ -37,8 +39,17 @@ public class Boom extends Component {
     public static int up = 0;
     public static int down = 0;
 
+    public static int rightBreak = 0;
+    public static int leftBreak = 0;
+    public static int upBreak = 0;
+    public static int downBreak = 0;
+
     public static int getSizeBoom() {
         return sizeBoom;
+    }
+
+    public static int getSizeBreak() {
+        return sizeBreak;
     }
 
     public static void setRight() {
@@ -57,9 +68,24 @@ public class Boom extends Component {
         Boom.down = 0;
     }
 
-    public void moveRight(Vector<Entity> tex, int size) {
+    public static void setRightBreak() {
+        Boom.rightBreak = 0;
+    }
+    public static void setLeftBreak() {
+        Boom.leftBreak = 0;
+    }
+    public static void setUpBreak() {
+        Boom.upBreak = 0;
+    }
+
+    public static void setDownBreak() {
+        Boom.downBreak = 0;
+    }
+
+    public void moveRight(Vector<Entity> tex, int size, int size_break) {
         if (right == size) {
             setRight();
+            setRightBreak();
         } else {
             right++;
             if (Main.g_map.myMap[(int) ((entity.getY()) / TITLE_SIZE)][(int) ((entity.getX() + right * TITLE_SIZE) / TITLE_SIZE)].equals("1")) {
@@ -69,23 +95,26 @@ public class Boom extends Component {
             tex.add(spawn("flameRight", entity.getX() + right * TITLE_SIZE, entity.getY()));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingHorizontal();
             onCollisionBegin(FLAMERIGHT, WALL, (flame, coin) -> {
+                rightBreak++;
                 coin.setZIndex(1000);
                 coin.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
                     coin.removeFromWorld();
                 }, Duration.seconds(0.7));
-                right = size;
+                if (rightBreak == size_break) {
+                    right = size;
+                }
             });
-
             getGameTimer().runOnceAfter(() -> {
-                moveRight(tex, size);
+                moveRight(tex, size, size_break);
             }, Duration.seconds(seconds));
         }
     }
 
-    public void moveLeft(Vector<Entity> tex, int size) {
+    public void moveLeft(Vector<Entity> tex, int size, int size_break) {
         if (left == size) {
             setLeft();
+            setLeftBreak();
         } else {
             left++;
             if (Main.g_map.myMap[(int) ((entity.getY()) / TITLE_SIZE)][(int) ((entity.getX() - left * TITLE_SIZE) / TITLE_SIZE)].equals("1")) {
@@ -95,22 +124,26 @@ public class Boom extends Component {
             tex.add(spawn("flameLeft", entity.getX() - left * TITLE_SIZE, entity.getY()));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingHorizontal();
             onCollisionBegin(FLAMELEFT, WALL, (flame, coin) -> {
+                leftBreak++;
                 coin.setZIndex(1000);
                 coin.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
                     coin.removeFromWorld();
                 }, Duration.seconds(0.7));
-                left = size;
+                if (leftBreak == size_break) {
+                    left = size;
+                }
             });
             getGameTimer().runOnceAfter(() -> {
-                moveLeft(tex, size);
+                moveLeft(tex, size, size_break);
             }, Duration.seconds(seconds));
         }
     }
 
-    public void moveUp(Vector<Entity> tex, int size) {
+    public void moveUp(Vector<Entity> tex, int size, int size_break) {
         if (up == size) {
             setUp();
+            setUpBreak();
         } else {
             up++;
             if (Main.g_map.myMap[(int) ((entity.getY() - up * TITLE_SIZE) / TITLE_SIZE)][(int) ((entity.getX()) / TITLE_SIZE)].equals("1")) {
@@ -120,22 +153,26 @@ public class Boom extends Component {
             tex.add(spawn("flameUp", entity.getX(), entity.getY() - up * TITLE_SIZE));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingVertical();
             onCollisionBegin(FLAMEUP, WALL, (flame, coin) -> {
+                upBreak++;
                 coin.setZIndex(1000);
                 coin.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
                     coin.removeFromWorld();
                 }, Duration.seconds(0.7));
-                up = size;
+                if (upBreak == size_break) {
+                    up = size;
+                }
             });
             getGameTimer().runOnceAfter(() -> {
-                moveUp(tex, size);
+                moveUp(tex, size, size_break);
             }, Duration.seconds(seconds));
         }
     }
 
-    public void moveDown(Vector<Entity> tex, int size) {
+    public void moveDown(Vector<Entity> tex, int size, int size_break) {
         if (down == size) {
             setDown();
+            setDownBreak();
         } else {
             down++;
             if (Main.g_map.myMap[(int) ((entity.getY() + down * TITLE_SIZE) / TITLE_SIZE)][(int) ((entity.getX()) / TITLE_SIZE)].equals("1")) {
@@ -145,26 +182,29 @@ public class Boom extends Component {
             tex.add(spawn("flameDown", entity.getX(), entity.getY() + down * TITLE_SIZE));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingVertical();
             onCollisionBegin(FLAMEDOWN, WALL, (flame, coin) -> {
-                //coin.setZIndex(1000);
+                downBreak++;
+                coin.setZIndex(1000);
                 coin.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
                     coin.removeFromWorld();
                 }, Duration.seconds(0.7));
-                down = size;
+                if (downBreak == size_break) {
+                    down = size;
+                }
             });
             getGameTimer().runOnceAfter(() -> {
-                moveDown(tex, size);
+                moveDown(tex, size, size_break);
             }, Duration.seconds(seconds));
         }
     }
 
-    public void explodeBoom(Vector<Entity> tex, int size) {
+    public void explodeBoom(Vector<Entity> tex, int size, int size_break) {
         Entity center = spawn("flame", entity.getX(), entity.getY());
         center.getComponent(FlameAnimation.class).AnimationWingCentral();
-        moveRight(tex, size);
-        moveLeft(tex, size);
-        moveUp(tex, size);
-        moveDown(tex, size);
+        moveRight(tex, size, size_break);
+        moveLeft(tex, size, size_break);
+        moveUp(tex, size, size_break);
+        moveDown(tex, size, size_break);
         getGameTimer().runOnceAfter(() -> {
             for (int i = 0; i < tex.size(); i++) {
                 tex.get(i).removeFromWorld();
@@ -181,5 +221,13 @@ public class Boom extends Component {
 
     public static void resizePowerBoom() {
         sizeBoom = 1;
+    }
+
+    public static void a() {
+        sizeBreak++;
+    }
+
+    public static void b() {
+        sizeBreak = 0;
     }
 }
