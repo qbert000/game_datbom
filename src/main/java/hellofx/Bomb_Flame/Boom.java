@@ -227,7 +227,7 @@ public class Boom extends Component {
         sizeBreak++;
     }
 
-    public static void resetF() {
-        sizeBreak = 0;
+    public static void resetFlameSize() {
+        sizeBreak = 1;
     }
 }

@@ -85,11 +85,27 @@ public class Main extends GameApplication {
     @Override
     protected void initInput() {
 
-        // Xac dinh su kien Tang Bomb (tester).
+        // Tang Bomb Radius (tester).
         onKeyDown(KeyCode.F, () -> {
             // play("drop.wav"); // play am thanh
             Boom.powerBoomUp();
         });
+
+        // Tang toc do nguoi choi (tester).
+        onKeyDown(KeyCode.G, () -> {
+            g_player.getComponent(AnimationComponent.class).increaseSpeed();
+        });
+
+        // Tang flame Power (tester).
+        onKeyDown(KeyCode.R, () -> {
+            Boom.increaseFlameSize();
+        });
+
+        // Tang so luong Boom (tester).
+        onKeyDown(KeyCode.T, () -> {
+            AnimationComponent.increaseBoomAmount();
+        });
+
         // Xac dinh su kien di ben phai.
         FXGL.getInput().addAction(new UserAction("Right") {
             @Override
@@ -287,6 +303,14 @@ public class Main extends GameApplication {
                     spawn("flameItem", j * TITLE_SIZE + 4, i * TITLE_SIZE + 4);
                 }
 
+                if (g_map.myMap[i][j].equals("C")) {
+                    spawn("bombItem", j * TITLE_SIZE + 4, i * TITLE_SIZE + 4);
+                }
+
+                if (g_map.myMap[i][j].equals("D")) {
+                    spawn("flamePowerItem", j * TITLE_SIZE + 4, i * TITLE_SIZE + 4);
+                }
+
                 if (g_map.myMap[i][j].equals("3")) {
                     playerPosX = j * TITLE_SIZE;
                     playerPosY = i * TITLE_SIZE;
@@ -317,6 +341,7 @@ public class Main extends GameApplication {
      */
     private void replay() {
         Boom.resizePowerBoom();
+        Boom.resetFlameSize();
         playerisAlive = false;
         getGameTimer().runOnceAfter(() -> {
             g_player.getComponent(AnimationComponent.class).loadDeadAnim();
@@ -333,10 +358,12 @@ public class Main extends GameApplication {
     }
 
     /*
-     * Dua nguoi choi den level tiep theo(neu lam :D) /ve man chinh khi di den Portal
+     * Dua nguoi choi den level tiep theo(neu lam :D) /ve man chinh khi di den
+     * Portal
      */
     private void nextLevel() {
         Boom.resizePowerBoom();
+        Boom.resetFlameSize();
         playerisAlive = false;
         getGameTimer().runOnceAfter(() -> {
             g_player.getComponent(AnimationComponent.class).loadWinAnim();
@@ -428,6 +455,60 @@ public class Main extends GameApplication {
             }, Duration.seconds(0.6));
         });
 
+        // Xu li va cham giua Flame_power_item va Flame
+        onCollisionBegin(FLAME_POWER_ITEM, FLAME, (flamePowerItem, flame) -> {
+            getGameTimer().runOnceAfter(() -> {
+                flamePowerItem.removeFromWorld();
+            }, Duration.seconds(0.6));
+        });
+        onCollisionBegin(FLAME_POWER_ITEM, FLAMERIGHT, (flamePowerItem, flame) -> {
+            getGameTimer().runOnceAfter(() -> {
+                flamePowerItem.removeFromWorld();
+            }, Duration.seconds(0.6));
+        });
+        onCollisionBegin(FLAME_POWER_ITEM, FLAMELEFT, (flamePowerItem, flame) -> {
+            getGameTimer().runOnceAfter(() -> {
+                flamePowerItem.removeFromWorld();
+            }, Duration.seconds(0.6));
+        });
+        onCollisionBegin(FLAME_POWER_ITEM, FLAMEUP, (flamePowerItem, flame) -> {
+            getGameTimer().runOnceAfter(() -> {
+                flamePowerItem.removeFromWorld();
+            }, Duration.seconds(0.6));
+        });
+        onCollisionBegin(FLAME_POWER_ITEM, FLAMEDOWN, (flamePowerItem, flame) -> {
+            getGameTimer().runOnceAfter(() -> {
+                flamePowerItem.removeFromWorld();
+            }, Duration.seconds(0.6));
+        });
+
+        // Xu li va cham giua Bomb_item va Flame
+        onCollisionBegin(BOMB_ITEM, FLAME, (bombItem, flame) -> {
+            getGameTimer().runOnceAfter(() -> {
+                bombItem.removeFromWorld();
+            }, Duration.seconds(0.6));
+        });
+        onCollisionBegin(BOMB_ITEM, FLAMERIGHT, (bombItem, flame) -> {
+            getGameTimer().runOnceAfter(() -> {
+                bombItem.removeFromWorld();
+            }, Duration.seconds(0.6));
+        });
+        onCollisionBegin(BOMB_ITEM, FLAMELEFT, (bombItem, flame) -> {
+            getGameTimer().runOnceAfter(() -> {
+                bombItem.removeFromWorld();
+            }, Duration.seconds(0.6));
+        });
+        onCollisionBegin(BOMB_ITEM, FLAMEUP, (bombItem, flame) -> {
+            getGameTimer().runOnceAfter(() -> {
+                bombItem.removeFromWorld();
+            }, Duration.seconds(0.6));
+        });
+        onCollisionBegin(BOMB_ITEM, FLAMEDOWN, (bombItem, flame) -> {
+            getGameTimer().runOnceAfter(() -> {
+                bombItem.removeFromWorld();
+            }, Duration.seconds(0.6));
+        });
+
         // Xu li va cham giua Player va boom
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, BOOM) {
             @Override
@@ -436,12 +517,14 @@ public class Main extends GameApplication {
                     player.setPosition(new Point2D(currentXpos, currentYpos));
                 }
             }
+
             @Override
             protected void onCollision(Entity player, Entity boom) {
                 if (AnimationComponent.k) {
                     player.setPosition(new Point2D(currentXpos, currentYpos));
                 }
             }
+
             @Override
             protected void onCollisionEnd(Entity player, Entity boom) {
                 AnimationComponent.k = true;
@@ -474,6 +557,28 @@ public class Main extends GameApplication {
                 player.getComponent(AnimationComponent.class).increaseSpeed();
                 getGameTimer().runOnceAfter(() -> {
                     speed_item.removeFromWorld();
+                }, Duration.seconds(0.1));
+            }
+        });
+
+        // Xu li va cham giua Player va Bomb_item
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, BOMB_ITEM) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity bomb_item) {
+                AnimationComponent.increaseBoomAmount();
+                getGameTimer().runOnceAfter(() -> {
+                    bomb_item.removeFromWorld();
+                }, Duration.seconds(0.1));
+            }
+        });
+
+        // Xu li va cham giua Player va Speed_item
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, FLAME_POWER_ITEM) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity flame_power_item) {
+                Boom.increaseFlameSize();
+                getGameTimer().runOnceAfter(() -> {
+                    flame_power_item.removeFromWorld();
                 }, Duration.seconds(0.1));
             }
         });

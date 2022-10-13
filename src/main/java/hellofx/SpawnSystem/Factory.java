@@ -26,7 +26,7 @@ public class Factory implements EntityFactory {
                 .type(PLAYER)
                 // .at(200, 200)
                 .with(new AnimationComponent())
-                .collidable()
+                // .collidable()
                 // de va cham phai co ham nay
                 .with(new CollidableComponent(true))
                 // point2d la chinh vi tri box so vs vi tri ban dau
@@ -41,7 +41,7 @@ public class Factory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(WALL)
                 // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
-                .viewWithBBox("mapTexture/wall.png")
+                .viewWithBBox("mapTexture/wall2.png")
                 .with(new CollidableComponent(true))
                 .build();
     }
@@ -95,7 +95,8 @@ public class Factory implements EntityFactory {
                 .type(SPEED_ITEM)
                 // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_speed.png")
-                .collidable()
+                .with(new CollidableComponent(true))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE / 2)))
                 .build();
     }
 
@@ -103,67 +104,88 @@ public class Factory implements EntityFactory {
     public Entity newFlameItem(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAME_ITEM)
-                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
+                // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_flames.png")
-                .collidable()
+                .with(new CollidableComponent(true))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE / 2)))
+                .build();
+    }
+
+    @Spawns("bombItem")
+    public Entity newBombItem(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(BOMB_ITEM)
+                // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
+                .viewWithBBox("gameItem/powerup_bombs.png")
+                .with(new CollidableComponent(true))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE / 2)))
+                .build();
+    }
+
+    @Spawns("flamePowerItem")
+    public Entity newFlamePowerItem(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(FLAME_POWER_ITEM)
+                // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
+                .viewWithBBox("gameItem/powerup_flamepass.png")
+                .with(new CollidableComponent(true))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE / 2)))
                 .build();
     }
 
     @Spawns("flame")
-    public  Entity newFlameCenter(SpawnData data) {
+    public Entity newFlameCenter(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAME)
                 .collidable()
                 .with(new FlameAnimation())
-                //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
+                // .viewWithBBox(new Rectangle(40, 40, Color.BLACK))
                 .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE, TITLE_SIZE)))
                 .build();
     }
 
     @Spawns("flameRight")
-    public  Entity newFlameRight(SpawnData data) {
+    public Entity newFlameRight(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAMERIGHT)
                 .collidable()
                 .with(new FlameAnimation())
-                //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
+                // .viewWithBBox(new Rectangle(40, 40, Color.BLACK))
                 .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
 
     @Spawns("flameLeft")
-    public  Entity newFlameLeft(SpawnData data) {
+    public Entity newFlameLeft(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAMELEFT)
                 .collidable()
                 .with(new FlameAnimation())
-                //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
+                // .viewWithBBox(new Rectangle(40, 40, Color.BLACK))
                 .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
 
     @Spawns("flameUp")
-    public  Entity newFlameUp(SpawnData data) {
+    public Entity newFlameUp(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAMEUP)
                 .collidable()
                 .with(new FlameAnimation())
-                //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
+                // .viewWithBBox(new Rectangle(40, 40, Color.BLACK))
                 .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
 
     @Spawns("flameDown")
-    public  Entity newFlameDown(SpawnData data) {
+    public Entity newFlameDown(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAMEDOWN)
                 .collidable()
                 .with(new FlameAnimation())
-                //.viewWithBBox(new Rectangle(40, 40, Color.BLACK))
+                // .viewWithBBox(new Rectangle(40, 40, Color.BLACK))
                 .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
 
-
 }
-
