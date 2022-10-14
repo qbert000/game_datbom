@@ -17,6 +17,8 @@ import com.almasb.fxgl.app.scene.SceneFactory;
 // import com.almasb.fxgl.app.scene.FXGLMenu;
 // import com.almasb.fxgl.physics.PhysicsWorld;
 // import com.almasb.fxgl.app.scene.MenuType;
+import hellofx.Enemy.EnemyHorizontal;
+import hellofx.Enemy.EnemyVertical;
 import javafx.scene.input.KeyCode;
 // import javafx.scene.text.Text;
 import javafx.geometry.Point2D;
@@ -318,6 +320,18 @@ public class Main extends GameApplication {
             }
         }
 
+//        Entity g_enemy = spawn("enemyVertical", 40, 120);
+//        g_enemy.getComponent(EnemyVertical.class).move(); // tao enemy
+
+        Entity enemy =  spawn("enemyVertical", 40, 40);
+        enemy.getComponent(EnemyVertical.class).move();
+        enemy.getComponent(EnemyVertical.class).setCurrentPosX(enemy.getPosition().getX());
+        enemy.getComponent(EnemyVertical.class).setCurrentPosY(enemy.getPosition().getY());
+
+//        spawn("enemyHorizontal", 120, 120).getComponent(EnemyHorizontal.class).move();
+
+
+
         // spawn nhan vat sau cung de z-index >> / hien thi ben tren theo chieu Oz
         g_player = spawn("player", playerPosX, playerPosY);
         g_playerComponent = g_player.getComponent(AnimationComponent.class);
@@ -385,6 +399,8 @@ public class Main extends GameApplication {
     @Override
     protected void initPhysics() {
         // Xu li va cham Player va Flame
+        //
+        // onCollisionBegin();
         onCollisionBegin(PLAYER, FLAME, (player, flame) -> {
             replay();
         });

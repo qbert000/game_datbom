@@ -8,6 +8,8 @@ import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import hellofx.Enemy.EnemyHorizontal;
+import hellofx.Enemy.EnemyVertical;
 import javafx.geometry.Point2D;
 // import javafx.scene.paint.Color;
 // import javafx.scene.shape.Rectangle;
@@ -21,7 +23,7 @@ import hellofx.Animation.*;
 public class Factory implements EntityFactory {
 
     @Spawns("player")
-    public Entity newEnemy(SpawnData data) {
+    public Entity newPlayer(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(PLAYER)
                 // .at(200, 200)
@@ -33,6 +35,26 @@ public class Factory implements EntityFactory {
                 // Point la vi tri cua hop so vs ban dau la (0,0)
                 // chieu cao vs chieu rong cua hop
                 .bbox(new HitBox(new Point2D(5, 7), BoundingShape.box(26, 26)))
+                .build();
+    }
+
+    @Spawns("enemyHorizontal")
+    public Entity newEnemyHorizon(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(ENEMYHORIZONTAL)
+                .with(new CollidableComponent(true))
+                .with(new EnemyHorizontal())
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
+                .build();
+    }
+
+    @Spawns("enemyVertical")
+    public Entity newEnemyVertical(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(ENEMYVERTICAL)
+                .with(new CollidableComponent(true))
+                .with(new EnemyVertical())
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
                 .build();
     }
 
