@@ -32,6 +32,8 @@ public abstract class Enemy extends Component {
 
     protected double currentPosY;
 
+
+
     public void setCurrentPosX(double currentPosX) {
         this.currentPosX = currentPosX;
     }
