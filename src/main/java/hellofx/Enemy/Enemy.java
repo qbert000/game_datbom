@@ -27,6 +27,8 @@ public abstract class Enemy extends Component {
 
     protected double currentPosY;
 
+
+
     public void setCurrentPosX(double currentPosX) {
         this.currentPosX = currentPosX;
     }
@@ -40,7 +42,7 @@ public abstract class Enemy extends Component {
     @Override
     public void onUpdate(double tpf) {
         // Luu vi tri cu cua Enemy
-        System.out.println((int) currentPosX / TITLE_SIZE + " " + (int) currentPosY / TITLE_SIZE + " " + currentPosX / TITLE_SIZE + " " + currentPosY / TITLE_SIZE);
+        //System.out.println((int) currentPosX / TITLE_SIZE + " " + (int) currentPosY / TITLE_SIZE + " " + currentPosX / TITLE_SIZE + " " + currentPosY / TITLE_SIZE);
         if (right_) {
             entity.translateX(speed * tpf);currentPosX = entity.getPosition().getX() - speed*tpf;
         } else if (left_) {
