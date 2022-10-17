@@ -28,6 +28,7 @@ public class Factory implements EntityFactory {
                 .type(PLAYER)
                 // .at(200, 200)
                 .with(new AnimationComponent())
+                .zIndex(1000)
                 // .collidable()
                 // de va cham phai co ham nay
                 .with(new CollidableComponent(true))
@@ -42,9 +43,10 @@ public class Factory implements EntityFactory {
     public Entity newEnemyHorizon(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(ENEMYHORIZONTAL)
+                .zIndex(900)
                 .with(new CollidableComponent(true))
                 .with(new EnemyHorizontal())
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
+                .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
                 .build();
     }
 
@@ -52,9 +54,10 @@ public class Factory implements EntityFactory {
     public Entity newEnemyVertical(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(ENEMYVERTICAL)
+                .zIndex(900)
                 .with(new CollidableComponent(true))
                 .with(new EnemyVertical())
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
+                .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
                 .build();
     }
 
@@ -86,7 +89,7 @@ public class Factory implements EntityFactory {
                 .type(GRASS)
                 // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("mapTexture/grass.png")
-                // .with(new CollidableComponent(true))
+                //.with(new CollidableComponent(true))
                 .build();
     }
 
