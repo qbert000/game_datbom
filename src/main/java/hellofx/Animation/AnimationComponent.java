@@ -93,6 +93,10 @@ public class AnimationComponent extends Component {
         entity.getViewComponent().addChild(texture);
     }
 
+    public static int getAmountBoom() {
+        return amountBoom;
+    }
+
     @Override
     public void onUpdate(double tpf) {
         // ham check di chuyen ben trai
@@ -230,7 +234,7 @@ public class AnimationComponent extends Component {
     /**
      * Reset amount boom on map.
      */
-    public void amountBoomDown() {
+    public static void amountBoomDown() {
         amountBoom = 1;
     }
 

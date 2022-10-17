@@ -231,7 +231,6 @@ public class Main extends GameApplication {
                 if (playerisAlive) {
                     currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
                     currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    g_player.getComponent(AnimationComponent.class).stay();
                 }
             }
 
@@ -243,6 +242,7 @@ public class Main extends GameApplication {
             protected void onActionBegin() {
                 if (playerisAlive) {
                     g_playerComponent.placeBoom();
+                    System.out.println(g_player.getComponent(AnimationComponent.class).getAmountBoom());
                 }
             }
         }, KeyCode.SPACE);
@@ -266,6 +266,7 @@ public class Main extends GameApplication {
         playerisAlive = true;
         double playerPosX = starterPosX;
         double playerPosY = starterPosY;
+        AnimationComponent.amountBoomDown();
         try {
             g_map = new Mymap();
         } catch (Exception e) {
@@ -364,16 +365,16 @@ public class Main extends GameApplication {
     private void replay() {
         Boom.resizePowerBoom();
         Boom.resetFlameSize();
+        AnimationComponent.amountBoomDown();
         playerisAlive = false;
-        getGameTimer().runOnceAfter(() -> {
-            if (g_player.getComponent(AnimationComponent.class) != null) {
+        // getGameTimer().runOnceAfter(() -> {
+            if (g_player.hasComponent(AnimationComponent.class)) {
                 g_player.getComponent(AnimationComponent.class).loadDeadAnim();
             }
-        }, Duration.seconds(0.4));
-
+        // }, Duration.seconds(0.4));
         getGameTimer().runOnceAfter(() -> {
             g_player.removeFromWorld();
-        }, Duration.seconds(1.5));
+        }, Duration.seconds(0.7));
 
         CONST_SPEED = 90;
         getGameTimer().runOnceAfter(() -> {
@@ -389,9 +390,12 @@ public class Main extends GameApplication {
     private void nextLevel() {
         Boom.resizePowerBoom();
         Boom.resetFlameSize();
+        AnimationComponent.amountBoomDown();
         playerisAlive = false;
         getGameTimer().runOnceAfter(() -> {
-            g_player.getComponent(AnimationComponent.class).loadWinAnim();
+            if (g_player.hasComponent(AnimationComponent.class)) {
+                g_player.getComponent(AnimationComponent.class).loadWinAnim();
+            }
         }, Duration.seconds(0.6));
 
         getGameTimer().runOnceAfter(() -> {
@@ -437,26 +441,28 @@ public class Main extends GameApplication {
         // Xu li bomb va enemy
         for(Enum myFlame : myList){
             onCollisionBegin(ENEMYHORIZONTAL, myFlame, (enemy, flame) -> {
-                getGameTimer().runOnceAfter(() -> {
-                    enemy.getComponent(EnemyHorizontal.class).dead();
+                // getGameTimer().runOnceAfter(() -> {
+                    if(enemy.hasComponent(EnemyHorizontal.class)) {
+                        enemy.getComponent(EnemyHorizontal.class).dead();
+                    }
                     getGameTimer().runOnceAfter(() -> {
                         enemy.removeFromWorld();
-                    }, Duration.seconds(0.4));
-                }, Duration.seconds(0.5));
+                    }, Duration.seconds(0.3));
+                // }, Duration.seconds(0.5));
             });
         }
   
         // Xu li enemy ngang va player
         for(Enum myFlame : myList) {
             onCollisionBegin(ENEMYVERTICAL, myFlame, (enemy, flame) -> {
-                getGameTimer().runOnceAfter(() -> {
-                    if(enemy.getComponent(EnemyVertical.class) != null){
+                // getGameTimer().runOnceAfter(() -> {
+                    if(enemy.hasComponent(EnemyVertical.class)){
                         enemy.getComponent(EnemyVertical.class).dead();
                     }
                     getGameTimer().runOnceAfter(() -> {
                         enemy.removeFromWorld();
                     }, Duration.seconds(0.4));
-                }, Duration.seconds(0.5));
+                // }, Duration.seconds(0.5));
             }); 
         }
 

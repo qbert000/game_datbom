@@ -65,16 +65,16 @@ public abstract class Enemy extends Component {
     }
 
     public void turnRight() {
-        speed = 150;
+        speed = 70;
     }
     public void turnLeft() {
-        speed = -150;
+        speed = -70;
     }
     public void turnUp() {
-        speed = -150;
+        speed = -70;
     }
     public void turnDown() {
-        speed = 150;
+        speed = 70;
     }
 
     public abstract void turnBack();
