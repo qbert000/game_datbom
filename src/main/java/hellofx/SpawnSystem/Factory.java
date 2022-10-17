@@ -121,7 +121,7 @@ public class Factory implements EntityFactory {
                 // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_speed.png")
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE / 2)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE - 2)))
                 .build();
     }
 
@@ -132,7 +132,7 @@ public class Factory implements EntityFactory {
                 // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_flames.png")
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE / 2)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE - 2)))
                 .build();
     }
 
@@ -143,7 +143,7 @@ public class Factory implements EntityFactory {
                 // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_bombs.png")
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE / 2)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE - 2)))
                 .build();
     }
 
@@ -154,7 +154,7 @@ public class Factory implements EntityFactory {
                 // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_flamepass.png")
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE / 2)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE -2)))
                 .build();
     }
 
@@ -165,7 +165,7 @@ public class Factory implements EntityFactory {
                 .collidable()
                 .with(new FlameAnimation())
                 // .viewWithBBox(new Rectangle(40, 40, Color.BLACK))
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE, TITLE_SIZE)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE, TITLE_SIZE)))
                 .build();
     }
 

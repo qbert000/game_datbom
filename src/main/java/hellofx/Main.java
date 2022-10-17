@@ -288,19 +288,19 @@ public class Main extends GameApplication {
                 }
 
                 if (g_map.myMap[i][j].equals("A")) {
-                    spawn("speedItem", j * TITLE_SIZE + 4, i * TITLE_SIZE + 4);
+                    spawn("speedItem", j * TITLE_SIZE, i * TITLE_SIZE);
                 }
 
                 if (g_map.myMap[i][j].equals("B")) {
-                    spawn("flameItem", j * TITLE_SIZE + 4, i * TITLE_SIZE + 4);
+                    spawn("flameItem", j * TITLE_SIZE, i * TITLE_SIZE);
                 }
 
                 if (g_map.myMap[i][j].equals("C")) {
-                    spawn("bombItem", j * TITLE_SIZE + 4, i * TITLE_SIZE + 4);
+                    spawn("bombItem", j * TITLE_SIZE, i * TITLE_SIZE);
                 }
 
                 if (g_map.myMap[i][j].equals("D")) {
-                    spawn("flamePowerItem", j * TITLE_SIZE + 4, i * TITLE_SIZE + 4);
+                    spawn("flamePowerItem", j * TITLE_SIZE, i * TITLE_SIZE);
                 }
 
                 if (g_map.myMap[i][j].equals("6")) {
