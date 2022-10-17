@@ -261,4 +261,32 @@ public class AnimationComponent extends Component {
     public static void increaseBoomAmount() {
         amountBoom ++;
     }
+
+    public void setLeft() {
+        isLeft = true;
+        isUp = false;
+        isDown = false;
+        isRight = false;
+    }
+
+    public void setUp() {
+        isUp = true;
+        isLeft = false;
+        isDown = false;
+        isRight = false;
+    }
+
+    public void setDown() {
+        isDown = true;
+        isUp = false;
+        isLeft = false;
+        isRight = false;
+    }
+
+    public void setRight() {
+        isRight = true;
+        isUp = false;
+        isDown = false;
+        isLeft = false;
+    }
 }

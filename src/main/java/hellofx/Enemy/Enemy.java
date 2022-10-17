@@ -2,26 +2,31 @@ package hellofx.Enemy;
 
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
-import static hellofx.Constant.GameConstant.*;
-import javafx.geometry.Point2D;
-
-import java.awt.*;
-
-import static com.almasb.fxgl.dsl.FXGL.onCollisionBegin;
-import static hellofx.SpawnSystem.Enum.ENEMYHORIZONTAL;
-import static hellofx.SpawnSystem.Enum.WALL;
-
-
-import hellofx.Map.Mymap.*;
 
 public abstract class Enemy extends Component {
 
     protected double speed = 0;
 
-    protected boolean right_;
-    protected boolean left_;
-    protected boolean up_;
-    protected boolean down_;
+    public boolean right_;
+    public boolean left_;
+    public boolean up_;
+    public boolean down_;
+
+    public boolean isRight_() {
+        return right_;
+    }
+
+    public boolean isLeft_() {
+        return left_;
+    }
+
+    public boolean isUp_() {
+        return up_;
+    }
+
+    public boolean isDown_() {
+        return down_;
+    }
 
     protected double currentPosX;
 
@@ -73,10 +78,6 @@ public abstract class Enemy extends Component {
     }
 
     public abstract void turnBack();
-
-
-
-
 
     public double getCurrentPosX() {
         return currentPosX;
