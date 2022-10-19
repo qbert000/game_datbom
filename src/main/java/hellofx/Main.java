@@ -50,7 +50,7 @@ public class Main extends GameApplication {
     public static Mymap g_map = null;
     public boolean playerisAlive = true;
 
-    public Enum[] myList = { FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
+    public Enum[] myList = new Enum[]{ FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
 
     /*
      * Overload Game Setting.
@@ -78,7 +78,6 @@ public class Main extends GameApplication {
             public FXGLMenu newGameMenu() {
                 return new GameMenu();
             }
-
         });
         settings.setDefaultCursor(new CursorInfo("cursor/cursor1.png", 0.0, 0.0));
     }
@@ -242,7 +241,6 @@ public class Main extends GameApplication {
             protected void onActionBegin() {
                 if (playerisAlive) {
                     g_playerComponent.placeBoom();
-                    System.out.println(g_player.getComponent(AnimationComponent.class).getAmountBoom());
                 }
             }
         }, KeyCode.SPACE);
@@ -329,26 +327,6 @@ public class Main extends GameApplication {
         currentYpos = g_player.getPosition().getY();
         g_player.getComponent(AnimationComponent.class).getMyX = g_player.getPosition().getX();
         g_player.getComponent(AnimationComponent.class).getMyY = g_player.getPosition().getY();
-
-        // Entity enemy = spawn("enemyVertical", 42, 42);
-        // enemy.getComponent(EnemyVertical.class).move();
-        // enemy.getComponent(EnemyVertical.class).setCurrentPosX(enemy.getPosition().getX());
-        // enemy.getComponent(EnemyVertical.class).setCurrentPosY(enemy.getPosition().getY());
-
-        // Entity enemy22 = spawn("enemyVertical", 202, 42);
-        // enemy22.getComponent(EnemyVertical.class).move();
-        // enemy22.getComponent(EnemyVertical.class).setCurrentPosX(enemy22.getPosition().getX());
-        // enemy22.getComponent(EnemyVertical.class).setCurrentPosY(enemy22.getPosition().getY());
-
-        // Entity enemy1 = spawn("enemyHorizontal", 122, 122);
-        // enemy1.getComponent(EnemyHorizontal.class).move();
-        // enemy1.getComponent(EnemyHorizontal.class).setCurrentPosX(enemy1.getPosition().getX());
-        // enemy1.getComponent(EnemyHorizontal.class).setCurrentPosY(enemy1.getPosition().getY());
-
-        // Entity enemy12 = spawn("enemyHorizontal", 202, 122);
-        // enemy12.getComponent(EnemyHorizontal.class).move();
-        // enemy12.getComponent(EnemyHorizontal.class).setCurrentPosX(enemy12.getPosition().getX());
-        // enemy12.getComponent(EnemyHorizontal.class).setCurrentPosY(enemy12.getPosition().getY());
     }
 
     /**
@@ -367,11 +345,9 @@ public class Main extends GameApplication {
         Boom.resetFlameSize();
         AnimationComponent.amountBoomDown();
         playerisAlive = false;
-        // getGameTimer().runOnceAfter(() -> {
-            if (g_player.hasComponent(AnimationComponent.class)) {
-                g_player.getComponent(AnimationComponent.class).loadDeadAnim();
-            }
-        // }, Duration.seconds(0.4));
+        if (g_player.hasComponent(AnimationComponent.class)) {
+            g_player.getComponent(AnimationComponent.class).loadDeadAnim();
+        }
         getGameTimer().runOnceAfter(() -> {
             g_player.removeFromWorld();
         }, Duration.seconds(0.7));
@@ -380,7 +356,6 @@ public class Main extends GameApplication {
         getGameTimer().runOnceAfter(() -> {
             FXGL.getGameController().gotoMainMenu();
         }, Duration.seconds(2));
-
     }
 
     /*
@@ -429,7 +404,7 @@ public class Main extends GameApplication {
         onCollisionBegin(PLAYER, ENEMYVERTICAL, (player, flame) -> {
             replay();
         });
-  
+
         for (Enum myFlame : myList) {
             onCollisionBegin(FLAME_ITEM, myFlame, (flame_item, flame) -> {
                 getGameTimer().runOnceAfter(() -> {
@@ -439,31 +414,27 @@ public class Main extends GameApplication {
         }
 
         // Xu li bomb va enemy
-        for(Enum myFlame : myList){
+        for (Enum myFlame : myList) {
             onCollisionBegin(ENEMYHORIZONTAL, myFlame, (enemy, flame) -> {
-                // getGameTimer().runOnceAfter(() -> {
-                    if(enemy.hasComponent(EnemyHorizontal.class)) {
-                        enemy.getComponent(EnemyHorizontal.class).dead();
-                    }
-                    getGameTimer().runOnceAfter(() -> {
-                        enemy.removeFromWorld();
-                    }, Duration.seconds(0.3));
-                // }, Duration.seconds(0.5));
+                if (enemy.hasComponent(EnemyHorizontal.class)) {
+                    enemy.getComponent(EnemyHorizontal.class).dead();
+                }
+                getGameTimer().runOnceAfter(() -> {
+                    enemy.removeFromWorld();
+                }, Duration.seconds(0.3));
             });
         }
-  
+
         // Xu li enemy ngang va player
-        for(Enum myFlame : myList) {
+        for (Enum myFlame : myList) {
             onCollisionBegin(ENEMYVERTICAL, myFlame, (enemy, flame) -> {
-                // getGameTimer().runOnceAfter(() -> {
-                    if(enemy.hasComponent(EnemyVertical.class)){
-                        enemy.getComponent(EnemyVertical.class).dead();
-                    }
-                    getGameTimer().runOnceAfter(() -> {
-                        enemy.removeFromWorld();
-                    }, Duration.seconds(0.4));
-                // }, Duration.seconds(0.5));
-            }); 
+                if (enemy.hasComponent(EnemyVertical.class)) {
+                    enemy.getComponent(EnemyVertical.class).dead();
+                }
+                getGameTimer().runOnceAfter(() -> {
+                    enemy.removeFromWorld();
+                }, Duration.seconds(0.4));
+            });
         }
 
         // Xu li va cham giua Speed_item va Flame
@@ -476,7 +447,7 @@ public class Main extends GameApplication {
         }
 
         // Xu li va cham giua Flame_power_item va Flame
-        for(Enum myFlame : myList) {
+        for (Enum myFlame : myList) {
             onCollisionBegin(FLAME_POWER_ITEM, myFlame, (flamePowerItem, flame) -> {
                 getGameTimer().runOnceAfter(() -> {
                     flamePowerItem.removeFromWorld();
@@ -485,7 +456,7 @@ public class Main extends GameApplication {
         }
 
         // Xu li va cham giua Bomb_item va Flame
-        for(Enum myFlame : myList){
+        for (Enum myFlame : myList) {
             onCollisionBegin(BOMB_ITEM, myFlame, (bombItem, flame) -> {
                 getGameTimer().runOnceAfter(() -> {
                     bombItem.removeFromWorld();
@@ -614,7 +585,6 @@ public class Main extends GameApplication {
                                 enemyHorizontal.getPosition().getY()));
             }
         });
-
     }
 
     /*
