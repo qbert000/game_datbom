@@ -10,6 +10,7 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import hellofx.Enemy.EnemyHorizontal;
+import hellofx.Enemy.EnemyRandom;
 import hellofx.Enemy.EnemyVertical;
 import javafx.scene.input.KeyCode;
 import javafx.geometry.Point2D;
@@ -288,6 +289,10 @@ public class Main extends GameApplication {
         currentYpos = g_player.getPosition().getY();
         g_player.getComponent(AnimationComponent.class).getMyX = g_player.getPosition().getX();
         g_player.getComponent(AnimationComponent.class).getMyY = g_player.getPosition().getY();
+
+        Entity g_enemyrandom = spawn("enemyRandom", 40, 40);
+        EnemyRandom  enemyRandom = g_enemyrandom.getComponent(EnemyRandom.class);
+//        enemyRandom.move();
 
         index = 0;
     }

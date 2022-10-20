@@ -20,7 +20,7 @@ public abstract class Enemy extends Component {
 
     public int speedX;
     public int speedY;
-    
+    public AnimatedTexture texture;
     public boolean isRight_() {
         return right_;
     }
@@ -49,7 +49,7 @@ public abstract class Enemy extends Component {
         this.currentPosY = currentPosY;
     }
 
-    public AnimatedTexture texture;
+
 
     @Override
     public void onUpdate(double tpf) {
@@ -64,18 +64,34 @@ public abstract class Enemy extends Component {
     public void turnRight() {
         speedX = 70;
         speedY = 0;
+        right_ = true;
+        left_ = false;
+        up_ = false;
+        down_ = false;
     }
     public void turnLeft() {
         speedX = -70;
         speedY = 0;
+        left_ = true;
+        right_ = false;
+        up_ = false;
+        down_ = false;
     }
     public void turnUp() {
         speedY = -70;
         speedX =  0;
+        right_ = false;
+        left_ = false;
+        up_ = true;
+        down_ = false;
     }
     public void turnDown() {
         speedY = 70;
         speedX = 0;
+        right_ = false;
+        left_ = false;
+        up_ = false;
+        down_ = true;
     }
 
     public abstract void turnBack();
