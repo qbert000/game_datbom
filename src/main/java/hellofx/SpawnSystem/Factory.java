@@ -10,6 +10,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import hellofx.Enemy.EnemyHorizontal;
 import hellofx.Enemy.EnemyVertical;
+import hellofx.Enemy.Enemy1;
 import javafx.geometry.Point2D;
 // import javafx.scene.paint.Color;
 // import javafx.scene.shape.Rectangle;
@@ -47,6 +48,17 @@ public class Factory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(new EnemyHorizontal())
                 .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
+                .build();
+    }
+
+    @Spawns("enemy1")
+    public Entity newEnemy1(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(ENEMY1)
+                .zIndex(900)
+                .with(new CollidableComponent(true))
+                .with(new Enemy1())
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(40, 40)))
                 .build();
     }
 

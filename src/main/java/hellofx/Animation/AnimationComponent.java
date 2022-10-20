@@ -6,15 +6,20 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import hellofx.Enemy.Enemy1;
 // import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import static hellofx.Constant.GameConstant.*;
+import static hellofx.Map.Mymap.g_map;
+import static hellofx.Map.Mymap.enemy;
+import static hellofx.Constant.GameConstant.ENEMY_NUMBER;
 
 import java.util.Vector;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 import hellofx.Bomb_Flame.*;
+import hellofx.Enemy.PathFinding;
 
 public class AnimationComponent extends Component {
     private int speed = 0;
@@ -49,12 +54,12 @@ public class AnimationComponent extends Component {
     // Di chuyen xuong duoi
     AnimationChannel animDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, TITLE_SIZE,
             TITLE_SIZE,
-            Duration.seconds(0.3),
+            Duration.seconds(0.5),
             0, 2);
     // Dung yen ben tren
     AnimationChannel IdleUp = new AnimationChannel(FXGL.image("character/gold_player_up.png"), 4, TITLE_SIZE,
             TITLE_SIZE,
-            Duration.seconds(0.3),
+            Duration.seconds(0.5),
             2, 2);
     // Dung yen ben duoi
     AnimationChannel IdleDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, TITLE_SIZE,
@@ -99,11 +104,35 @@ public class AnimationComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+        // ham check di chuyen ben duoi
+        if (isDown && !isUp && !isLeft && !isRight) {
+            entity.translateY(speed * tpf);
+            getMyX = getXPos();
+            getMyY = getYPos() - speed * tpf;
+            if (speed != 0) {
+                if (texture.getAnimationChannel() == animIdle
+                        || texture.getAnimationChannel() == IdleDown
+                        || texture.getAnimationChannel() == IdleUp
+                        || texture.getAnimationChannel() == animUp
+                        || texture.getAnimationChannel() == animWalk
+                        || texture.getAnimationChannel() == AnimLeft
+                        || texture.getAnimationChannel() == IdleLeft) {
+                    texture.loopAnimationChannel(animDown);
+                }
+
+                speed = (int) (speed * 0.9);
+
+                if (FXGLMath.abs(speed) < 1) {
+                    speed = 0;
+                    texture.loopAnimationChannel(IdleDown);
+                }
+            }
+        }
         // ham check di chuyen ben trai
         if (isLeft && !isDown && !isUp && !isRight) {
             entity.translateX(speed * tpf);
-            getMyX = entity.getPosition().getX() - speed * tpf;
-            getMyY = entity.getPosition().getY();
+            getMyX = getXPos() - speed * tpf;
+            getMyY = getYPos();
             if (speed != 0) {
                 if (texture.getAnimationChannel() == animIdle
                         || texture.getAnimationChannel() == IdleDown
@@ -126,8 +155,8 @@ public class AnimationComponent extends Component {
         // ham check di chuyen ben phai
         if (isRight && !isUp && !isDown && !isLeft) {
             entity.translateX(speed * tpf);
-            getMyX = entity.getPosition().getX() - speed * tpf;
-            getMyY = entity.getPosition().getY();
+            getMyX = getXPos() - speed * tpf;
+            getMyY = getYPos();
             if (speed != 0) {
                 if (texture.getAnimationChannel() == animIdle
                         || texture.getAnimationChannel() == IdleDown
@@ -150,8 +179,8 @@ public class AnimationComponent extends Component {
         // ham check di chuyen ben tren
         if (isUp && !isDown && !isLeft && !isRight) {
             entity.translateY(speed * tpf);
-            getMyX = entity.getPosition().getX();
-            getMyY = entity.getPosition().getY() - speed * tpf;
+            getMyX = getXPos();
+            getMyY = getYPos() - speed * tpf;
             if (speed != 0) {
                 if (texture.getAnimationChannel() == animIdle
                         || texture.getAnimationChannel() == IdleDown
@@ -171,31 +200,25 @@ public class AnimationComponent extends Component {
                 }
             }
         }
-        // ham check di chuyen ben duoi
-        if (isDown && !isUp && !isLeft && !isRight) {
-            entity.translateY(speed * tpf);
-            getMyX = entity.getPosition().getX();
-            getMyY = entity.getPosition().getY() - speed * tpf;
-            if (speed != 0) {
-
-                if (texture.getAnimationChannel() == animIdle
-                        || texture.getAnimationChannel() == IdleDown
-                        || texture.getAnimationChannel() == IdleUp
-                        || texture.getAnimationChannel() == animUp
-                        || texture.getAnimationChannel() == animWalk
-                        || texture.getAnimationChannel() == AnimLeft
-                        || texture.getAnimationChannel() == IdleLeft) {
-                    texture.loopAnimationChannel(animDown);
+        double tempX = Math.round(getXPos() / 40);
+        double tempY = Math.round(getYPos() / 40);
+        if(Math.abs(tempX - getXPos()/40) < 0.4 && Math.abs(tempY - getYPos()/40) < 0.4) {
+           if(!g_map.updatePlayerPosition((int) tempX, (int) tempY)) {
+                // g_map.getPlayerTile();
+                // PathFinding.resetFinding = true;
+                for(int i = 0; i < ENEMY_NUMBER; i++) {
+                    enemy[i].getComponent(Enemy1.class).findPlayer.resetFinding = true;
                 }
-
-                speed = (int) (speed * 0.9);
-
-                if (FXGLMath.abs(speed) < 1) {
-                    speed = 0;
-                    texture.loopAnimationChannel(IdleDown);
-                }
-            }
+           }
         }
+    }
+
+    public double getXPos() {
+        return entity.getPosition().getX();
+    }
+
+    public double getYPos() {
+        return entity.getPosition().getY();
     }
 
     public void placeBoom() {
@@ -263,7 +286,7 @@ public class AnimationComponent extends Component {
     }
 
     public static void increaseBoomAmount() {
-        amountBoom ++;
+        amountBoom++;
     }
 
     public void setLeft() {

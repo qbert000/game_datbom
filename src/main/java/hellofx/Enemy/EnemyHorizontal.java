@@ -19,12 +19,10 @@ public class EnemyHorizontal extends Enemy {
         left_ = false;
         up_ = false;
         down_ = false;
-        animation = new AnimationChannel(FXGL.image("enemy/balloon36.png")
-                , 3, ENEMY_SIZE, ENEMY_SIZE
-                , Duration.seconds(0.5), 6,8);
-        animDead = new AnimationChannel(FXGL.image("enemy/balloon36.png")
-        , 5, ENEMY_SIZE, ENEMY_SIZE
-        , Duration.seconds(0.3), 0, 4);
+        animation = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 3, ENEMY_SIZE, ENEMY_SIZE,
+                Duration.seconds(0.7), 6, 8);
+        animDead = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 5, ENEMY_SIZE, ENEMY_SIZE,
+                Duration.seconds(0.3), 0, 4);
         texture = new AnimatedTexture(animation);
     }
 
@@ -53,8 +51,8 @@ public class EnemyHorizontal extends Enemy {
 
     @Override
     public void turnBack() {
-        if(right_) {
-            right_= false;
+        if (right_) {
+            right_ = false;
             left_ = true;
         } else if (left_) {
             right_ = true;

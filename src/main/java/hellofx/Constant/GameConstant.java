@@ -10,4 +10,5 @@ public class GameConstant{
     public static final int flame4dirSize = 38;
     public static final int fontSize = 36;
     public static final int ENEMY_SIZE = 36;
+    public static final int ENEMY_NUMBER = 2;
 }

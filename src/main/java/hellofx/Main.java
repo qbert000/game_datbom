@@ -1,6 +1,5 @@
 package hellofx;
 
-// import com.almasb.fxgl.animation.Animation;
 import com.almasb.fxgl.app.CursorInfo;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -10,26 +9,19 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
-// import com.almasb.fxgl.app.scene.Viewport;
-// import com.almasb.fxgl.dev.editor.EntityInspector;
-// import com.almasb.fxgl.entity.Entity;
-// import com.almasb.fxgl.input.UserAction;
-// import com.almasb.fxgl.app.scene.FXGLMenu;
-// import com.almasb.fxgl.physics.PhysicsWorld;
-// import com.almasb.fxgl.app.scene.MenuType;
 import hellofx.Enemy.EnemyHorizontal;
 import hellofx.Enemy.EnemyVertical;
 import javafx.scene.input.KeyCode;
-// import javafx.scene.text.Text;
 import javafx.geometry.Point2D;
 import java.util.Map;
-// import java.util.Vector;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static hellofx.SpawnSystem.Enum.*;
+import static hellofx.Map.Mymap.g_map;
+import static hellofx.Map.Mymap.index;
+import static hellofx.Map.Mymap.spawnComponent;
 import hellofx.Menu.GameMenu;
 import hellofx.Menu.MainMenu;
-// import hellofx.Menu.MenuButton;
 import hellofx.Bomb_Flame.*;
 import javafx.util.Duration;
 import static hellofx.Constant.GameConstant.*;
@@ -47,10 +39,17 @@ public class Main extends GameApplication {
     private Entity g_player = new Entity();
     public AnimationComponent g_playerComponent;
 
-    public static Mymap g_map = null;
     public boolean playerisAlive = true;
 
     public Enum[] myList = new Enum[]{ FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
+
+    public double getPlayerX() {
+        return g_player.getPosition().getX();
+    }
+
+    public double getPlayerY() {
+        return g_player.getPosition().getY();
+    }
 
     /*
      * Overload Game Setting.
@@ -244,7 +243,6 @@ public class Main extends GameApplication {
                 }
             }
         }, KeyCode.SPACE);
-
     }
 
     /*
@@ -272,53 +270,16 @@ public class Main extends GameApplication {
         }
         for (int i = 0; i < HEIGHT_TITLE; i++) {
             for (int j = 0; j < WIDTH_TITLE; j++) {
-
-                spawn("grass", j * TITLE_SIZE, i * TITLE_SIZE);
-
-                if (g_map.myMap[i][j].equals("1")) {
-                    spawn("wall", j * TITLE_SIZE, i * TITLE_SIZE);
-                }
-                if (g_map.myMap[i][j].equals("5")) {
-                    spawn("portal", j * TITLE_SIZE, i * TITLE_SIZE);
-                    spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
-                }
-                if (g_map.myMap[i][j].equals("2")) {
-                    spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
-                }
-
-                if (g_map.myMap[i][j].equals("A")) {
-                    spawn("speedItem", j * TITLE_SIZE, i * TITLE_SIZE);
-                }
-
-                if (g_map.myMap[i][j].equals("B")) {
-                    spawn("flameItem", j * TITLE_SIZE, i * TITLE_SIZE);
-                }
-
-                if (g_map.myMap[i][j].equals("C")) {
-                    spawn("bombItem", j * TITLE_SIZE, i * TITLE_SIZE);
-                }
-
-                if (g_map.myMap[i][j].equals("D")) {
-                    spawn("flamePowerItem", j * TITLE_SIZE, i * TITLE_SIZE);
-                }
-
-                if (g_map.myMap[i][j].equals("6")) {
-                    spawn("enemyVertical", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2).getComponent(EnemyVertical.class)
-                            .move();
-                }
-
-                if (g_map.myMap[i][j].equals("7")) {
-                    spawn("enemyHorizontal", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2).getComponent(EnemyHorizontal.class)
-                            .move();
-                }
-
-                if (g_map.myMap[i][j].equals("3")) {
+                spawnComponent(i, j);
+                if (Mymap.myMap[i][j].equals("3")) {
                     playerPosX = j * TITLE_SIZE;
                     playerPosY = i * TITLE_SIZE;
+                    Mymap.playerX = i;
+                    Mymap.playerY = j;
                 }
-
             }
         }
+        // System.out.println(g_map.playerX + " " + g_map.playerY);
         // spawn nhan vat sau cung de z-index >> / hien thi ben tren theo chieu Oz
         g_player = spawn("player", playerPosX, playerPosY);
         g_playerComponent = g_player.getComponent(AnimationComponent.class);
@@ -327,6 +288,8 @@ public class Main extends GameApplication {
         currentYpos = g_player.getPosition().getY();
         g_player.getComponent(AnimationComponent.class).getMyX = g_player.getPosition().getX();
         g_player.getComponent(AnimationComponent.class).getMyY = g_player.getPosition().getY();
+
+        index = 0;
     }
 
     /**
@@ -356,6 +319,7 @@ public class Main extends GameApplication {
         getGameTimer().runOnceAfter(() -> {
             FXGL.getGameController().gotoMainMenu();
         }, Duration.seconds(2));
+        index = 0;
     }
 
     /*
@@ -381,6 +345,7 @@ public class Main extends GameApplication {
         getGameTimer().runOnceAfter(() -> {
             FXGL.getGameController().gotoMainMenu();
         }, Duration.seconds(2));
+        index = 0;
     }
 
     /*
@@ -388,6 +353,10 @@ public class Main extends GameApplication {
      */
     @Override
     protected void initPhysics() {
+
+        onCollisionBegin(PLAYER, ENEMY1, (player, enemy) -> {
+            replay();
+        });
         // Xu li va cham Player va Flame
 
         for (Enum flame : myList) {

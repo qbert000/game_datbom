@@ -23,8 +23,10 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 // import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 import static hellofx.SpawnSystem.Enum.*;
 import static hellofx.Constant.GameConstant.*;
+import static hellofx.Map.Mymap.g_map;
 import hellofx.Main;
 import hellofx.Animation.*;
+import hellofx.Map.Mymap;
 
 public class Boom extends Component {
 
@@ -88,7 +90,7 @@ public class Boom extends Component {
             setRightBreak();
         } else {
             right++;
-            if (Main.g_map.myMap[(int) ((entity.getY()) / TITLE_SIZE)][(int) ((entity.getX() + right * TITLE_SIZE) / TITLE_SIZE)].equals("1")) {
+            if (Mymap.myMap[(int) ((entity.getY()) / TITLE_SIZE)][(int) ((entity.getX() + right * TITLE_SIZE) / TITLE_SIZE)].equals("1")) {
                 setRight();
                 return;
             }
@@ -117,7 +119,7 @@ public class Boom extends Component {
             setLeftBreak();
         } else {
             left++;
-            if (Main.g_map.myMap[(int) ((entity.getY()) / TITLE_SIZE)][(int) ((entity.getX() - left * TITLE_SIZE) / TITLE_SIZE)].equals("1")) {
+            if (Mymap.myMap[(int) ((entity.getY()) / TITLE_SIZE)][(int) ((entity.getX() - left * TITLE_SIZE) / TITLE_SIZE)].equals("1")) {
                 setLeft();
                 return;
             }
@@ -146,7 +148,7 @@ public class Boom extends Component {
             setUpBreak();
         } else {
             up++;
-            if (Main.g_map.myMap[(int) ((entity.getY() - up * TITLE_SIZE) / TITLE_SIZE)][(int) ((entity.getX()) / TITLE_SIZE)].equals("1")) {
+            if (Mymap.myMap[(int) ((entity.getY() - up * TITLE_SIZE) / TITLE_SIZE)][(int) ((entity.getX()) / TITLE_SIZE)].equals("1")) {
                 setUp();
                 return;
             }
@@ -175,7 +177,7 @@ public class Boom extends Component {
             setDownBreak();
         } else {
             down++;
-            if (Main.g_map.myMap[(int) ((entity.getY() + down * TITLE_SIZE) / TITLE_SIZE)][(int) ((entity.getX()) / TITLE_SIZE)].equals("1")) {
+            if (Mymap.myMap[(int) ((entity.getY() + down * TITLE_SIZE) / TITLE_SIZE)][(int) ((entity.getX()) / TITLE_SIZE)].equals("1")) {
                 setDown();
                 return;
             }

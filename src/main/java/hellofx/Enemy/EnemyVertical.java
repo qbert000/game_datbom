@@ -8,7 +8,7 @@ import javafx.util.Duration;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static hellofx.Constant.GameConstant.ENEMY_SIZE;
 
-public class EnemyVertical extends Enemy{
+public class EnemyVertical extends Enemy {
 
     protected final AnimationChannel animation;
 
@@ -19,12 +19,10 @@ public class EnemyVertical extends Enemy{
         left_ = false;
         up_ = false;
         down_ = true;
-        animation = new AnimationChannel(FXGL.image("enemy/balloon36.png")
-                , 3, ENEMY_SIZE, ENEMY_SIZE
-                , Duration.seconds(0.5), 3,5);
-                animDead = new AnimationChannel(FXGL.image("enemy/balloon36.png")
-        , 5, ENEMY_SIZE, ENEMY_SIZE
-        , Duration.seconds(0.4), 0, 4);
+        animation = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 3, ENEMY_SIZE, ENEMY_SIZE,
+                Duration.seconds(0.7), 6, 8);
+        animDead = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 5, ENEMY_SIZE, ENEMY_SIZE,
+                Duration.seconds(0.4), 0, 4);
         texture = new AnimatedTexture(animation);
     }
 
@@ -53,7 +51,7 @@ public class EnemyVertical extends Enemy{
 
     @Override
     public void turnBack() {
-        if(up_) {
+        if (up_) {
             up_ = false;
             down_ = true;
         } else if (down_) {

@@ -16,6 +16,7 @@ import javafx.scene.shape.Shape;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGL.centerTextBind;
 import static hellofx.Constant.GameConstant.*;
+import static hellofx.Map.Mymap.index;
 
 public class GameMenu extends FXGLMenu {
     public GameMenu() {
