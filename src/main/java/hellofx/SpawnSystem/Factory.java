@@ -37,7 +37,7 @@ public class Factory implements EntityFactory {
                 // point2d la chinh vi tri box so vs vi tri ban dau
                 // Point la vi tri cua hop so vs ban dau la (0,0)
                 // chieu cao vs chieu rong cua hop
-                .bbox(new HitBox(new Point2D(5, 7), BoundingShape.box(26, 26)))
+                .bbox(new HitBox(new Point2D(6, 1), BoundingShape.box(26, 36)))
                 .build();
     }
 
@@ -59,7 +59,7 @@ public class Factory implements EntityFactory {
                 .zIndex(1000)
                 .with(new EnemyRandom())
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38,38)))
+                .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
                 .build();
     }
 
@@ -113,7 +113,7 @@ public class Factory implements EntityFactory {
                 .type(GRASS)
                 // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("mapTexture/grass.png")
-                //.with(new CollidableComponent(true))
+                // .with(new CollidableComponent(true))
                 .build();
     }
 
@@ -178,7 +178,7 @@ public class Factory implements EntityFactory {
                 // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_flamepass.png")
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE -2)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE - 2)))
                 .build();
     }
 

@@ -9,6 +9,8 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.core.math.FXGLMath;
+
 import hellofx.Enemy.EnemyHorizontal;
 import hellofx.Enemy.EnemyRandom;
 import hellofx.Enemy.EnemyVertical;
@@ -20,6 +22,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static hellofx.SpawnSystem.Enum.*;
 import static hellofx.Map.Mymap.g_map;
 import static hellofx.Map.Mymap.index;
+import static hellofx.Map.Mymap.myMap;
 import static hellofx.Map.Mymap.spawnComponent;
 import hellofx.Menu.GameMenu;
 import hellofx.Menu.MainMenu;
@@ -29,20 +32,19 @@ import static hellofx.Constant.GameConstant.*;
 import hellofx.Animation.*;
 import hellofx.SpawnSystem.Factory;
 import hellofx.Map.*;
+import static hellofx.Animation.AnimationComponent.currentXpos;
+import static hellofx.Animation.AnimationComponent.currentYpos;
 
 /*
  * Ham main luon phai extends GameApplication.
  */
 public class Main extends GameApplication {
-    public double currentXpos;
-    public double currentYpos;
-
     private Entity g_player = new Entity();
     public AnimationComponent g_playerComponent;
 
     public boolean playerisAlive = true;
 
-    public Enum[] myList = new Enum[]{ FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
+    public Enum[] myList = new Enum[] { FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
 
     public double getPlayerX() {
         return g_player.getPosition().getX();
@@ -280,20 +282,13 @@ public class Main extends GameApplication {
                 }
             }
         }
-        // System.out.println(g_map.playerX + " " + g_map.playerY);
         // spawn nhan vat sau cung de z-index >> / hien thi ben tren theo chieu Oz
         g_player = spawn("player", playerPosX, playerPosY);
         g_playerComponent = g_player.getComponent(AnimationComponent.class);
-
         currentXpos = g_player.getPosition().getX();
         currentYpos = g_player.getPosition().getY();
         g_player.getComponent(AnimationComponent.class).getMyX = g_player.getPosition().getX();
         g_player.getComponent(AnimationComponent.class).getMyY = g_player.getPosition().getY();
-
-        Entity g_enemyrandom = spawn("enemyRandom", 40, 40);
-        EnemyRandom  enemyRandom = g_enemyrandom.getComponent(EnemyRandom.class);
-//        enemyRandom.move();
-
         index = 0;
     }
 
@@ -320,7 +315,7 @@ public class Main extends GameApplication {
             g_player.removeFromWorld();
         }, Duration.seconds(0.7));
 
-        CONST_SPEED = 90;
+        CONST_SPEED = 1.5;
         getGameTimer().runOnceAfter(() -> {
             FXGL.getGameController().gotoMainMenu();
         }, Duration.seconds(2));
@@ -346,7 +341,7 @@ public class Main extends GameApplication {
             g_player.removeFromWorld();
         }, Duration.seconds(2));
 
-        CONST_SPEED = 90;
+        CONST_SPEED = 1.5;
         getGameTimer().runOnceAfter(() -> {
             FXGL.getGameController().gotoMainMenu();
         }, Duration.seconds(2));
@@ -521,8 +516,96 @@ public class Main extends GameApplication {
 
             @Override
             protected void onCollision(Entity player, Entity wall) {
+                // System.out.println("Player:" + player.getPosition().getX() + " " +
+                //         player.getPosition().getY());
+                // System.out.println("Wall:" + wall.getPosition().getX() + " " +
+                //         wall.getPosition().getY());
+                String getStatus = player.getComponent(AnimationComponent.class).getStatus();
+                int wallTileY = (int) wall.getPosition().getX() / TITLE_SIZE;
+                int wallTileX = (int) wall.getPosition().getY() / TITLE_SIZE;
+                boolean hasLeftTile = false;
+                boolean hasRightTile = false;
+                boolean hasUpTile = false;
+                boolean hasDownTile = false;
+                double diff;
+                // System.out.println(wallTileX + " WALL " + wallTileY);
+                if (wallTileX >= 0 && wallTileX < HEIGHT_TITLE
+                        && wallTileY - 1 >= 0 && wallTileY - 1 < WIDTH_TITLE) {
+                    if (myMap[wallTileX][wallTileY - 1].equals("1")
+                            || myMap[wallTileX][wallTileY - 1].equals("2")) {
+                        hasLeftTile = true;
+                    }
+                }
+                if (wallTileX >= 0 && wallTileX < HEIGHT_TITLE
+                        && wallTileY + 1 >= 0 && wallTileY + 1 < WIDTH_TITLE) {
+                    if (myMap[wallTileX][wallTileY + 1].equals("1")
+                            || myMap[wallTileX][wallTileY + 1].equals("2")) {
+                        hasRightTile = true;
+                    }
+                }
+                if (wallTileX + 1 >= 0 && wallTileX + 1 < HEIGHT_TITLE
+                        && wallTileY >= 0 && wallTileY < WIDTH_TITLE) {
+                    if (myMap[wallTileX + 1][wallTileY].equals("1")
+                            || myMap[wallTileX + 1][wallTileY].equals("2")) {
+                        hasDownTile = true;
+                    }
+                }
+                if (wallTileX - 1 >= 0 && wallTileX - 1 < HEIGHT_TITLE
+                        && wallTileY >= 0 && wallTileY < WIDTH_TITLE) {
+                    if (myMap[wallTileX - 1][wallTileY].equals("1")
+                            || myMap[wallTileX - 1][wallTileY].equals("2")) {
+                        hasUpTile = true;
+                    }
+                }
+                if(hasUpTile) {
+                    System.out.print(" Has Up ");
+                } else {
+                    System.out.print(" No Up ");
+                }
+                if(hasDownTile) {
+                    System.out.print(" Has Down ");
+                } else {
+                    System.out.print(" No Down ");
+                }
+                if(hasLeftTile) {
+                    System.out.print(" Has Left ");
+                } else {
+                    System.out.print(" No Left ");
+                }
+                if(hasRightTile) {
+                    System.out.print("Has Right");
+                } else {
+                    System.out.print("No Right");
+                }
+                System.out.print("\n");
+                switch (getStatus) {
+                    case "LEFT":
+                        player.getComponent(AnimationComponent.class).supportMoveHorizontal(player, wall, hasUpTile,
+                                hasDownTile);
+                        break;
+                    case "RIGHT":
+                        player.getComponent(AnimationComponent.class).supportMoveHorizontal(player, wall, hasUpTile,
+                                hasDownTile);
+                        break;
+                    case "UP":
+                        player.getComponent(AnimationComponent.class).supportMoveVertical(player, wall, hasRightTile,
+                                hasLeftTile);
+                        break;
+                    case "DOWN":
+                        player.getComponent(AnimationComponent.class).supportMoveVertical(player, wall, hasRightTile,
+                                hasLeftTile);
+                        break;
+                    default:
+                        break;
+                }
                 player.setPosition(new Point2D(currentXpos, currentYpos));
             }
+
+            @Override
+            protected void onCollisionEnd(Entity player, Entity wall) {
+                int i = 0;
+            }
+            
         });
 
         // Xu li va cham Enemy doc va tuong
@@ -541,7 +624,6 @@ public class Main extends GameApplication {
                         enemyVertical.getComponent(EnemyVertical.class).getCurrentPosY()));
             }
         });
-
         // Xu li va cham Enemy ngang va tuong
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(ENEMYHORIZONTAL, WALL) {
             @Override
