@@ -8,6 +8,8 @@ import static hellofx.Constant.GameConstant.HEIGHT_TITLE;
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
 import static hellofx.Constant.GameConstant.WIDTH_TITLE;
 import static hellofx.Constant.GameConstant.ENEMY_NUMBER;
+import static hellofx.Map.Mymap.enemy;
+// import static hellofx.Constant.GameConstant.ENEMY_NUMBER;
 
 import java.io.File;
 import java.util.Scanner;
@@ -112,7 +114,7 @@ public class Mymap {
         if (!canUpdate) {
             myMap[playerX][playerY] = "0";
             myMap[newY][newX] = "3";
-        }
+        } 
         playerX = newY;
         playerY = newX;
         return canUpdate;
@@ -132,14 +134,20 @@ public class Mymap {
         }
         if (tileType.equals("brick")) {
             if (!myMap[tileX][tileY].equals("2")) {
-                System.out.println("There's Item inside");
+                // System.out.println("There's Item inside");
                 myMap[tileX][tileY] = myMap[tileX][tileY].toLowerCase();
             } else {
-                System.out.println("No item inside");
+                // System.out.println("No item inside");
                 myMap[tileX][tileY] = "0";
             }
         }
-        printMap();
+        for (int i = 0; i < ENEMY_NUMBER; i++) {
+            enemy[i].getComponent(Enemy1.class).findPlayer.resetFinding = true;
+            enemy[i].getComponent(Enemy1.class).findPlayer.resetMap();
+        }
+
+        // printMap();
+
     }
 
     public static void printMap() {

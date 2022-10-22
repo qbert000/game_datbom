@@ -317,7 +317,7 @@ public class Main extends GameApplication {
         AnimationComponent.amountBoomDown();
         playerisAlive = false;
         if (g_player.hasComponent(AnimationComponent.class)) {
-            System.out.println("has animation");
+            // System.out.println("has animation");
             g_player.getComponent(AnimationComponent.class).loadDeadAnim();
         }
         getGameTimer().runOnceAfter(() -> {
@@ -504,10 +504,6 @@ public class Main extends GameApplication {
             @Override
             protected void onCollision(Entity player, Entity wall) {
                 player.getComponent(AnimationComponent.class).onCollision = true;
-                // System.out.println("Player:" + player.getPosition().getX() + " " +
-                // player.getPosition().getY());
-                // System.out.println("Wall:" + wall.getPosition().getX() + " " +
-                // wall.getPosition().getY());
                 String getStatus = player.getComponent(AnimationComponent.class).getStatus();
                 int wallTileY = (int) wall.getPosition().getX() / TITLE_SIZE;
                 int wallTileX = (int) wall.getPosition().getY() / TITLE_SIZE;
@@ -520,10 +516,10 @@ public class Main extends GameApplication {
                         && wallTileY - 1 >= 0 && wallTileY - 1 < WIDTH_TITLE) {
                     if (myMap[wallTileX][wallTileY - 1].equals("1")
                             || myMap[wallTileX][wallTileY - 1].equals("2")
-                            || myMap[wallTileX][wallTileY + 1].equals("A")
-                            || myMap[wallTileX][wallTileY + 1].equals("B")
-                            || myMap[wallTileX][wallTileY + 1].equals("C")
-                            || myMap[wallTileX][wallTileY + 1].equals("D")) {
+                            || myMap[wallTileX][wallTileY - 1].equals("A")
+                            || myMap[wallTileX][wallTileY - 1].equals("B")
+                            || myMap[wallTileX][wallTileY - 1].equals("C")
+                            || myMap[wallTileX][wallTileY - 1].equals("D")) {
                         hasLeftTile = true;
                     }
                 }
@@ -542,10 +538,10 @@ public class Main extends GameApplication {
                         && wallTileY >= 0 && wallTileY < WIDTH_TITLE) {
                     if (myMap[wallTileX + 1][wallTileY].equals("1")
                             || myMap[wallTileX + 1][wallTileY].equals("2")
-                            || myMap[wallTileX][wallTileY + 1].equals("A")
-                            || myMap[wallTileX][wallTileY + 1].equals("B")
-                            || myMap[wallTileX][wallTileY + 1].equals("C")
-                            || myMap[wallTileX][wallTileY + 1].equals("D")) {
+                            || myMap[wallTileX + 1][wallTileY].equals("A")
+                            || myMap[wallTileX + 1][wallTileY].equals("B")
+                            || myMap[wallTileX + 1][wallTileY].equals("C")
+                            || myMap[wallTileX + 1][wallTileY].equals("D")) {
                         hasDownTile = true;
                     }
                 }
@@ -553,10 +549,10 @@ public class Main extends GameApplication {
                         && wallTileY >= 0 && wallTileY < WIDTH_TITLE) {
                     if (myMap[wallTileX - 1][wallTileY].equals("1")
                             || myMap[wallTileX - 1][wallTileY].equals("2")
-                            || myMap[wallTileX][wallTileY + 1].equals("A")
-                            || myMap[wallTileX][wallTileY + 1].equals("B")
-                            || myMap[wallTileX][wallTileY + 1].equals("C")
-                            || myMap[wallTileX][wallTileY + 1].equals("D")) {
+                            || myMap[wallTileX - 1][wallTileY].equals("A")
+                            || myMap[wallTileX - 1][wallTileY].equals("B")
+                            || myMap[wallTileX - 1][wallTileY].equals("C")
+                            || myMap[wallTileX - 1][wallTileY].equals("D")) {
                         hasUpTile = true;
                     }
                 }

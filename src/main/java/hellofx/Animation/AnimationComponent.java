@@ -248,9 +248,8 @@ public class AnimationComponent extends Component {
                     }
                 }
             }
-        }
-        else {
-            
+        } else {
+
         }
     }
 
