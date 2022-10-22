@@ -24,6 +24,8 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 import static hellofx.SpawnSystem.Enum.*;
 import static hellofx.Constant.GameConstant.*;
 import static hellofx.Map.Mymap.g_map;
+import static hellofx.Map.Mymap.myMap;
+import static hellofx.Map.Mymap.updateMap;
 import hellofx.Main;
 import hellofx.Animation.*;
 import hellofx.Map.Mymap;
@@ -96,16 +98,17 @@ public class Boom extends Component {
             }
             tex.add(spawn("flameRight", entity.getX() + right * TITLE_SIZE, entity.getY()));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingHorizontal();
-            onCollisionBegin(FLAMERIGHT, WALL, (flame, coin) -> {
+            onCollisionBegin(FLAMERIGHT, WALL, (flame, wall) -> {
                 rightBreak++;
-                coin.setZIndex(1000);
-                coin.getComponent(BrickBreakAnimation.class).BrickBreak();
+                wall.setZIndex(1000);
+                wall.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
-                    coin.removeFromWorld();
+                    wall.removeFromWorld();
                 }, Duration.seconds(0.7));
                 if (rightBreak == size_break) {
                     right = size;
                 }
+                updateMap(wall, "brick");
             });
             getGameTimer().runOnceAfter(() -> {
                 moveRight(tex, size, size_break);
@@ -125,16 +128,17 @@ public class Boom extends Component {
             }
             tex.add(spawn("flameLeft", entity.getX() - left * TITLE_SIZE, entity.getY()));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingHorizontal();
-            onCollisionBegin(FLAMELEFT, WALL, (flame, coin) -> {
+            onCollisionBegin(FLAMELEFT, WALL, (flame, wall) -> {
                 leftBreak++;
-                coin.setZIndex(1000);
-                coin.getComponent(BrickBreakAnimation.class).BrickBreak();
+                wall.setZIndex(1000);
+                wall.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
-                    coin.removeFromWorld();
+                    wall.removeFromWorld();
                 }, Duration.seconds(0.7));
                 if (leftBreak == size_break) {
                     left = size;
                 }
+                updateMap(wall, "brick");
             });
             getGameTimer().runOnceAfter(() -> {
                 moveLeft(tex, size, size_break);
@@ -154,16 +158,17 @@ public class Boom extends Component {
             }
             tex.add(spawn("flameUp", entity.getX(), entity.getY() - up * TITLE_SIZE));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingVertical();
-            onCollisionBegin(FLAMEUP, WALL, (flame, coin) -> {
+            onCollisionBegin(FLAMEUP, WALL, (flame, wall) -> {
                 upBreak++;
-                coin.setZIndex(1000);
-                coin.getComponent(BrickBreakAnimation.class).BrickBreak();
+                wall.setZIndex(1000);
+                wall.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
-                    coin.removeFromWorld();
+                    wall.removeFromWorld();
                 }, Duration.seconds(0.7));
                 if (upBreak == size_break) {
                     up = size;
                 }
+                updateMap(wall, "brick");
             });
             getGameTimer().runOnceAfter(() -> {
                 moveUp(tex, size, size_break);
@@ -183,16 +188,17 @@ public class Boom extends Component {
             }
             tex.add(spawn("flameDown", entity.getX(), entity.getY() + down * TITLE_SIZE));
             tex.get(tex.size() - 1).getComponent(FlameAnimation.class).AnimationWingVertical();
-            onCollisionBegin(FLAMEDOWN, WALL, (flame, coin) -> {
+            onCollisionBegin(FLAMEDOWN, WALL, (flame, wall) -> {
                 downBreak++;
-                coin.setZIndex(1000);
-                coin.getComponent(BrickBreakAnimation.class).BrickBreak();
+                wall.setZIndex(1000);
+                wall.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
-                    coin.removeFromWorld();
+                    wall.removeFromWorld();
                 }, Duration.seconds(0.7));
                 if (downBreak == size_break) {
                     down = size;
                 }
+                updateMap(wall, "brick");
             });
             getGameTimer().runOnceAfter(() -> {
                 moveDown(tex, size, size_break);

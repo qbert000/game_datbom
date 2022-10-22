@@ -16,9 +16,8 @@ import static hellofx.Constant.GameConstant.ENEMY_SIZE;
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
 import static hellofx.Map.Mymap.enemy;
 import static hellofx.Map.Mymap.myMap;
-
+import static hellofx.Map.Mymap.canGoThisWay;
 public class EnemyRandom extends Enemy {
-    private AnimationChannel animation;
 
     private List<Integer> turn_ = new ArrayList<Integer>();
 
@@ -29,15 +28,11 @@ public class EnemyRandom extends Enemy {
     private boolean turn_left_;
     private boolean turn_up_;
     private boolean turn_down_;
-
     public EnemyRandom() {
         right_ = true;
         left_ = false;
         up_ = false;
         down_ = false;
-
-        animation = animation = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 3, ENEMY_SIZE, ENEMY_SIZE,
-                Duration.seconds(0.7), 6, 8);
         texture = new AnimatedTexture(animation);
     }
 
@@ -48,17 +43,33 @@ public class EnemyRandom extends Enemy {
 
     @Override
     public void onUpdate(double tpf) {
-        setMap();
-        if (right_) {
-            entity.translateX(1);
-        } else if (left_) {
-            entity.translateX(-1);
-        } else if (up_) {
-            entity.translateY(-1);
-        } else if (down_) {
-            entity.translateY(1);
+        if(!isDead) {
+            setMap();
+            if (right_) {
+                if(canLoopWalkRight) {
+                    texture.loopAnimationChannel(animation);
+                    canLoopWalkRight = false;
+                    canLoopWalkLeft = true;
+                }
+                entity.translateX(1);
+            } else if (left_) {
+                if(canLoopWalkLeft) {
+                    texture.loopAnimationChannel(animationLeft);
+                    canLoopWalkLeft = false;
+                    canLoopWalkRight = true;
+                }
+                entity.translateX(-1);
+            } else if (up_) {
+                entity.translateY(-1);
+            } else if (down_) {
+                entity.translateY(1);
+            }
+        } else {
+            if(canLoop) {
+                texture.playAnimationChannel(animDead);
+                canLoop = false;
+            }
         }
-
     }
 
     public void setMap() {
@@ -71,26 +82,21 @@ public class EnemyRandom extends Enemy {
         int index_y_ = (int) entity.getY() / TITLE_SIZE;
 
         // set ben trai
-        turn_left_ = !Objects.equals(myMap[index_y_][index_x_ - 1], "1") &&
-                !Objects.equals(myMap[index_y_][index_x_ - 1], "2");
+        turn_left_ = canGoThisWay(index_y_, index_x_ - 1);
         //set ben phai
-        turn_right_ = !Objects.equals(myMap[index_y_][index_x_ + 1], "1") &&
-                !Objects.equals(myMap[index_y_][index_x_ + 1], "2");
+        turn_right_ = canGoThisWay(index_y_, index_x_ + 1);
         //set ben tren
-        turn_up_ = !Objects.equals(myMap[index_y_ - 1][index_x_], "1") &&
-                !Objects.equals(myMap[index_y_ - 1][index_x_], "2");
+        turn_up_ = canGoThisWay(index_y_ - 1, index_x_);
         //set ben duoi
-        turn_down_ = !Objects.equals(myMap[index_y_ + 1][index_x_], "1") &&
-                !Objects.equals(myMap[index_y_ + 1][index_x_], "2");
+        turn_down_ = canGoThisWay(index_y_ + 1, index_x_);
 
-        System.out.println(index_x_ + " " +index_y_ + " " + turn_right_ + " " + turn_left_ + " " + turn_down_ + " " + turn_up_ );
+        //System.out.println(index_x_ + " " +index_y_ + " " + turn_right_ + " " + turn_left_ + " " + turn_down_ + " " + turn_up_ );
 
         setCorner();
 
         if (corner == 1) {
             turnBack();
         }
-
         setTurn();
     }
 
@@ -144,6 +150,5 @@ public class EnemyRandom extends Enemy {
         } else if (turn_down_) {
             turnDown();
         }
-
     }
 }

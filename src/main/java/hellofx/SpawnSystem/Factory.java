@@ -145,7 +145,7 @@ public class Factory implements EntityFactory {
                 // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_speed.png")
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE - 2)))
+                .bbox(new HitBox(new Point2D(10, 10), BoundingShape.box(TITLE_SIZE - 20, TITLE_SIZE - 20)))
                 .build();
     }
 
@@ -153,10 +153,10 @@ public class Factory implements EntityFactory {
     public Entity newFlameItem(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAME_ITEM)
-                // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
+                // .viewWithBBox(new Rectangle(TITLE_SIZE - 20, TITLE_SIZE - 20, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_flames.png")
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE - 2)))
+                .bbox(new HitBox(new Point2D(10, 10), BoundingShape.box(TITLE_SIZE - 20, TITLE_SIZE - 20)))
                 .build();
     }
 
@@ -167,7 +167,7 @@ public class Factory implements EntityFactory {
                 // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_bombs.png")
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE - 2)))
+                .bbox(new HitBox(new Point2D(10, 10), BoundingShape.box(TITLE_SIZE - 20, TITLE_SIZE - 20)))
                 .build();
     }
 
@@ -178,7 +178,7 @@ public class Factory implements EntityFactory {
                 // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_flamepass.png")
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE - 2, TITLE_SIZE - 2)))
+                .bbox(new HitBox(new Point2D(10, 10), BoundingShape.box(TITLE_SIZE - 20, TITLE_SIZE - 20)))
                 .build();
     }
 

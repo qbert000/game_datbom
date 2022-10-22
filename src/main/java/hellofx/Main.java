@@ -1,5 +1,6 @@
 package hellofx;
 
+import com.almasb.fxgl.animation.Animation;
 import com.almasb.fxgl.app.CursorInfo;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -7,6 +8,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.inventory.ItemConfig;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.core.math.FXGLMath;
@@ -14,6 +16,8 @@ import com.almasb.fxgl.core.math.FXGLMath;
 import hellofx.Enemy.EnemyHorizontal;
 import hellofx.Enemy.EnemyRandom;
 import hellofx.Enemy.EnemyVertical;
+import hellofx.Enemy.Enemy;
+import hellofx.Enemy.Enemy1;
 import javafx.scene.input.KeyCode;
 import javafx.geometry.Point2D;
 import java.util.Map;
@@ -23,7 +27,9 @@ import static hellofx.SpawnSystem.Enum.*;
 import static hellofx.Map.Mymap.g_map;
 import static hellofx.Map.Mymap.index;
 import static hellofx.Map.Mymap.myMap;
+import static hellofx.Map.Mymap.updateMap;
 import static hellofx.Map.Mymap.spawnComponent;
+import static hellofx.Map.Mymap.getSignOfEntity;
 import hellofx.Menu.GameMenu;
 import hellofx.Menu.MainMenu;
 import hellofx.Bomb_Flame.*;
@@ -44,7 +50,9 @@ public class Main extends GameApplication {
 
     public boolean playerisAlive = true;
 
-    public Enum[] myList = new Enum[] { FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
+    public Enum[] myFlameList = new Enum[] { FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
+    public Enum[] myItemList = new Enum[] { SPEED_ITEM, FLAME_POWER_ITEM, BOMB_ITEM, FLAME_ITEM };
+    public Enum[] enemyType = new Enum[] {ENEMYHORIZONTAL, ENEMYVERTICAL, ENEMYRANDOM};
 
     public double getPlayerX() {
         return g_player.getPosition().getX();
@@ -309,13 +317,14 @@ public class Main extends GameApplication {
         AnimationComponent.amountBoomDown();
         playerisAlive = false;
         if (g_player.hasComponent(AnimationComponent.class)) {
+            System.out.println("has animation");
             g_player.getComponent(AnimationComponent.class).loadDeadAnim();
         }
         getGameTimer().runOnceAfter(() -> {
             g_player.removeFromWorld();
-        }, Duration.seconds(0.7));
+        }, Duration.seconds(1.1));
 
-        CONST_SPEED = 1.5;
+        CONST_SPEED = CONST_SPEED_BEGIN;
         getGameTimer().runOnceAfter(() -> {
             FXGL.getGameController().gotoMainMenu();
         }, Duration.seconds(2));
@@ -332,16 +341,16 @@ public class Main extends GameApplication {
         AnimationComponent.amountBoomDown();
         playerisAlive = false;
         getGameTimer().runOnceAfter(() -> {
-            if (g_player.hasComponent(AnimationComponent.class)) {
+            // if (g_player.hasComponent(AnimationComponent.class)) {
                 g_player.getComponent(AnimationComponent.class).loadWinAnim();
-            }
-        }, Duration.seconds(0.6));
+            // }
+        }, Duration.seconds(0.05));
 
         getGameTimer().runOnceAfter(() -> {
             g_player.removeFromWorld();
-        }, Duration.seconds(2));
+        }, Duration.seconds(1.5));
 
-        CONST_SPEED = 1.5;
+        CONST_SPEED = CONST_SPEED_BEGIN;
         getGameTimer().runOnceAfter(() -> {
             FXGL.getGameController().gotoMainMenu();
         }, Duration.seconds(2));
@@ -353,84 +362,67 @@ public class Main extends GameApplication {
      */
     @Override
     protected void initPhysics() {
+        // Xu li va cham Player va cac Enemy trong game
+        for (Enum enemy : enemyType) {
+            onCollisionBegin(PLAYER, enemy, (player, myEnemy) -> {
+                replay();
+            });
+        }
 
-        onCollisionBegin(PLAYER, ENEMY1, (player, enemy) -> {
-            replay();
-        });
         // Xu li va cham Player va Flame
-
-        for (Enum flame : myList) {
+        for (Enum flame : myFlameList) {
             onCollisionBegin(PLAYER, flame, (player, myFlame) -> {
                 replay();
             });
         }
 
-        // Xu li va cham nguoi choi va Enemy
-        onCollisionBegin(PLAYER, ENEMYHORIZONTAL, (player, flame) -> {
-            replay();
-        });
-
-        onCollisionBegin(PLAYER, ENEMYVERTICAL, (player, flame) -> {
-            replay();
-        });
-
-        for (Enum myFlame : myList) {
-            onCollisionBegin(FLAME_ITEM, myFlame, (flame_item, flame) -> {
-                getGameTimer().runOnceAfter(() -> {
-                    flame_item.removeFromWorld();
-                }, Duration.seconds(0.6));
-            });
+        // Xu li enemy va bomb trong Game
+        for (Enum enemy : enemyType) {
+            for (Enum myFlame : myFlameList) {
+                onCollisionBegin(enemy, myFlame, (enemyEntity, flame) -> {
+                    if(enemyEntity.hasComponent(EnemyRandom.class)) {
+                        enemyEntity.getComponent(EnemyRandom.class).dead();
+                    }
+                    getGameTimer().runOnceAfter(() -> {
+                        enemyEntity.removeFromWorld();
+                    }, Duration.seconds(0.7));
+                });
+            }
         }
 
-        // Xu li bomb va enemy
-        for (Enum myFlame : myList) {
-            onCollisionBegin(ENEMYHORIZONTAL, myFlame, (enemy, flame) -> {
-                if (enemy.hasComponent(EnemyHorizontal.class)) {
-                    enemy.getComponent(EnemyHorizontal.class).dead();
-                }
-                getGameTimer().runOnceAfter(() -> {
-                    enemy.removeFromWorld();
-                }, Duration.seconds(0.3));
-            });
-        }
 
-        // Xu li enemy ngang va player
-        for (Enum myFlame : myList) {
-            onCollisionBegin(ENEMYVERTICAL, myFlame, (enemy, flame) -> {
-                if (enemy.hasComponent(EnemyVertical.class)) {
-                    enemy.getComponent(EnemyVertical.class).dead();
-                }
-                getGameTimer().runOnceAfter(() -> {
-                    enemy.removeFromWorld();
-                }, Duration.seconds(0.4));
-            });
-        }
+        // // Xu li enemy va Flame cua Bomb
+        // for (Enum myFlame : myFlameList) {
+        //     onCollisionBegin(ENEMYVERTICAL, myFlame, (enemy, flame) -> {
+        //         if (enemy.hasComponent(EnemyVertical.class)) {
+        //             enemy.getComponent(EnemyVertical.class).dead();
+        //         } else if (enemy.hasComponent(EnemyVertical.class)) {
+        //             enemy.getComponent(EnemyHorizontal.class).dead();
+        //         } else if (enemy.hasComponent(Enemy1.class)) {
 
-        // Xu li va cham giua Speed_item va Flame
-        for (Enum myFlame : myList) {
-            onCollisionBegin(SPEED_ITEM, myFlame, (speed_item, flame) -> {
-                getGameTimer().runOnceAfter(() -> {
-                    speed_item.removeFromWorld();
-                }, Duration.seconds(0.6));
-            });
-        }
+        //         }
+        //         getGameTimer().runOnceAfter(() -> {
+        //             enemy.removeFromWorld();
+        //         }, Duration.seconds(0.4));
+        //     });
+        // }
 
-        // Xu li va cham giua Flame_power_item va Flame
-        for (Enum myFlame : myList) {
-            onCollisionBegin(FLAME_POWER_ITEM, myFlame, (flamePowerItem, flame) -> {
-                getGameTimer().runOnceAfter(() -> {
-                    flamePowerItem.removeFromWorld();
-                }, Duration.seconds(0.6));
-            });
-        }
+        // Xu li va cham giua cac item va Flame cua Bomb
+        for (Enum myItem : myItemList) {
+            for (Enum myFlame : myFlameList) {
+                onCollisionBegin(myItem, myFlame, (item, flame) -> {
+                    // String prevSign = getSignOfEntity(item);
+                    // System.out.println("Prev: " + prevSign);
+                    String sign = getSignOfEntity(item);
+                    getGameTimer().runOnceAfter(() -> {
+                        if (sign.equals("c") || sign.equals("a") || sign.equals("d") || sign.equals("b")) {
+                            item.removeFromWorld();
+                            updateMap(item, "item");
+                        }
+                    }, Duration.seconds(0.6));
 
-        // Xu li va cham giua Bomb_item va Flame
-        for (Enum myFlame : myList) {
-            onCollisionBegin(BOMB_ITEM, myFlame, (bombItem, flame) -> {
-                getGameTimer().runOnceAfter(() -> {
-                    bombItem.removeFromWorld();
-                }, Duration.seconds(0.6));
-            });
+                });
+            }
         }
 
         // Xu li va cham giua Player va boom
@@ -459,67 +451,63 @@ public class Main extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, PORTAL) {
             @Override
             protected void onCollisionBegin(Entity player, Entity portal) {
-                nextLevel();
+                String sign = getSignOfEntity(portal);
+                getGameTimer().runOnceAfter(() -> {
+                    if (sign.equals("p")) {
+                        nextLevel();
+                    }
+                }, Duration.seconds(0.6));
             }
         });
 
-        // Xu li va cham giua Player va Flame_Item
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, FLAME_ITEM) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity flame_item) {
-                Boom.powerBoomUp();
-                getGameTimer().runOnceAfter(() -> {
-                    flame_item.removeFromWorld();
-                }, Duration.seconds(0.1));
-            }
-        });
-
-        // Xu li va cham giua Player va Speed_item
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, SPEED_ITEM) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity speed_item) {
-                player.getComponent(AnimationComponent.class).increaseSpeed();
-                getGameTimer().runOnceAfter(() -> {
-                    speed_item.removeFromWorld();
-                }, Duration.seconds(0.1));
-            }
-        });
-
-        // Xu li va cham giua Player va Bomb_item
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, BOMB_ITEM) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity bomb_item) {
-                AnimationComponent.increaseBoomAmount();
-                getGameTimer().runOnceAfter(() -> {
-                    bomb_item.removeFromWorld();
-                }, Duration.seconds(0.1));
-            }
-        });
-
-        // Xu li va cham giua Player va Speed_item
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, FLAME_POWER_ITEM) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity flame_power_item) {
-                Boom.increaseFlameSize();
-                getGameTimer().runOnceAfter(() -> {
-                    flame_power_item.removeFromWorld();
-                }, Duration.seconds(0.1));
-            }
-        });
+        // Xu li va cham Player va Item
+        for (Enum item : myItemList) {
+            getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, item) {
+                @Override
+                protected void onCollisionBegin(Entity player, Entity my_item) {
+                    String prevSolve = getSignOfEntity(my_item);
+                    if (prevSolve.equals("a") || prevSolve.equals("b") || prevSolve.equals("c")
+                            || prevSolve.equals("d")) {
+                        updateMap(my_item, "item");
+                        switch (item.name()) {
+                            case "BOMB_ITEM":
+                                AnimationComponent.increaseBoomAmount();
+                                break;
+                            case "FLAME_POWER_ITEM":
+                                Boom.increaseFlameSize();
+                                break;
+                            case "FLAME_ITEM":
+                                Boom.powerBoomUp();
+                                break;
+                            case "SPEED_ITEM":
+                                player.getComponent(AnimationComponent.class).increaseSpeed();
+                                break;
+                            default:
+                                break;
+                        }
+                        getGameTimer().runOnceAfter(() -> {
+                            my_item.removeFromWorld();
+                        }, Duration.seconds(0.1));
+                    }
+                }
+            });
+        }
 
         // Xu li va cham giua Player va Wall
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, WALL) {
             @Override
             protected void onCollisionBegin(Entity player, Entity wall) {
                 player.setPosition(new Point2D(currentXpos, currentYpos));
+                player.getComponent(AnimationComponent.class).onCollision = true;
             }
 
             @Override
             protected void onCollision(Entity player, Entity wall) {
+                player.getComponent(AnimationComponent.class).onCollision = true;
                 // System.out.println("Player:" + player.getPosition().getX() + " " +
-                //         player.getPosition().getY());
+                // player.getPosition().getY());
                 // System.out.println("Wall:" + wall.getPosition().getX() + " " +
-                //         wall.getPosition().getY());
+                // wall.getPosition().getY());
                 String getStatus = player.getComponent(AnimationComponent.class).getStatus();
                 int wallTileY = (int) wall.getPosition().getX() / TITLE_SIZE;
                 int wallTileX = (int) wall.getPosition().getY() / TITLE_SIZE;
@@ -527,57 +515,51 @@ public class Main extends GameApplication {
                 boolean hasRightTile = false;
                 boolean hasUpTile = false;
                 boolean hasDownTile = false;
-                double diff;
                 // System.out.println(wallTileX + " WALL " + wallTileY);
                 if (wallTileX >= 0 && wallTileX < HEIGHT_TITLE
                         && wallTileY - 1 >= 0 && wallTileY - 1 < WIDTH_TITLE) {
                     if (myMap[wallTileX][wallTileY - 1].equals("1")
-                            || myMap[wallTileX][wallTileY - 1].equals("2")) {
+                            || myMap[wallTileX][wallTileY - 1].equals("2")
+                            || myMap[wallTileX][wallTileY + 1].equals("A")
+                            || myMap[wallTileX][wallTileY + 1].equals("B")
+                            || myMap[wallTileX][wallTileY + 1].equals("C")
+                            || myMap[wallTileX][wallTileY + 1].equals("D")) {
                         hasLeftTile = true;
                     }
                 }
                 if (wallTileX >= 0 && wallTileX < HEIGHT_TITLE
                         && wallTileY + 1 >= 0 && wallTileY + 1 < WIDTH_TITLE) {
                     if (myMap[wallTileX][wallTileY + 1].equals("1")
-                            || myMap[wallTileX][wallTileY + 1].equals("2")) {
+                            || myMap[wallTileX][wallTileY + 1].equals("2")
+                            || myMap[wallTileX][wallTileY + 1].equals("A")
+                            || myMap[wallTileX][wallTileY + 1].equals("B")
+                            || myMap[wallTileX][wallTileY + 1].equals("C")
+                            || myMap[wallTileX][wallTileY + 1].equals("D")) {
                         hasRightTile = true;
                     }
                 }
                 if (wallTileX + 1 >= 0 && wallTileX + 1 < HEIGHT_TITLE
                         && wallTileY >= 0 && wallTileY < WIDTH_TITLE) {
                     if (myMap[wallTileX + 1][wallTileY].equals("1")
-                            || myMap[wallTileX + 1][wallTileY].equals("2")) {
+                            || myMap[wallTileX + 1][wallTileY].equals("2")
+                            || myMap[wallTileX][wallTileY + 1].equals("A")
+                            || myMap[wallTileX][wallTileY + 1].equals("B")
+                            || myMap[wallTileX][wallTileY + 1].equals("C")
+                            || myMap[wallTileX][wallTileY + 1].equals("D")) {
                         hasDownTile = true;
                     }
                 }
                 if (wallTileX - 1 >= 0 && wallTileX - 1 < HEIGHT_TITLE
                         && wallTileY >= 0 && wallTileY < WIDTH_TITLE) {
                     if (myMap[wallTileX - 1][wallTileY].equals("1")
-                            || myMap[wallTileX - 1][wallTileY].equals("2")) {
+                            || myMap[wallTileX - 1][wallTileY].equals("2")
+                            || myMap[wallTileX][wallTileY + 1].equals("A")
+                            || myMap[wallTileX][wallTileY + 1].equals("B")
+                            || myMap[wallTileX][wallTileY + 1].equals("C")
+                            || myMap[wallTileX][wallTileY + 1].equals("D")) {
                         hasUpTile = true;
                     }
                 }
-                if(hasUpTile) {
-                    System.out.print(" Has Up ");
-                } else {
-                    System.out.print(" No Up ");
-                }
-                if(hasDownTile) {
-                    System.out.print(" Has Down ");
-                } else {
-                    System.out.print(" No Down ");
-                }
-                if(hasLeftTile) {
-                    System.out.print(" Has Left ");
-                } else {
-                    System.out.print(" No Left ");
-                }
-                if(hasRightTile) {
-                    System.out.print("Has Right");
-                } else {
-                    System.out.print("No Right");
-                }
-                System.out.print("\n");
                 switch (getStatus) {
                     case "LEFT":
                         player.getComponent(AnimationComponent.class).supportMoveHorizontal(player, wall, hasUpTile,
@@ -603,9 +585,9 @@ public class Main extends GameApplication {
 
             @Override
             protected void onCollisionEnd(Entity player, Entity wall) {
-                int i = 0;
+                player.getComponent(AnimationComponent.class).onCollision = false;
             }
-            
+
         });
 
         // Xu li va cham Enemy doc va tuong

@@ -1,10 +1,13 @@
 package hellofx.Enemy;
 
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.dsl.FXGL;
+import javafx.util.Duration;
 import com.almasb.fxgl.entity.Entity;
 
-
+import static hellofx.Constant.GameConstant.ENEMY_SIZE;
 
 public abstract class Enemy extends Component {
 
@@ -14,13 +17,26 @@ public abstract class Enemy extends Component {
     public boolean left_;
     public boolean up_;
     public boolean down_;
-    
+    public boolean isDead = false;
+    public boolean canLoop = true;
+    public boolean canLoopWalkRight = true;
+    public boolean canLoopWalkLeft = true;
+
     protected double currentPosX;
     protected double currentPosY;
 
     public int speedX;
     public int speedY;
     public AnimatedTexture texture;
+    public final AnimationChannel animDead = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 5, ENEMY_SIZE,
+            ENEMY_SIZE, Duration.seconds(0.7), 0, 4);
+    // anim right
+    public final AnimationChannel animation = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 3, ENEMY_SIZE,
+            ENEMY_SIZE, Duration.seconds(0.5), 6, 8);
+    // anim left
+    public final AnimationChannel animationLeft = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 3, ENEMY_SIZE,
+            ENEMY_SIZE, Duration.seconds(0.5), 3, 5);
+
     public boolean isRight_() {
         return right_;
     }
@@ -41,6 +57,14 @@ public abstract class Enemy extends Component {
         return entity;
     }
 
+    public void dead() {
+        isDead = true;
+        up_ = false;
+        down_ = false;
+        right_ = false;
+        left_ = false;
+    }
+
     public void setCurrentPosX(double currentPosX) {
         this.currentPosX = currentPosX;
     }
@@ -49,16 +73,20 @@ public abstract class Enemy extends Component {
         this.currentPosY = currentPosY;
     }
 
-
-
     @Override
     public void onUpdate(double tpf) {
-        // Luu vi tri cu cua Enemy
-        //System.out.println((int) currentPosX / TITLE_SIZE + " " + (int) currentPosY / TITLE_SIZE + " " + currentPosX / TITLE_SIZE + " " + currentPosY / TITLE_SIZE);
-            entity.translateX(speedX * tpf);currentPosX = entity.getPosition().getX() - speedX*tpf;
-            entity.translateY(speedY * tpf);currentPosY = entity.getPosition().getY() - speedY*tpf;
-        //System.out.println(currentPosX + " " + currentPosY);
-
+        if(!isDead) {
+            // Luu vi tri cu cua Enemy
+            entity.translateX(speedX * tpf);
+            currentPosX = entity.getPosition().getX() - speedX * tpf;
+            entity.translateY(speedY * tpf);
+            currentPosY = entity.getPosition().getY() - speedY * tpf;
+        } else {
+            if(canLoop) {
+                texture.playAnimationChannel(animDead);
+                canLoop = false;
+            }
+        }
     }
 
     public void turnRight() {
@@ -69,6 +97,7 @@ public abstract class Enemy extends Component {
         up_ = false;
         down_ = false;
     }
+
     public void turnLeft() {
         speedX = -70;
         speedY = 0;
@@ -77,14 +106,16 @@ public abstract class Enemy extends Component {
         up_ = false;
         down_ = false;
     }
+
     public void turnUp() {
         speedY = -70;
-        speedX =  0;
+        speedX = 0;
         right_ = false;
         left_ = false;
         up_ = true;
         down_ = false;
     }
+
     public void turnDown() {
         speedY = 70;
         speedX = 0;
