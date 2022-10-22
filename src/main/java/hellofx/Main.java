@@ -383,6 +383,12 @@ public class Main extends GameApplication {
                     if(enemyEntity.hasComponent(EnemyRandom.class)) {
                         enemyEntity.getComponent(EnemyRandom.class).dead();
                     }
+                    if(enemyEntity.hasComponent(EnemyVertical.class)) {
+                        enemyEntity.getComponent(EnemyVertical.class).dead();
+                    }
+                    if(enemyEntity.hasComponent(EnemyHorizontal.class)) {
+                        enemyEntity.getComponent(EnemyHorizontal.class).dead();
+                    }
                     getGameTimer().runOnceAfter(() -> {
                         enemyEntity.removeFromWorld();
                     }, Duration.seconds(0.7));

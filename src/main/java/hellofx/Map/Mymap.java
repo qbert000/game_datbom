@@ -88,13 +88,11 @@ public class Mymap {
         }
 
         if (Mymap.myMap[i][j].equals("V")) {
-            spawn("enemyVertical", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2).getComponent(EnemyVertical.class)
-                    .move();
+            spawn("enemyVertical", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
         }
 
         if (Mymap.myMap[i][j].equals("H")) {
-            spawn("enemyHorizontal", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2).getComponent(EnemyHorizontal.class)
-                    .move();
+            spawn("enemyHorizontal", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
         }
 
         if (Mymap.myMap[i][j].equals("F")) {

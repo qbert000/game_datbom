@@ -9,7 +9,7 @@ import com.almasb.fxgl.entity.Entity;
 
 import static hellofx.Constant.GameConstant.ENEMY_SIZE;
 
-public abstract class Enemy extends Component {
+public class Enemy extends Component {
 
     protected double speed = 0;
 
@@ -75,13 +75,45 @@ public abstract class Enemy extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+        System.out.println(isDead);
         if(!isDead) {
             // Luu vi tri cu cua Enemy
-            entity.translateX(speedX * tpf);
+            //entity.translateX(speedX * tpf);
+            if (right_) {
+                if(canLoopWalkRight) {
+                    texture.loopAnimationChannel(animation);
+                    canLoopWalkRight = false;
+                    canLoopWalkLeft = true;
+                }
+                entity.translateX(1);
+            } else if (left_) {
+                if(canLoopWalkLeft) {
+                    texture.loopAnimationChannel(animationLeft);
+                    canLoopWalkLeft = false;
+                    canLoopWalkRight = true;
+                }
+                entity.translateX(-1);
+            }
             currentPosX = entity.getPosition().getX() - speedX * tpf;
-            entity.translateY(speedY * tpf);
+            //entity.translateY(speedY * tpf);
+            if (up_) {
+                if(canLoopWalkRight) {
+                    texture.loopAnimationChannel(animation);
+                    canLoopWalkRight = false;
+                    canLoopWalkLeft = true;
+                }
+                entity.translateY(-1);
+            } else if (down_) {
+                if(canLoopWalkLeft) {
+                    texture.loopAnimationChannel(animationLeft);
+                    canLoopWalkLeft = false;
+                    canLoopWalkRight = true;
+                }
+                entity.translateY(1);
+            }
             currentPosY = entity.getPosition().getY() - speedY * tpf;
-        } else {
+        }
+        else {
             if(canLoop) {
                 texture.playAnimationChannel(animDead);
                 canLoop = false;
@@ -125,7 +157,7 @@ public abstract class Enemy extends Component {
         down_ = true;
     }
 
-    public abstract void turnBack();
+    public void turnBack() {};
 
     public double getCurrentPosX() {
         return currentPosX;

@@ -24,7 +24,7 @@ public class EnemyHorizontal extends Enemy {
     }
 
     public void move() {
-        texture.loopAnimationChannel(animation);
+//        texture.loopAnimationChannel(animation);
         if (right_) {
             turnRight();
         } else if (left_) {
