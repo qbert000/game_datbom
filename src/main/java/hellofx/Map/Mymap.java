@@ -31,11 +31,11 @@ public class Mymap {
 
     public Mymap() throws Exception {
         /*
-         * Comment lai dong nay khi dung tren may Quyen.
+         * Comment lai dong duoi khi dung tren may Quyen.
          */
         //File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\map.txt");
         /*
-         * Comment lai dong nay khi dung tren may Dung.
+         * Comment lai dong duoi khi dung tren may Dung.
          */
         File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
         Scanner sc = new Scanner(file);
@@ -94,6 +94,10 @@ public class Mymap {
             enemy[index] = spawn("enemy1", j * TITLE_SIZE, i * TITLE_SIZE);
             enemy[index].getComponent(Enemy1.class).setUp();
             index++;
+        }
+
+        if (Mymap.myMap[i][j].equals("4")) {
+            spawn("enemyRandom", j * TITLE_SIZE, i * TITLE_SIZE);
         }
     }
 

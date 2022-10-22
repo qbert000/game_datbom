@@ -59,7 +59,7 @@ public class Enemy1 extends Enemy {
             double tileY = this.entity.getPosition().getY();
             findPlayer.resetPathFinding((int) (tileY / TITLE_SIZE), (int) (tileX / TITLE_SIZE));
             setUp();
-            System.out.println("RESET MAP !!!");
+            // System.out.println("RESET MAP !!!");
             findPlayer.resetFinding = false;
         }
     }

@@ -34,14 +34,14 @@ public class PathFinding {
         myDistance[enemyPosX][enemyPosY] = 0;
         getMinimum(enemyPosX, enemyPosY);
         // System.out.println("Player's Position is: " + playerX + " " + playerY);
-        for (int i = 0; i < 18; i++) {
-            for (int j = 0; j < 32; j++) {
-                System.out.print(myMap[i][j] + " ");
-            }
-            System.out.print("\n");
-        }
+        // for (int i = 0; i < 18; i++) {
+        //     for (int j = 0; j < 32; j++) {
+        //         System.out.print(myMap[i][j] + " ");
+        //     }
+        //     System.out.print("\n");
+        // }
         moving(playerX, playerY);
-        System.out.println("Set up:" + playerX + " " + playerY);
+        // System.out.println("Set up:" + playerX + " " + playerY);
     }
 
     public void seeMyStack() {
@@ -116,7 +116,7 @@ public class PathFinding {
     }
 
     public void moving(int x, int y) {
-        System.out.println(x + " " + y);
+        // System.out.println(x + " " + y);
         if (myDistance[x][y] == 0) {
             return;
         }
