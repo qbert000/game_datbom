@@ -1,6 +1,7 @@
 package hellofx.Map;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.List;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 import static hellofx.Constant.GameConstant.HEIGHT_TITLE;
@@ -37,7 +38,8 @@ public class Mymap {
         /*
          * Comment lai dong duoi khi dung tren may Dung.
          */
-        //File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
+        // File file = new
+        // File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
         Scanner sc = new Scanner(file);
 
         int i = 0;
@@ -56,7 +58,7 @@ public class Mymap {
         if (Mymap.myMap[i][j].equals("1")) {
             spawn("wall", j * TITLE_SIZE, i * TITLE_SIZE);
         }
-        if (Mymap.myMap[i][j].equals("5")) {
+        if (Mymap.myMap[i][j].equals("P")) {
             spawn("portal", j * TITLE_SIZE, i * TITLE_SIZE);
             spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
         }
@@ -66,45 +68,48 @@ public class Mymap {
 
         if (Mymap.myMap[i][j].equals("A")) {
             spawn("speedItem", j * TITLE_SIZE, i * TITLE_SIZE);
+            spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
         if (Mymap.myMap[i][j].equals("B")) {
             spawn("flameItem", j * TITLE_SIZE, i * TITLE_SIZE);
+            spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
         if (Mymap.myMap[i][j].equals("C")) {
             spawn("bombItem", j * TITLE_SIZE, i * TITLE_SIZE);
+            spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
         if (Mymap.myMap[i][j].equals("D")) {
             spawn("flamePowerItem", j * TITLE_SIZE, i * TITLE_SIZE);
+            spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
-        if (Mymap.myMap[i][j].equals("6")) {
+        if (Mymap.myMap[i][j].equals("V")) {
             spawn("enemyVertical", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2).getComponent(EnemyVertical.class)
                     .move();
         }
 
-        if (Mymap.myMap[i][j].equals("7")) {
+        if (Mymap.myMap[i][j].equals("H")) {
             spawn("enemyHorizontal", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2).getComponent(EnemyHorizontal.class)
                     .move();
         }
 
-        if (Mymap.myMap[i][j].equals("8")) {
+        if (Mymap.myMap[i][j].equals("F")) {
             enemy[index] = spawn("enemy1", j * TITLE_SIZE, i * TITLE_SIZE);
             enemy[index].getComponent(Enemy1.class).setUp();
             index++;
         }
 
-        if (Mymap.myMap[i][j].equals("4")) {
+        if (Mymap.myMap[i][j].equals("R")) {
             spawn("enemyRandom", j * TITLE_SIZE, i * TITLE_SIZE);
         }
     }
 
     public boolean updatePlayerPosition(int newX, int newY) {
         boolean canUpdate = (newY == playerX) && (newX == playerY);
-        // System.out.println(newX + " " + newY + " " + playerY + " " + playerX + " " + canUpdate);
-        if(!canUpdate) {
+        if (!canUpdate) {
             myMap[playerX][playerY] = "0";
             myMap[newY][newX] = "3";
         }
@@ -115,5 +120,50 @@ public class Mymap {
 
     public void getPlayerTile() {
         // System.out.println(playerX + " " + playerY);
+    }
+
+    public static void updateMap(Entity updateTile, String tileType) {
+        int tileY = (int) updateTile.getPosition().getX() / TITLE_SIZE;
+        int tileX = (int) updateTile.getPosition().getY() / TITLE_SIZE;
+        if (tileType.equals("item")) {
+            // System.out.println(myMap[tileX][tileY]);
+            myMap[tileX][tileY] = "0";
+            // System.out.println(myMap[tileX][tileY]);
+        }
+        if (tileType.equals("brick")) {
+            if (!myMap[tileX][tileY].equals("2")) {
+                System.out.println("There's Item inside");
+                myMap[tileX][tileY] = myMap[tileX][tileY].toLowerCase();
+            } else {
+                System.out.println("No item inside");
+                myMap[tileX][tileY] = "0";
+            }
+        }
+        printMap();
+    }
+
+    public static void printMap() {
+        for (int i = 0; i < HEIGHT_TITLE; i++) {
+            for (int j = 0; j < WIDTH_TITLE; j++) {
+                System.out.print(myMap[i][j] + " ");
+            }
+            System.out.print("\n");
+        }
+        System.out.print("\n");
+    }
+
+    public static String getSignOfEntity(Entity tile) {
+        int tileY = (int) tile.getPosition().getX() / TITLE_SIZE;
+        int tileX = (int) tile.getPosition().getY() / TITLE_SIZE;
+        return myMap[tileX][tileY];
+    }
+
+    public static boolean canGoThisWay(int x, int y) {
+        return !Objects.equals(myMap[x][y], "1") &&
+        !Objects.equals(myMap[x][y], "2")
+        && !Objects.equals(myMap[x][y], "A")
+        && !Objects.equals(myMap[x][y], "B")
+        && !Objects.equals(myMap[x][y], "C")
+        && !Objects.equals(myMap[x][y], "D");
     }
 }
