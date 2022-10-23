@@ -1,6 +1,5 @@
 package hellofx;
 
-import com.almasb.fxgl.animation.Animation;
 import com.almasb.fxgl.app.CursorInfo;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -8,28 +7,27 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.inventory.ItemConfig;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
-import com.almasb.fxgl.core.math.FXGLMath;
 
 import hellofx.Enemy.EnemyHorizontal;
 import hellofx.Enemy.EnemyRandom;
 import hellofx.Enemy.EnemyVertical;
-import hellofx.Enemy.Enemy;
-import hellofx.Enemy.Enemy1;
+import hellofx.SmartMap.Position;
+import hellofx.SmartMap.SmartMap;
 import javafx.scene.input.KeyCode;
 import javafx.geometry.Point2D;
 import java.util.Map;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static hellofx.SpawnSystem.Enum.*;
-import static hellofx.Map.Mymap.g_map;
-import static hellofx.Map.Mymap.index;
-import static hellofx.Map.Mymap.myMap;
-import static hellofx.Map.Mymap.updateMap;
-import static hellofx.Map.Mymap.spawnComponent;
-import static hellofx.Map.Mymap.getSignOfEntity;
+import static hellofx.Map.MyMap.g_map;
+import static hellofx.Map.MyMap.index;
+import static hellofx.Map.MyMap.myMap;
+import static hellofx.SmartMap.SmartMap.g_smartMap;
+import static hellofx.Map.MyMap.updateMap;
+import static hellofx.Map.MyMap.spawnComponent;
+import static hellofx.Map.MyMap.getSignOfEntity;
 import hellofx.Menu.GameMenu;
 import hellofx.Menu.MainMenu;
 import hellofx.Bomb_Flame.*;
@@ -53,6 +51,7 @@ public class Main extends GameApplication {
     public Enum[] myFlameList = new Enum[] { FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
     public Enum[] myItemList = new Enum[] { SPEED_ITEM, FLAME_POWER_ITEM, BOMB_ITEM, FLAME_ITEM };
     public Enum[] enemyType = new Enum[] {ENEMYHORIZONTAL, ENEMYVERTICAL, ENEMYRANDOM};
+
 
     public double getPlayerX() {
         return g_player.getPosition().getX();
@@ -275,21 +274,31 @@ public class Main extends GameApplication {
         double playerPosY = starterPosY;
         AnimationComponent.amountBoomDown();
         try {
-            g_map = new Mymap();
+            g_map = new MyMap();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         for (int i = 0; i < HEIGHT_TITLE; i++) {
             for (int j = 0; j < WIDTH_TITLE; j++) {
                 spawnComponent(i, j);
-                if (Mymap.myMap[i][j].equals("3")) {
+                if (MyMap.myMap[i][j].equals("3")) {
                     playerPosX = j * TITLE_SIZE;
                     playerPosY = i * TITLE_SIZE;
-                    Mymap.playerX = i;
-                    Mymap.playerY = j;
+                    MyMap.playerX = i;
+                    MyMap.playerY = j;
                 }
             }
         }
+        g_smartMap = new SmartMap();
+        SmartMap.set();
+        //SmartMap.print();
+        for (Position position:SmartMap.smartPosition) {
+            position.findAround();
+        }
+//        SmartMap.smartPosition.get(0).findAround();
+        SmartMap.smartPosition.get(1).print();
+//        System.out.println(SmartMap.smartPosition.get(1).street.get(1).weight);
+
         // spawn nhan vat sau cung de z-index >> / hien thi ben tren theo chieu Oz
         g_player = spawn("player", playerPosX, playerPosY);
         g_playerComponent = g_player.getComponent(AnimationComponent.class);

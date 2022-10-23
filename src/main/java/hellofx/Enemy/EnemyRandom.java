@@ -1,27 +1,21 @@
 package hellofx.Enemy;
 
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.level.tiled.Tile;
 import com.almasb.fxgl.texture.AnimatedTexture;
-import com.almasb.fxgl.texture.AnimationChannel;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
-import static hellofx.Constant.GameConstant.ENEMY_SIZE;
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
-import static hellofx.Map.Mymap.enemy;
-import static hellofx.Map.Mymap.myMap;
-import static hellofx.Map.Mymap.canGoThisWay;
+import static hellofx.Map.MyMap.canGoThisWay;
 public class EnemyRandom extends Enemy {
 
-    private List<Integer> turn_ = new ArrayList<Integer>();
+    private final List<Integer> turn_ = new ArrayList<Integer>();
 
     private int corner;
+
+    private int index_x_;
+    private int index_y_;
 
 
     private boolean turn_right_;
@@ -78,17 +72,17 @@ public class EnemyRandom extends Enemy {
             return;
         }
         corner = 0;
-        int index_x_ = (int) entity.getX() / TITLE_SIZE;
-        int index_y_ = (int) entity.getY() / TITLE_SIZE;
+        index_x_ = (int) entity.getX() / TITLE_SIZE;
+        index_y_ = (int) entity.getY() / TITLE_SIZE;
 
         // set ben trai
-        turn_left_ = canGoThisWay(index_y_, index_x_ - 1);
+        turn_left_ = canGoThisWay(index_x_ - 1, index_y_);
         //set ben phai
-        turn_right_ = canGoThisWay(index_y_, index_x_ + 1);
+        turn_right_ = canGoThisWay(index_x_ + 1, index_y_);
         //set ben tren
-        turn_up_ = canGoThisWay(index_y_ - 1, index_x_);
+        turn_up_ = canGoThisWay(index_x_, index_y_ - 1);
         //set ben duoi
-        turn_down_ = canGoThisWay(index_y_ + 1, index_x_);
+        turn_down_ = canGoThisWay(index_x_, index_y_ + 1);
 
         //System.out.println(index_x_ + " " +index_y_ + " " + turn_right_ + " " + turn_left_ + " " + turn_down_ + " " + turn_up_ );
 
@@ -113,11 +107,10 @@ public class EnemyRandom extends Enemy {
         if (turn_up_ && !down_) {turn_.add(2);}
         if (turn_down_ && !up_) {turn_.add(3);}
 
-
-        for (int i =0; i< turn_.size(); i++) {
-            System.out.print(turn_.get(i) + "  ");
-        }
-        System.out.println();
+//        for (int i =0; i< turn_.size(); i++) {
+//            System.out.print(turn_.get(i) + "  ");
+//        }
+//        System.out.println();
 
         int ranNum = ThreadLocalRandom.current().nextInt(0,turn_.size());
         switch (turn_.get(ranNum)) {

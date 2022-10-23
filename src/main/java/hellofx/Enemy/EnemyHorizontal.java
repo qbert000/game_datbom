@@ -23,17 +23,7 @@ public class EnemyHorizontal extends Enemy {
         entity.getViewComponent().addChild(texture);
     }
 
-    public void move() {
-//        texture.loopAnimationChannel(animation);
-        if (right_) {
-            turnRight();
-        } else if (left_) {
-            turnLeft();
-        }
-        getGameTimer().runOnceAfter(() -> {
-            move();
-        }, Duration.seconds(0.2));
-    }
+
 
     @Override
     public void turnBack() {

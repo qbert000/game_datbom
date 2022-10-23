@@ -23,26 +23,6 @@ public class EnemyVertical extends Enemy {
         entity.getViewComponent().addChild(texture);
     }
 
-    public void move() {
-        //if(!isDead) {
-            if (up_) {
-                turnUp();
-            } else if (down_) {
-                turnDown();
-            }
-//            getGameTimer().runOnceAfter(() -> {
-//                move();
-//            }, Duration.seconds(0.2));
-        //}
-//        texture.loopAnimationChannel(animation);
-        //else {
-//            if(canLoop) {
-//                texture.playAnimationChannel(animDead);
-//                canLoop = false;
-//            }
-        //}
-    }
-
     @Override
     public void turnBack() {
         if (up_) {

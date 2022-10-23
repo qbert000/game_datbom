@@ -75,7 +75,6 @@ public class Enemy extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        System.out.println(isDead);
         if(!isDead) {
             // Luu vi tri cu cua Enemy
             //entity.translateX(speedX * tpf);

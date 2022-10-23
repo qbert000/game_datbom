@@ -10,15 +10,14 @@ import hellofx.Enemy.Enemy1;
 // import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import static hellofx.Constant.GameConstant.*;
-import static hellofx.Map.Mymap.g_map;
-import static hellofx.Map.Mymap.enemy;
+import static hellofx.Map.MyMap.g_map;
+import static hellofx.Map.MyMap.enemy;
 import static hellofx.Constant.GameConstant.ENEMY_NUMBER;
 import java.util.Vector;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 import hellofx.Bomb_Flame.*;
-import hellofx.Enemy.PathFinding;
 
 public class AnimationComponent extends Component {
     public double speed = 0;

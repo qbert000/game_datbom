@@ -1,15 +1,14 @@
 package hellofx.Enemy;
 
-import static hellofx.Map.Mymap.g_map;
-// import static hellofx.Map.Mymap.myMap;
+// import static hellofx.Map.MyMap.myMap;
 import java.util.*;
 
-import hellofx.Map.Mymap;
+import hellofx.Map.MyMap;
 
 public class PathFinding {
     public Stack<String> st = new Stack<>();
 
-    public String[][] myEnemyMap = Mymap.myMap;
+    public String[][] myEnemyMap = MyMap.myMap;
 
     public int[][] myDistance = new int[18][32];
 
@@ -55,7 +54,7 @@ public class PathFinding {
     }
 
     public void resetPathFinding(int newX, int newY) {
-        myEnemyMap = Mymap.myMap;
+        myEnemyMap = MyMap.myMap;
         for (int i = 0; i < 18; i++) {
             for (int j = 0; j < 32; j++) {
                 myDistance[i][j] = 10000000;
@@ -160,6 +159,6 @@ public class PathFinding {
     }
 
     public void resetMap() {
-        myEnemyMap = Mymap.myMap;
+        myEnemyMap = MyMap.myMap;
     }
 }

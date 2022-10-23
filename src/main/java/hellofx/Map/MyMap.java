@@ -1,29 +1,25 @@
 package hellofx.Map;
 
-import java.util.ArrayList;
 import java.util.Objects;
-import java.util.List;
+
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 import static hellofx.Constant.GameConstant.HEIGHT_TITLE;
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
 import static hellofx.Constant.GameConstant.WIDTH_TITLE;
 import static hellofx.Constant.GameConstant.ENEMY_NUMBER;
-import static hellofx.Map.Mymap.enemy;
 // import static hellofx.Constant.GameConstant.ENEMY_NUMBER;
 
 import java.io.File;
 import java.util.Scanner;
 
-import hellofx.Enemy.Enemy;
+import com.almasb.fxgl.dsl.FXGL;
 import hellofx.Enemy.Enemy1;
-import hellofx.Enemy.EnemyHorizontal;
-import hellofx.Enemy.EnemyVertical;
 import com.almasb.fxgl.entity.*;
 
-public class Mymap {
-    public static String myMap[][] = new String[HEIGHT_TITLE][WIDTH_TITLE];
+public class MyMap {
+    public static String[][] myMap = new String[HEIGHT_TITLE][WIDTH_TITLE];
 
-    public static Mymap g_map = null;
+    public static MyMap g_map = null;
 
     public static Entity[] enemy = new Entity[ENEMY_NUMBER];
 
@@ -32,7 +28,7 @@ public class Mymap {
     public static int playerX;
     public static int playerY;
 
-    public Mymap() throws Exception {
+    public MyMap() throws Exception {
         /*
          * Comment lai dong duoi khi dung tren may Quyen.
          */
@@ -54,55 +50,55 @@ public class Mymap {
     }
 
     public static void spawnComponent(int i, int j) {
-        spawn("grass", j * TITLE_SIZE, i * TITLE_SIZE);
+        FXGL.spawn("grass", j * TITLE_SIZE, i * TITLE_SIZE);
 
-        if (Mymap.myMap[i][j].equals("1")) {
-            spawn("wall", j * TITLE_SIZE, i * TITLE_SIZE);
+        if (MyMap.myMap[i][j].equals("1")) {
+            FXGL.spawn("wall", j * TITLE_SIZE, i * TITLE_SIZE);
         }
-        if (Mymap.myMap[i][j].equals("P")) {
-            spawn("portal", j * TITLE_SIZE, i * TITLE_SIZE);
-            spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
+        if (MyMap.myMap[i][j].equals("P")) {
+            FXGL.spawn("portal", j * TITLE_SIZE, i * TITLE_SIZE);
+            FXGL.spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
         }
-        if (Mymap.myMap[i][j].equals("2")) {
-            spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
-        }
-
-        if (Mymap.myMap[i][j].equals("A")) {
-            spawn("speedItem", j * TITLE_SIZE, i * TITLE_SIZE);
-            spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
+        if (MyMap.myMap[i][j].equals("2")) {
+            FXGL.spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
-        if (Mymap.myMap[i][j].equals("B")) {
-            spawn("flameItem", j * TITLE_SIZE, i * TITLE_SIZE);
-            spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
+        if (MyMap.myMap[i][j].equals("A")) {
+            FXGL.spawn("speedItem", j * TITLE_SIZE, i * TITLE_SIZE);
+            FXGL.spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
-        if (Mymap.myMap[i][j].equals("C")) {
-            spawn("bombItem", j * TITLE_SIZE, i * TITLE_SIZE);
-            spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
+        if (MyMap.myMap[i][j].equals("B")) {
+            FXGL.spawn("flameItem", j * TITLE_SIZE, i * TITLE_SIZE);
+            FXGL.spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
-        if (Mymap.myMap[i][j].equals("D")) {
-            spawn("flamePowerItem", j * TITLE_SIZE, i * TITLE_SIZE);
-            spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
+        if (MyMap.myMap[i][j].equals("C")) {
+            FXGL.spawn("bombItem", j * TITLE_SIZE, i * TITLE_SIZE);
+            FXGL.spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
-        if (Mymap.myMap[i][j].equals("V")) {
-            spawn("enemyVertical", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
+        if (MyMap.myMap[i][j].equals("D")) {
+            FXGL.spawn("flamePowerItem", j * TITLE_SIZE, i * TITLE_SIZE);
+            FXGL.spawn("brick", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
-        if (Mymap.myMap[i][j].equals("H")) {
-            spawn("enemyHorizontal", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
+        if (MyMap.myMap[i][j].equals("V")) {
+            FXGL.spawn("enemyVertical", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
         }
 
-        if (Mymap.myMap[i][j].equals("F")) {
-            enemy[index] = spawn("enemy1", j * TITLE_SIZE, i * TITLE_SIZE);
+        if (MyMap.myMap[i][j].equals("H")) {
+            FXGL.spawn("enemyHorizontal", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
+        }
+
+        if (MyMap.myMap[i][j].equals("F")) {
+            enemy[index] = FXGL.spawn("enemy1", j * TITLE_SIZE, i * TITLE_SIZE);
             enemy[index].getComponent(Enemy1.class).setUp();
             index++;
         }
 
-        if (Mymap.myMap[i][j].equals("R")) {
-            spawn("enemyRandom", j * TITLE_SIZE, i * TITLE_SIZE);
+        if (MyMap.myMap[i][j].equals("R")) {
+            FXGL.spawn("enemyRandom", j * TITLE_SIZE, i * TITLE_SIZE);
         }
     }
 
@@ -164,11 +160,15 @@ public class Mymap {
     }
 
     public static boolean canGoThisWay(int x, int y) {
-        return !Objects.equals(myMap[x][y], "1") &&
-        !Objects.equals(myMap[x][y], "2")
-        && !Objects.equals(myMap[x][y], "A")
-        && !Objects.equals(myMap[x][y], "B")
-        && !Objects.equals(myMap[x][y], "C")
-        && !Objects.equals(myMap[x][y], "D");
+        return !Objects.equals(myMap[y][x], "1") &&
+        !Objects.equals(myMap[y][x], "2")
+        && !Objects.equals(myMap[y][x], "A")
+        && !Objects.equals(myMap[y][x], "B")
+        && !Objects.equals(myMap[y][x], "C")
+        && !Objects.equals(myMap[y][x], "D");
+    }
+
+    public static boolean canGoThisWay(int x, int y, String k) {
+        return !Objects.equals(myMap[y][x], k);
     }
 }
