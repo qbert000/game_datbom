@@ -14,7 +14,9 @@ import java.util.Scanner;
 
 import com.almasb.fxgl.dsl.FXGL;
 import hellofx.Enemy.Enemy1;
+import javafx.util.Duration;
 import com.almasb.fxgl.entity.*;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 
 public class MyMap {
     public static String[][] myMap = new String[HEIGHT_TITLE][WIDTH_TITLE];
@@ -32,11 +34,12 @@ public class MyMap {
         /*
          * Comment lai dong duoi khi dung tren may Quyen.
          */
-        //File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\map.txt");
+        File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\map.txt");
         /*
          * Comment lai dong duoi khi dung tren may Dung.
          */
-        File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
+        // File file = new
+        // File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
         Scanner sc = new Scanner(file);
 
         int i = 0;
@@ -107,7 +110,7 @@ public class MyMap {
         if (!canUpdate) {
             myMap[playerX][playerY] = "0";
             myMap[newY][newX] = "3";
-        } 
+        }
         playerX = newY;
         playerY = newX;
         return canUpdate;
@@ -117,6 +120,17 @@ public class MyMap {
         // System.out.println(playerX + " " + playerY);
     }
 
+    public static void updateEnemy() {
+        for (int i = 0; i < ENEMY_NUMBER; i++) {
+            if (enemy[i].hasComponent(Enemy1.class)) {
+                if (!enemy[i].getComponent(Enemy1.class).isDead) {
+                    enemy[i].getComponent(Enemy1.class).findPlayer.resetFinding = true;
+                    enemy[i].getComponent(Enemy1.class).findPlayer.resetMap();
+                }
+            }
+        }
+    }
+
     public static void updateMap(Entity updateTile, String tileType) {
         int tileY = (int) updateTile.getPosition().getX() / TITLE_SIZE;
         int tileX = (int) updateTile.getPosition().getY() / TITLE_SIZE;
@@ -124,6 +138,7 @@ public class MyMap {
             // System.out.println(myMap[tileX][tileY]);
             myMap[tileX][tileY] = "0";
             // System.out.println(myMap[tileX][tileY]);
+            updateEnemy();
         }
         if (tileType.equals("brick")) {
             if (!myMap[tileX][tileY].equals("2")) {
@@ -133,12 +148,23 @@ public class MyMap {
                 // System.out.println("No item inside");
                 myMap[tileX][tileY] = "0";
             }
+            updateEnemy();
         }
-        for (int i = 0; i < ENEMY_NUMBER; i++) {
-            enemy[i].getComponent(Enemy1.class).findPlayer.resetFinding = true;
-            enemy[i].getComponent(Enemy1.class).findPlayer.resetMap();
+        if (tileType.equals("bomb")) {
+            // System.out.println("HAS BOMBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+            // System.out.println("Prev");
+            String prev1 = myMap[tileX][tileY];
+            // printMap();
+            getGameTimer().runOnceAfter(() -> {
+                myMap[tileX][tileY] = "1";
+                updateEnemy();
+            }, Duration.seconds(0.4));
+            getGameTimer().runOnceAfter(() -> {
+                myMap[tileX][tileY] = prev1;
+                // System.out.println("After");
+                // printMap();
+            }, Duration.seconds(0.2));
         }
-
         // printMap();
 
     }
@@ -161,11 +187,11 @@ public class MyMap {
 
     public static boolean canGoThisWay(int x, int y) {
         return !Objects.equals(myMap[y][x], "1") &&
-        !Objects.equals(myMap[y][x], "2")
-        && !Objects.equals(myMap[y][x], "A")
-        && !Objects.equals(myMap[y][x], "B")
-        && !Objects.equals(myMap[y][x], "C")
-        && !Objects.equals(myMap[y][x], "D");
+                !Objects.equals(myMap[y][x], "2")
+                && !Objects.equals(myMap[y][x], "A")
+                && !Objects.equals(myMap[y][x], "B")
+                && !Objects.equals(myMap[y][x], "C")
+                && !Objects.equals(myMap[y][x], "D");
     }
 
     public static boolean canGoThisWay(int x, int y, String k) {

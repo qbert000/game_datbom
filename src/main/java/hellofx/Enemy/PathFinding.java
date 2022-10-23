@@ -4,6 +4,8 @@ package hellofx.Enemy;
 import java.util.*;
 
 import hellofx.Map.MyMap;
+import javafx.util.Duration;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 
 public class PathFinding {
     public Stack<String> st = new Stack<>();
@@ -33,16 +35,29 @@ public class PathFinding {
     public void setUpPath() {
         myDistance[enemyPosX][enemyPosY] = 0;
         getMinimum(enemyPosX, enemyPosY);
-        System.out.println("Player's Position is: " + playerX + " " + playerY);
+        // System.out.println("Player's Position is: " + playerX + " " + playerY);
         // for (int i = 0; i < 18; i++) {
         //     for (int j = 0; j < 32; j++) {
         //         System.out.print(myEnemyMap[i][j] + " ");
         //     }
         //     System.out.print("\n");
         // }
-        moving(playerX, playerY);
-        // seeMyStack();
-        // System.out.println("Set up:" + playerX + " " + playerY);
+        if(playerX >= 1 && playerX <= 16 && playerY >=1 && playerY <= 30) {
+            moving(playerX, playerY);
+        } else {
+            System.out.println("HUHUHUH BUGGG KHONG FIX NUA");
+            // getGameTimer().runOnceAfter(() -> {
+            //     myEnemyMap = MyMap.myMap;
+            //     for (int i = 0; i < 18; i++) {
+            //         for (int j = 0; j < 32; j++) {
+            //             myDistance[i][j] = 10000000;
+            //         }
+            //     }
+            //     myDistance[enemyPosX][enemyPosY] = 0;
+            //     getMinimum(enemyPosX, enemyPosY);
+            //     moving(playerX, playerY);
+            // }, Duration.seconds(0.3));
+        }
     }
 
     public void seeMyStack() {

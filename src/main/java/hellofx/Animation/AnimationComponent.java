@@ -16,6 +16,7 @@ import static hellofx.Constant.GameConstant.ENEMY_NUMBER;
 import java.util.Vector;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
+import static hellofx.Map.MyMap.updateMap;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 import hellofx.Bomb_Flame.*;
 
@@ -238,12 +239,16 @@ public class AnimationComponent extends Component {
             }
             double tempX = Math.round(getXPos() / 40);
             double tempY = Math.round(getYPos() / 40);
-            if (Math.abs(tempX - getXPos() / 40) < 0.4 && Math.abs(tempY - getYPos() / 40) < 0.4) {
+            if (Math.abs(tempX - getXPos() / 40) < 0.7 && Math.abs(tempY - getYPos() / 40) < 0.7) {
                 if (!g_map.updatePlayerPosition((int) tempX, (int) tempY)) {
                     // g_map.getPlayerTile();
                     // PathFinding.resetFinding = true;
                     for (int i = 0; i < ENEMY_NUMBER; i++) {
-                        enemy[i].getComponent(Enemy1.class).findPlayer.resetFinding = true;
+                        if (enemy[i].hasComponent(Enemy1.class)) {
+                            if (!enemy[i].getComponent(Enemy1.class).isDead) {
+                                enemy[i].getComponent(Enemy1.class).findPlayer.resetFinding = true;
+                            }
+                        }
                     }
                 }
             }
@@ -270,6 +275,7 @@ public class AnimationComponent extends Component {
         k = false;
         Entity g_boom = spawn("boom", ((int) ((entity.getX() + 15) / TITLE_SIZE)) * TITLE_SIZE,
                 ((int) ((entity.getY() + 15) / TITLE_SIZE)) * TITLE_SIZE);
+        updateMap(g_boom, "bomb");
         g_boom.getComponent(FlameAnimation.class).AnimationCenter();
         getGameTimer().runOnceAfter(() -> {
             Vector<Entity> tex = new Vector<>();
@@ -307,7 +313,6 @@ public class AnimationComponent extends Component {
         } else {
             if (!hasUpTile) {
                 double translate = -(41.5 + diff);
-                ;
                 player.getComponent(AnimationComponent.class).spDistance = translate;
             }
         }

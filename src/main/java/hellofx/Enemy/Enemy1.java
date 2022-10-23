@@ -10,9 +10,11 @@ import static hellofx.Constant.GameConstant.TITLE_SIZE;
 // import static hellofx.Main.g_map;
 
 public class Enemy1 extends Enemy {
-    protected final AnimationChannel animation;
+    protected final AnimationChannel animationLeft;
 
-    private final AnimationChannel animDead;
+    private final AnimationChannel animEnemy1Dead;
+
+    private final AnimationChannel animationRight;
 
     public PathFinding findPlayer;
 
@@ -20,15 +22,14 @@ public class Enemy1 extends Enemy {
     public int firstY;
 
     public Enemy1() {
-        right_ = false;
-        left_ = false;
-        up_ = false;
-        down_ = false;
-        animation = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 3, TITLE_SIZE, TITLE_SIZE,
+        // di chuyen ben trai
+        animationLeft = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 3, TITLE_SIZE, TITLE_SIZE,
+                Duration.seconds(0.5), 3, 5);
+        animationRight = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 3, TITLE_SIZE, TITLE_SIZE,
                 Duration.seconds(0.5), 6, 8);
-        animDead = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 5, TITLE_SIZE, TITLE_SIZE,
-                Duration.seconds(0.3), 0, 4);
-        texture = new AnimatedTexture(animation);
+        animEnemy1Dead = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 5, TITLE_SIZE, TITLE_SIZE,
+                Duration.seconds(0.7), 0, 4);
+        texture = new AnimatedTexture(animationLeft);
     }
 
     @Override
@@ -43,13 +44,7 @@ public class Enemy1 extends Enemy {
         firstY = (int) tileY;
         findPlayer = new PathFinding((int) (tileY / TITLE_SIZE), (int) (tileX / TITLE_SIZE));
         findPlayer.setUpPath();
-        texture.loopAnimationChannel(animation);
-    }
-
-    public void dead() {
-        right_ = false;
-        left_ = false;
-        texture.loopAnimationChannel(animDead);
+        texture.loopAnimationChannel(animationLeft);
     }
 
     public void findAgain() {
@@ -66,48 +61,55 @@ public class Enemy1 extends Enemy {
 
     @Override
     public void onUpdate(double tpf) {
-        // System.out.println(findPlayer.resetFinding);
-        String direction = "";
-        if (!findPlayer.st.empty()) {
-            direction = findPlayer.st.peek();
-        }
-        if (direction.equals("LEFT")) {
-            if ((int) getXPos() == firstX - TITLE_SIZE) {
-                findPlayer.st.pop();
-                firstX -= TITLE_SIZE;
-                findAgain();
-            } else {
-                turnLeft();
+        if (!isDead) {
+            // findPlayer.seeMyStack();
+            // System.out.println(findPlayer.resetFinding);
+            String direction = "";
+            if (!findPlayer.st.empty()) {
+                direction = findPlayer.st.peek();
+            }
+            if (direction.equals("LEFT")) {
+                if ((int) getXPos() == firstX - TITLE_SIZE) {
+                    findPlayer.st.pop();
+                    firstX -= TITLE_SIZE;
+                    findAgain();
+                } else {
+                    turnLeft();
+                }
+            }
+            if (direction.equals("RIGHT")) {
+                if ((int) getXPos() == firstX + TITLE_SIZE) {
+                    findPlayer.st.pop();
+                    firstX += TITLE_SIZE;
+                    findAgain();
+                } else {
+                    turnRight();
+                }
+            }
+            if (direction.equals("UP")) {
+                if ((int) getYPos() == firstY - TITLE_SIZE) {
+                    findPlayer.st.pop();
+                    firstY -= TITLE_SIZE;
+                    findAgain();
+                } else {
+                    turnUp();
+                }
+            }
+            if (direction.equals("DOWN")) {
+                if ((int) getYPos() == firstY + TITLE_SIZE) {
+                    findPlayer.st.pop();
+                    firstY += TITLE_SIZE;
+                    findAgain();
+                } else {
+                    turnDown();
+                }
+            }
+        } else {
+            if (canLoop) {
+                texture.playAnimationChannel(animEnemy1Dead);
+                canLoop = false;
             }
         }
-        if (direction.equals("RIGHT")) {
-            if ((int) getXPos() == firstX + TITLE_SIZE) {
-                findPlayer.st.pop();
-                firstX += TITLE_SIZE;
-                findAgain();
-            } else {
-                turnRight();
-            }
-        }
-        if (direction.equals("UP")) {
-            if ((int) getYPos() == firstY - TITLE_SIZE) {
-                findPlayer.st.pop();
-                firstY -= TITLE_SIZE;
-                findAgain();
-            } else {
-                turnUp();
-            }
-        }
-        if (direction.equals("DOWN")) {
-            if ((int) getYPos() == firstY + TITLE_SIZE) {
-                findPlayer.st.pop();
-                firstY += TITLE_SIZE;
-                findAgain();
-            } else {
-                turnDown();
-            }
-        }
-        // System.out.println(getXPos() + " " + getYPos());
     }
 
     @Override
@@ -124,19 +126,19 @@ public class Enemy1 extends Enemy {
     }
 
     public void turnLeft() {
-        entity.translateX(-1);
+        entity.translateX(-2);
     }
 
     public void turnRight() {
-        entity.translateX(1);
+        entity.translateX(2);
     }
 
     public void turnUp() {
-        entity.translateY(-1);
+        entity.translateY(-2);
     }
 
     public void turnDown() {
-        entity.translateY(1);
+        entity.translateY(2);
     }
 
 }

@@ -13,6 +13,7 @@ import com.almasb.fxgl.app.scene.SceneFactory;
 import hellofx.Enemy.EnemyHorizontal;
 import hellofx.Enemy.EnemyRandom;
 import hellofx.Enemy.EnemyVertical;
+import hellofx.Enemy.Enemy1;
 import hellofx.SmartMap.Position;
 import hellofx.SmartMap.SmartMap;
 import javafx.scene.input.KeyCode;
@@ -50,7 +51,7 @@ public class Main extends GameApplication {
 
     public Enum[] myFlameList = new Enum[] { FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
     public Enum[] myItemList = new Enum[] { SPEED_ITEM, FLAME_POWER_ITEM, BOMB_ITEM, FLAME_ITEM };
-    public Enum[] enemyType = new Enum[] {ENEMYHORIZONTAL, ENEMYVERTICAL, ENEMYRANDOM};
+    public Enum[] enemyType = new Enum[] {ENEMYHORIZONTAL, ENEMYVERTICAL, ENEMYRANDOM, ENEMY1};
 
 
     public double getPlayerX() {
@@ -397,6 +398,9 @@ public class Main extends GameApplication {
                     }
                     if(enemyEntity.hasComponent(EnemyHorizontal.class)) {
                         enemyEntity.getComponent(EnemyHorizontal.class).dead();
+                    }
+                    if(enemyEntity.hasComponent(Enemy1.class)) {
+                        enemyEntity.getComponent(Enemy1.class).dead();
                     }
                     getGameTimer().runOnceAfter(() -> {
                         enemyEntity.removeFromWorld();
