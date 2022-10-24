@@ -241,6 +241,7 @@ public class AnimationComponent extends Component {
             double tempY = Math.round(getYPos() / 40);
             if (Math.abs(tempX - getXPos() / 40) < 0.7 && Math.abs(tempY - getYPos() / 40) < 0.7) {
                 if (!g_map.updatePlayerPosition((int) tempX, (int) tempY)) {
+                    System.out.println("Update player position");
                     // g_map.getPlayerTile();
                     // PathFinding.resetFinding = true;
                     for (int i = 0; i < ENEMY_NUMBER; i++) {

@@ -63,7 +63,7 @@ public class Enemy1 extends Enemy {
     public void onUpdate(double tpf) {
         if (!isDead) {
             // findPlayer.seeMyStack();
-            // System.out.println(findPlayer.resetFinding);
+            // System.out.println(findPlayer.resetFinding)
             String direction = "";
             if (!findPlayer.st.empty()) {
                 direction = findPlayer.st.peek();
@@ -77,7 +77,7 @@ public class Enemy1 extends Enemy {
                     turnLeft();
                 }
             }
-            if (direction.equals("RIGHT")) {
+            else if (direction.equals("RIGHT")) {
                 if ((int) getXPos() == firstX + TITLE_SIZE) {
                     findPlayer.st.pop();
                     firstX += TITLE_SIZE;
@@ -86,7 +86,7 @@ public class Enemy1 extends Enemy {
                     turnRight();
                 }
             }
-            if (direction.equals("UP")) {
+            else if (direction.equals("UP")) {
                 if ((int) getYPos() == firstY - TITLE_SIZE) {
                     findPlayer.st.pop();
                     firstY -= TITLE_SIZE;
@@ -95,7 +95,7 @@ public class Enemy1 extends Enemy {
                     turnUp();
                 }
             }
-            if (direction.equals("DOWN")) {
+            else if (direction.equals("DOWN")) {
                 if ((int) getYPos() == firstY + TITLE_SIZE) {
                     findPlayer.st.pop();
                     firstY += TITLE_SIZE;
@@ -103,7 +103,10 @@ public class Enemy1 extends Enemy {
                 } else {
                     turnDown();
                 }
+            } else {
+                findAgain();
             }
+
         } else {
             if (canLoop) {
                 texture.playAnimationChannel(animEnemy1Dead);

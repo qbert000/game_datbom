@@ -34,12 +34,11 @@ public class MyMap {
         /*
          * Comment lai dong duoi khi dung tren may Quyen.
          */
-        File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\map.txt");
+//        File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\map.txt");
         /*
          * Comment lai dong duoi khi dung tren may Dung.
          */
-        // File file = new
-        // File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
+        File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
         Scanner sc = new Scanner(file);
 
         int i = 0;
@@ -153,7 +152,6 @@ public class MyMap {
         if (tileType.equals("bomb")) {
             // System.out.println("HAS BOMBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
             // System.out.println("Prev");
-            System.out.println(prev1);
             // printMap();
             getGameTimer().runOnceAfter(() -> {
                 myMap[tileX][tileY] = "1";
@@ -162,7 +160,7 @@ public class MyMap {
             getGameTimer().runOnceAfter(() -> {
                 myMap[tileX][tileY] = "0";
                 System.out.println("After");
-                printMap();
+//                printMap();
             }, Duration.seconds(0.2));
         }
         // printMap();

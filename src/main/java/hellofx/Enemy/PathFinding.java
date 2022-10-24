@@ -34,6 +34,7 @@ public class PathFinding {
     }
 
     public void setUpPath() {
+//        System.out.println("I'm setting up Path !!!!" + );
         myDistance[enemyPosX][enemyPosY] = 0;
         getMinimum(enemyPosX, enemyPosY);
         // System.out.println("Player's Position is: " + playerX + " " + playerY);
@@ -58,6 +59,7 @@ public class PathFinding {
                 getMinimum(enemyPosX, enemyPosY);
                 playerX = MyMap.playerX;
                 playerY = MyMap.playerY;
+                System.out.println(playerX + " " + playerY);
                 moving(playerX, playerY);
             }, Duration.seconds(0.3));
         }
