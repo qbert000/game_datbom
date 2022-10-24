@@ -153,16 +153,16 @@ public class MyMap {
         if (tileType.equals("bomb")) {
             // System.out.println("HAS BOMBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
             // System.out.println("Prev");
-            String prev1 = myMap[tileX][tileY];
+            System.out.println(prev1);
             // printMap();
             getGameTimer().runOnceAfter(() -> {
                 myMap[tileX][tileY] = "1";
                 updateEnemy();
             }, Duration.seconds(0.4));
             getGameTimer().runOnceAfter(() -> {
-                myMap[tileX][tileY] = prev1;
-                // System.out.println("After");
-                // printMap();
+                myMap[tileX][tileY] = "0";
+                System.out.println("After");
+                printMap();
             }, Duration.seconds(0.2));
         }
         // printMap();

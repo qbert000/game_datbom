@@ -290,14 +290,14 @@ public class Main extends GameApplication {
                 }
             }
         }
-        g_smartMap = new SmartMap();
-        SmartMap.set();
-        //SmartMap.print();
-        for (Position position:SmartMap.smartPosition) {
-            position.findAround();
-        }
+        // g_smartMap = new SmartMap();
+        // SmartMap.set();
+        // //SmartMap.print();
+        // for (Position position:SmartMap.smartPosition) {
+        //     position.findAround();
+        // }
 //        SmartMap.smartPosition.get(0).findAround();
-        SmartMap.smartPosition.get(1).print();
+       // SmartMap.smartPosition.get(1).print();
 //        System.out.println(SmartMap.smartPosition.get(1).street.get(1).weight);
 
         // spawn nhan vat sau cung de z-index >> / hien thi ben tren theo chieu Oz
