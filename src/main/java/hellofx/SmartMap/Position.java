@@ -161,7 +161,14 @@ public class Position {
     public void print() {
         for (int i = 0; i < direction.size(); i++) {
             if (street.get(i).weight != 0) {
-                System.out.println(street.get(i).position1.index_x + " " + street.get(i).position1.index_y + " " + street.get(i).weight);
+                if (street.get(i).position1.equals(this)) {
+                    System.out.println(street.get(i).position2.index_x + " " + street.get(i).position2.index_y + " " + street.get(i).weight);
+                } else {
+                    System.out.println(street.get(i).position1.index_x + " " + street.get(i).position1.index_y + " " + street.get(i).weight);
+                }
+
+
+//                System.out.println(street.get(i).position1.index_x + " " + street.get(i).position1.index_y + " " + street.get(i).weight);
             }
         }
     }

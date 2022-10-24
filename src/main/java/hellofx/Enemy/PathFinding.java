@@ -47,7 +47,7 @@ public class PathFinding {
         if(playerX >= 1 && playerX <= 16 && playerY >=1 && playerY <= 30) {
             moving(playerX, playerY);
         } else {
-            System.out.println("HUHUHUH BUGGG KHONG FIX NUA " + enemyPosX + " " + enemyPosY);
+//            System.out.println("HUHUHUH BUGGG KHONG FIX NUA " + enemyPosX + " " + enemyPosY);
             getGameTimer().runOnceAfter(() -> {
                 myEnemyMap = MyMap.myMap;
                 for (int i = 0; i < 18; i++) {
@@ -59,7 +59,7 @@ public class PathFinding {
                 getMinimum(enemyPosX, enemyPosY);
                 playerX = MyMap.playerX;
                 playerY = MyMap.playerY;
-                System.out.println(playerX + " " + playerY);
+//                System.out.println(playerX + " " + playerY);
                 moving(playerX, playerY);
             }, Duration.seconds(0.3));
         }
@@ -67,10 +67,10 @@ public class PathFinding {
 
     public void seeMyStack() {
         Stack<String> temp = st;
-        while (!temp.empty()) {
-            System.out.print(temp.pop() + " ");
-        }
-        System.out.print("\n");
+//        while (!temp.empty()) {
+//            System.out.print(temp.pop() + " ");
+//        }
+//        System.out.print("\n");
     }
 
     public void resetPathFinding(int newX, int newY) {
