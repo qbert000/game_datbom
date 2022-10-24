@@ -14,16 +14,16 @@ public class EnemyRandom extends Enemy {
 
     private int corner;
 
-    private int index_x_;
-    private int index_y_;
+    public int index_x_;
+    public int index_y_;
 
 
-    private boolean turn_right_;
-    private boolean turn_left_;
-    private boolean turn_up_;
-    private boolean turn_down_;
+    public boolean turn_right_;
+    public boolean turn_left_;
+    public boolean turn_up_;
+    public boolean turn_down_;
     public EnemyRandom() {
-        right_ = true;
+        right_ = false;
         left_ = false;
         up_ = false;
         down_ = false;
@@ -67,22 +67,19 @@ public class EnemyRandom extends Enemy {
     }
 
     public void move() {
+        if ((int) (entity.getY() % TITLE_SIZE) != 0 || (int) (entity.getX() % TITLE_SIZE) != 0) {
+            return;
+        }
         setMap();
-
         setCorner();
-
         if (corner == 1) {
             turnBack();
         }
-        setTurn();
+        setTurnRandom();
     }
 
     public void setMap() {
 
-        if ((int) (entity.getY() % TITLE_SIZE) != 0 || (int) (entity.getX() % TITLE_SIZE) != 0) {
-            return;
-        }
-        corner = 0;
         index_x_ = (int) entity.getX() / TITLE_SIZE;
         index_y_ = (int) entity.getY() / TITLE_SIZE;
 
@@ -100,13 +97,14 @@ public class EnemyRandom extends Enemy {
     }
 
     public void setCorner() {
+        corner = 0;
         if (turn_right_) {corner++;}
         if (turn_left_) {corner++;}
         if (turn_up_) {corner++;}
         if (turn_down_) {corner++;}
         //System.out.println(corner);
     }
-    public void setTurn() {
+    public void setTurnRandom() {
         if (turn_right_ && !left_) {turn_.add(0);}
         if (turn_left_ && !right_) {turn_.add(1);}
         if (turn_up_ && !down_) {turn_.add(2);}

@@ -60,6 +60,17 @@ public class Factory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("enemy8")
+    public Entity newEnemy8(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(ENEMY8)
+                .zIndex(900)
+                .with(new Enemy8())
+                .with(new CollidableComponent(true))
+                .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
+                .build();
+    }
+
     @Spawns("enemy1")
     public Entity newEnemy1(SpawnData data) {
         return FXGL.entityBuilder(data)

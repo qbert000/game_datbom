@@ -10,10 +10,7 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 
-import hellofx.Enemy.EnemyHorizontal;
-import hellofx.Enemy.EnemyRandom;
-import hellofx.Enemy.EnemyVertical;
-import hellofx.Enemy.Enemy1;
+import hellofx.Enemy.*;
 import hellofx.SmartMap.Position;
 import hellofx.SmartMap.SmartMap;
 import javafx.scene.input.KeyCode;
@@ -296,9 +293,11 @@ public class Main extends GameApplication {
          for (Position position:SmartMap.smartPosition) {
              position.findAround();
          }
-//        SmartMap.smartPosition.get(0).findAround();
-        SmartMap.smartPosition.get(36).print();
-//        System.out.println(SmartMap.smartPosition.get(1).street.get(1).weight);
+
+        //SmartMap.smartPosition.get(0).print();
+
+
+
 
         // spawn nhan vat sau cung de z-index >> / hien thi ben tren theo chieu Oz
         g_player = spawn("player", playerPosX, playerPosY);

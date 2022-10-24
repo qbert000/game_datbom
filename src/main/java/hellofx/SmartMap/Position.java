@@ -11,13 +11,13 @@ public class Position {
     public int index_y_vir;
     public int reckon;
 
-    public boolean right_;
-    public boolean left_;
-    public boolean up_;
-    public boolean down_;
+    private boolean right_;
+    private boolean left_;
+    private boolean up_;
+    private boolean down_;
 
-    public int step_x;
-    public int step_y;
+    private int step_x;
+    private int step_y;
 
 
     public List<Boolean> direction = new ArrayList<>();
@@ -105,8 +105,7 @@ public class Position {
         SmartMap.checkAround(index_y_vir, index_x_vir);
         if (SmartMap.corner == 1) {
             direction.set(i, false);
-            street.get(i).weight = 1000;
-            return;
+            street.get(i).weight = 0;
         } else if (SmartMap.corner == 2) {
             if (SmartMap.gate[0] && !left_) {
                 setRight_();
@@ -171,5 +170,12 @@ public class Position {
 //                System.out.println(street.get(i).position1.index_x + " " + street.get(i).position1.index_y + " " + street.get(i).weight);
             }
         }
+    }
+
+    public int setReckon(int x, int y) {
+        return (Math.abs(index_x - x / 40) + Math.abs(index_y - y / 40) );
+//        double dx = Math.abs(index_x - x);
+//        double dy = Math.abs(index_x - y);
+//        return (Math.abs(dx - dy) + Math.sqrt(2) * Math.min(dx, dy) );
     }
 }
