@@ -68,7 +68,7 @@ public class Main extends GameApplication {
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(TITLE_SIZE * WIDTH_TITLE);
-        settings.setHeight(TITLE_SIZE * HEIGHT_TITLE);
+        settings.setHeight(TITLE_SIZE * 20);
         settings.setTitle("Bomberman");
         settings.setAppIcon("icon/icon.png");
         // to chuc file mac dinh la assets/textures/ --> them duong dan dc

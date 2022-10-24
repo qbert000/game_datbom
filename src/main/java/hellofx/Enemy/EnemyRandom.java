@@ -38,7 +38,7 @@ public class EnemyRandom extends Enemy {
     @Override
     public void onUpdate(double tpf) {
         if(!isDead) {
-            setMap();
+            move();
             if (right_) {
                 if(canLoopWalkRight) {
                     texture.loopAnimationChannel(animation);
@@ -66,6 +66,17 @@ public class EnemyRandom extends Enemy {
         }
     }
 
+    public void move() {
+        setMap();
+
+        setCorner();
+
+        if (corner == 1) {
+            turnBack();
+        }
+        setTurn();
+    }
+
     public void setMap() {
 
         if ((int) (entity.getY() % TITLE_SIZE) != 0 || (int) (entity.getX() % TITLE_SIZE) != 0) {
@@ -86,12 +97,6 @@ public class EnemyRandom extends Enemy {
 
         //System.out.println(index_x_ + " " +index_y_ + " " + turn_right_ + " " + turn_left_ + " " + turn_down_ + " " + turn_up_ );
 
-        setCorner();
-
-        if (corner == 1) {
-            turnBack();
-        }
-        setTurn();
     }
 
     public void setCorner() {
