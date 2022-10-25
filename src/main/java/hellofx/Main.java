@@ -1,7 +1,12 @@
 package hellofx;
 
+import java.util.List;
 import java.util.Map;
+
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 import javafx.geometry.Point2D;
 import com.almasb.fxgl.app.CursorInfo;
@@ -9,10 +14,12 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.physics.CollisionHandler;
+import com.fasterxml.jackson.databind.jsontype.impl.AsDeductionTypeDeserializer;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
+// import static com.almasb.fxgl.dsl.FXGL.*;
 
 import hellofx.Enemy.*;
 import hellofx.GameEntity.DynamicEntity.Player;
@@ -24,6 +31,8 @@ import hellofx.Bomb_Flame.*;
 import hellofx.Animation.*;
 import hellofx.SpawnSystem.Factory;
 import hellofx.Map.*;
+import static com.almasb.fxgl.dsl.FXGL.addUINode;
+import hellofx.GameUI.GameUIComponent;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static hellofx.SpawnSystem.Enum.*;
@@ -37,6 +46,7 @@ import static hellofx.Map.MyMap.getSignOfEntity;
 import static hellofx.Constant.GameConstant.*;
 import static hellofx.GameEntity.DynamicEntity.Player.currentXpos;
 import static hellofx.GameEntity.DynamicEntity.Player.currentYpos;
+import static com.almasb.fxgl.dsl.FXGL.*;
 import static hellofx.GameEntity.DynamicEntity.Player.playerisAlive;
 
 public class Main extends GameApplication {
@@ -51,14 +61,19 @@ public class Main extends GameApplication {
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(TITLE_SIZE * WIDTH_TITLE);
-        settings.setHeight(TITLE_SIZE * 20);
+        settings.setHeight(TITLE_SIZE * 19);
         settings.setTitle("Bomberman");
         settings.setAppIcon("icon/icon.png");
+        // settings.setFontUI("font/game_font.ttf");
         // to chuc file mac dinh la assets/textures/ --> them duong dan dc
         settings.setVersion("1.0");
         settings.setDeveloperMenuEnabled(true);
         settings.setIntroEnabled(false);
         settings.setIntroEnabled(false);
+        settings.setFontGame("font2.ttf");
+        // settings.setFontMono("font/font2.ttf");
+        // settings.setFontText("font/font3.ttf");
+        // settings.setFontUI("font/font4.ttf");
         settings.setGameMenuEnabled(true);
         settings.setMainMenuEnabled(true);
         settings.setSceneFactory(new SceneFactory() {
@@ -240,7 +255,49 @@ public class Main extends GameApplication {
      */
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("pixelsMoved", 0);
+        vars.put("bombAmount", 1);
+        vars.put("speed", (int)CONST_SPEED * 10);
+        vars.put("flameRadius", Boom.getSizeBoom());
+        vars.put("flamePass", 0);
+        vars.put("life", 1);
+        vars.put("score", 0);
+        vars.put("enemies", TOTAL_ENEMY);
+        vars.put("levelTime", GAME_TIME);
+    }
+
+    /**
+     * Khoi tao nhung UI cua game nhu text, node, hinh anh, ....
+     */
+    @Override
+    protected void initUI() {
+        GameUIComponent.addILabelUI("bombAmount", "%d", 45, TITLE_SIZE * 18);
+        GameUIComponent.addILabelUI("speed", "%d", 206, TITLE_SIZE * 18);
+        GameUIComponent.addILabelUI("flameRadius", "%d", 367, TITLE_SIZE * 18);
+        GameUIComponent.addILabelUI("flamePass", "%d", 528, TITLE_SIZE * 18);
+        GameUIComponent.addILabelUI("life", "%d", 689, TITLE_SIZE * 18);
+        GameUIComponent.addILabelUI("score", "%d", 850, TITLE_SIZE * 18);
+        GameUIComponent.addILabelUI("enemies", "%d", 1011, TITLE_SIZE * 18);
+        GameUIComponent.addDLabelUI("levelTime", "%.0f", 1172, TITLE_SIZE * 18);
+    }
+
+    @Override
+    protected void onUpdate(double tpf) {
+        inc("levelTime", -tpf);
+        if (g_player.hasComponent(Player.class)) {
+            set("bombAmount", Player.getAmountBoom());
+            set("speed", (int)CONST_SPEED * 100);
+            if (g_player.getComponent(Player.class).flamePass) {
+                set("flamePass", 1);
+            }
+            set("flameRadius", Boom.getSizeBoom());
+        }
+        if (getd("levelTime") <= 0.0) {
+            showMessage("Time Up !!!");
+            set("levelTime", GAME_TIME);
+            getGameTimer().runOnceAfter(() -> {
+                FXGL.getGameController().gotoMainMenu();
+            }, Duration.seconds(0.1));
+        }
     }
 
     /*
@@ -268,6 +325,7 @@ public class Main extends GameApplication {
                     MyMap.playerY = j;
                 }
             }
+            set("enemies", TOTAL_ENEMY);
         }
         g_smartMap = new SmartMap();
         SmartMap.set();
@@ -283,20 +341,14 @@ public class Main extends GameApplication {
         g_player.getComponent(Player.class).getMyX = g_player.getPosition().getX();
         g_player.getComponent(Player.class).getMyY = g_player.getPosition().getY();
         index = 0;
-    }
-
-    /**
-     * Khoi tao nhung UI cua game nhu text, node, hinh anh, ....
-     */
-    @Override
-    protected void initUI() {
-
+        spawn("background", 0, 720);
     }
 
     /*
      * Reset lai nhung bien trong game khi nguoi choi chet / ve portal
      */
     private void replay() {
+        g_player.getComponent(Player.class).flamePass = false;
         ENEMY_NUMBER = 0;
         TOTAL_ENEMY = 0;
         Boom.resizePowerBoom();
@@ -321,6 +373,7 @@ public class Main extends GameApplication {
      * Dua nguoi choi den level tiep theo(neu lam :D) /ve man chinh khi di den
      */
     private void nextLevel() {
+        g_player.getComponent(Player.class).flamePass = false;
         ENEMY_NUMBER = 0;
         TOTAL_ENEMY = 0;
         Boom.resizePowerBoom();
@@ -359,7 +412,8 @@ public class Main extends GameApplication {
         // Xu li va cham Player va Flame
         for (Enum flame : myFlameList) {
             onCollisionBegin(PLAYER, flame, (player, myFlame) -> {
-                replay();
+                if (!g_player.getComponent(Player.class).flamePass)
+                    replay();
             });
         }
 
@@ -370,24 +424,28 @@ public class Main extends GameApplication {
                     if (enemyEntity.hasComponent(EnemyRandom.class)) {
                         if (!enemyEntity.getComponent(EnemyRandom.class).isDead) {
                             enemyEntity.getComponent(EnemyRandom.class).dead();
+                            inc("enemies", -1);
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(EnemyVertical.class)) {
                         if (!enemyEntity.getComponent(EnemyVertical.class).isDead) {
                             enemyEntity.getComponent(EnemyVertical.class).dead();
+                            inc("enemies", -1);
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(EnemyHorizontal.class)) {
                         if (!enemyEntity.getComponent(EnemyHorizontal.class).isDead) {
                             enemyEntity.getComponent(EnemyHorizontal.class).dead();
+                            inc("enemies", -1);
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(Enemy1.class)) {
                         if (!enemyEntity.getComponent(Enemy1.class).isDead) {
                             enemyEntity.getComponent(Enemy1.class).dead();
+                            inc("enemies", -1);
                             TOTAL_ENEMY--;
                         }
                     }
@@ -442,7 +500,7 @@ public class Main extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity player, Entity portal) {
                 String sign = getSignOfEntity(portal);
-                // System.out.println(TOTAL_ENEMY  + " " + sign);
+                // System.out.println(TOTAL_ENEMY + " " + sign);
                 getGameTimer().runOnceAfter(() -> {
                     if ((sign.equals("p") || sign.equals("0")) && TOTAL_ENEMY == 0) {
                         nextLevel();
@@ -466,6 +524,7 @@ public class Main extends GameApplication {
                                 break;
                             case "FLAME_POWER_ITEM":
                                 Boom.increaseFlameSize();
+                                g_player.getComponent(Player.class).flamePass = true;
                                 break;
                             case "FLAME_ITEM":
                                 Boom.powerBoomUp();

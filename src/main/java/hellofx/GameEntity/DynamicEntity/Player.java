@@ -37,6 +37,7 @@ public class Player extends DynamicEntity {
     public boolean onCollision = false;
     public boolean isWin = false;
     public boolean isDead = false;
+    public boolean flamePass = false;
 
     public final AnimationChannel idleUp;
     public final AnimationChannel idleDown;

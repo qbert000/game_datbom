@@ -39,6 +39,13 @@ public class Factory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("background") 
+    public Entity newBackGround(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .view("background/score.png")
+                .build();
+    }
+
     @Spawns("enemyHorizontal")
     public Entity newEnemyHorizon(SpawnData data) {
         return FXGL.entityBuilder(data)
