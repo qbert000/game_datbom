@@ -2,7 +2,7 @@ package hellofx.Enemy;
 
 // import com.almasb.fxgl.animation.Animation;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
+// import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
@@ -10,12 +10,6 @@ import static hellofx.Constant.GameConstant.TITLE_SIZE;
 // import static hellofx.Main.g_map;
 
 public class Enemy1 extends Enemy {
-    protected final AnimationChannel animationLeft;
-
-    private final AnimationChannel animEnemy1Dead;
-
-    private final AnimationChannel animationRight;
-
     public PathFinding findPlayer;
 
     public int firstX;
@@ -23,13 +17,13 @@ public class Enemy1 extends Enemy {
 
     public Enemy1() {
         // di chuyen ben trai
-        animationLeft = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 3, TITLE_SIZE, TITLE_SIZE,
+        animLeft = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 3, TITLE_SIZE, TITLE_SIZE,
                 Duration.seconds(0.5), 3, 5);
-        animationRight = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 3, TITLE_SIZE, TITLE_SIZE,
+        animRight = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 3, TITLE_SIZE, TITLE_SIZE,
                 Duration.seconds(0.5), 6, 8);
-        animEnemy1Dead = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 5, TITLE_SIZE, TITLE_SIZE,
-                Duration.seconds(0.7), 0, 4);
-        texture = new AnimatedTexture(animationLeft);
+        animDead = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 6, TITLE_SIZE, TITLE_SIZE,
+                Duration.seconds(0.7), 0, 5);
+        texture = new AnimatedTexture(animLeft);
     }
 
     @Override
@@ -44,7 +38,7 @@ public class Enemy1 extends Enemy {
         firstY = (int) tileY;
         findPlayer = new PathFinding((int) (tileY / TITLE_SIZE), (int) (tileX / TITLE_SIZE));
         findPlayer.setUpPath();
-        texture.loopAnimationChannel(animationLeft);
+        texture.loopAnimationChannel(animLeft);
     }
 
     public void findAgain() {
@@ -76,8 +70,7 @@ public class Enemy1 extends Enemy {
                 } else {
                     turnLeft();
                 }
-            }
-            else if (direction.equals("RIGHT")) {
+            } else if (direction.equals("RIGHT")) {
                 if ((int) getXPos() == firstX + TITLE_SIZE) {
                     findPlayer.st.pop();
                     firstX += TITLE_SIZE;
@@ -85,8 +78,7 @@ public class Enemy1 extends Enemy {
                 } else {
                     turnRight();
                 }
-            }
-            else if (direction.equals("UP")) {
+            } else if (direction.equals("UP")) {
                 if ((int) getYPos() == firstY - TITLE_SIZE) {
                     findPlayer.st.pop();
                     firstY -= TITLE_SIZE;
@@ -94,8 +86,7 @@ public class Enemy1 extends Enemy {
                 } else {
                     turnUp();
                 }
-            }
-            else if (direction.equals("DOWN")) {
+            } else if (direction.equals("DOWN")) {
                 if ((int) getYPos() == firstY + TITLE_SIZE) {
                     findPlayer.st.pop();
                     firstY += TITLE_SIZE;
@@ -108,10 +99,7 @@ public class Enemy1 extends Enemy {
             }
 
         } else {
-            if (canLoop) {
-                texture.playAnimationChannel(animEnemy1Dead);
-                canLoop = false;
-            }
+            setDeadAnimationOnce();
         }
     }
 
@@ -129,10 +117,12 @@ public class Enemy1 extends Enemy {
     }
 
     public void turnLeft() {
+        setLeftAnimationOnce();
         entity.translateX(-2);
     }
 
     public void turnRight() {
+        setRightAnimationOnce();
         entity.translateX(2);
     }
 

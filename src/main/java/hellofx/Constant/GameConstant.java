@@ -1,5 +1,7 @@
 package hellofx.Constant;
 
+import static hellofx.SpawnSystem.Enum.*;
+
 public class GameConstant {
     public static double CONST_SPEED = 1.5;
     public static final double CONST_SPEED_BEGIN = 1.5;
@@ -11,5 +13,9 @@ public class GameConstant {
     public static final int flame4dirSize = 38;
     public static final int fontSize = 36;
     public static final int ENEMY_SIZE = 36;
-    public static final int ENEMY_NUMBER = 0;
+    public static int ENEMY_NUMBER = 0;
+    public static int TOTAL_ENEMY = 0;
+    public static Enum[] myFlameList = new Enum[] { FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
+    public static Enum[] myItemList = new Enum[] { SPEED_ITEM, FLAME_POWER_ITEM, BOMB_ITEM, FLAME_ITEM };
+    public static Enum[] enemyType = new Enum[] {ENEMYHORIZONTAL, ENEMYVERTICAL, ENEMYRANDOM, ENEMY1, ENEMY8};
 }

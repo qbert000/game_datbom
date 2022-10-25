@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static hellofx.Constant.GameConstant.*;
-import static hellofx.Constant.GameConstant.TITLE_SIZE;
-import static hellofx.Map.MyMap.myMap;
-import static hellofx.Map.MyMap.spawnComponent;
+// import static hellofx.Constant.GameConstant.TITLE_SIZE;
+// import static hellofx.Map.MyMap.myMap;
+// import static hellofx.Map.MyMap.spawnComponent;
 
 public class SmartMap {
 

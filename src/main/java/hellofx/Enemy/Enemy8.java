@@ -4,14 +4,14 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import hellofx.Map.MyMap;
 import hellofx.SmartMap.Position;
 import hellofx.SmartMap.SmartMap;
-import hellofx.SmartMap.Street;
+// import hellofx.SmartMap.Street;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
-import static hellofx.Constant.GameConstant.starterPosX;
+// import static hellofx.Constant.GameConstant.starterPosX;
 import static hellofx.Map.MyMap.canGoThisWay;
 
 public class Enemy8 extends EnemyRandom {
@@ -19,12 +19,13 @@ public class Enemy8 extends EnemyRandom {
     private List<Integer> check = new ArrayList<>();
     private Position vir;
     public Enemy8() {
+        super();
         right_ = true;
         left_ = false;
         up_ = false;
         down_ = false;
         vir = new Position();
-        texture = new AnimatedTexture(animation);
+        texture = new AnimatedTexture(animRight);
     }
     @Override
     public void onUpdate(double tpf) {

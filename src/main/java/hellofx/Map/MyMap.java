@@ -2,17 +2,20 @@ package hellofx.Map;
 
 import java.util.Objects;
 
-import static com.almasb.fxgl.dsl.FXGL.spawn;
+// import static com.almasb.fxgl.dsl.FXGL.spawn;
 import static hellofx.Constant.GameConstant.HEIGHT_TITLE;
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
 import static hellofx.Constant.GameConstant.WIDTH_TITLE;
 import static hellofx.Constant.GameConstant.ENEMY_NUMBER;
+import static hellofx.Constant.GameConstant.TOTAL_ENEMY;
 // import static hellofx.Constant.GameConstant.ENEMY_NUMBER;
 
 import java.io.File;
 import java.util.Scanner;
 
 import com.almasb.fxgl.dsl.FXGL;
+
+// import hellofx.Enemy.Enemy;
 import hellofx.Enemy.Enemy1;
 import javafx.util.Duration;
 import com.almasb.fxgl.entity.*;
@@ -23,7 +26,7 @@ public class MyMap {
 
     public static MyMap g_map = null;
 
-    public static Entity[] enemy = new Entity[ENEMY_NUMBER];
+    public static Entity[] enemy;
 
     public static int index = 0;
 
@@ -34,20 +37,23 @@ public class MyMap {
         /*
          * Comment lai dong duoi khi dung tren may Quyen.
          */
-        //File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\map.txt");
+        File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\map.txt");
         /*
          * Comment lai dong duoi khi dung tren may Dung.
          */
-        File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
+        //File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
         Scanner sc = new Scanner(file);
 
         int i = 0;
         while (sc.hasNextLine() && i < HEIGHT_TITLE) {
             for (int j = 0; j < WIDTH_TITLE; j++) {
                 myMap[i][j] = sc.next();
+                if(myMap[i][j].equals("F")) ENEMY_NUMBER ++;
             }
             i++;
         }
+        System.out.println(ENEMY_NUMBER);
+        enemy = new Entity[ENEMY_NUMBER];
         sc.close();
     }
 
@@ -86,24 +92,29 @@ public class MyMap {
         }
 
         if (MyMap.myMap[i][j].equals("V")) {
+            TOTAL_ENEMY++;
             FXGL.spawn("enemyVertical", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
         }
 
         if (MyMap.myMap[i][j].equals("H")) {
+            TOTAL_ENEMY++;
             FXGL.spawn("enemyHorizontal", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
         }
 
         if (MyMap.myMap[i][j].equals("F")) {
+            TOTAL_ENEMY++;
             enemy[index] = FXGL.spawn("enemy1", j * TITLE_SIZE, i * TITLE_SIZE);
             enemy[index].getComponent(Enemy1.class).setUp();
             index++;
         }
 
         if (MyMap.myMap[i][j].equals("R")) {
+            TOTAL_ENEMY++;
             FXGL.spawn("enemyRandom", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
-        if (MyMap.myMap[i][j].equals("*")) {
+        if (MyMap.myMap[i][j].equals("S")) {
+            TOTAL_ENEMY++;
             FXGL.spawn("enemy8", j * TITLE_SIZE, i * TITLE_SIZE);
         }
     }
@@ -163,7 +174,6 @@ public class MyMap {
             }, Duration.seconds(0.4));
             getGameTimer().runOnceAfter(() -> {
                 myMap[tileX][tileY] = "0";
-                System.out.println("After");
 //                printMap();
             }, Duration.seconds(0.2));
         }

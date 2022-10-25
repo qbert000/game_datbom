@@ -1,21 +1,22 @@
 package hellofx.Enemy;
 
-import com.almasb.fxgl.dsl.FXGL;
+// import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.AnimatedTexture;
-import com.almasb.fxgl.texture.AnimationChannel;
-// import com.almasb.fxgl.animation.Animation;
-import javafx.util.Duration;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
-import static hellofx.Constant.GameConstant.ENEMY_SIZE;
+// import com.almasb.fxgl.texture.AnimationChannel;
+// // import com.almasb.fxgl.animation.Animation;
+// import javafx.util.Duration;
+// import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
+// import static hellofx.Constant.GameConstant.ENEMY_SIZE;
 
 public class EnemyVertical extends Enemy {
 
     public EnemyVertical() {
+        super();
         right_ = false;
         left_ = false;
         up_ = false;
         down_ = true;
-        texture = new AnimatedTexture(animation);
+        texture = new AnimatedTexture(animRight);
     }
 
     @Override

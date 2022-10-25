@@ -23,11 +23,12 @@ public class EnemyRandom extends Enemy {
     public boolean turn_up_;
     public boolean turn_down_;
     public EnemyRandom() {
+        super();
         right_ = false;
         left_ = false;
         up_ = false;
         down_ = false;
-        texture = new AnimatedTexture(animation);
+        texture = new AnimatedTexture(animRight);
     }
 
     @Override
@@ -40,18 +41,10 @@ public class EnemyRandom extends Enemy {
         if(!isDead) {
             move();
             if (right_) {
-                if(canLoopWalkRight) {
-                    texture.loopAnimationChannel(animation);
-                    canLoopWalkRight = false;
-                    canLoopWalkLeft = true;
-                }
+                setRightAnimationOnce();
                 entity.translateX(1);
             } else if (left_) {
-                if(canLoopWalkLeft) {
-                    texture.loopAnimationChannel(animationLeft);
-                    canLoopWalkLeft = false;
-                    canLoopWalkRight = true;
-                }
+                setLeftAnimationOnce();
                 entity.translateX(-1);
             } else if (up_) {
                 entity.translateY(-1);
@@ -59,10 +52,7 @@ public class EnemyRandom extends Enemy {
                 entity.translateY(1);
             }
         } else {
-            if(canLoop) {
-                texture.playAnimationChannel(animDead);
-                canLoop = false;
-            }
+            setDeadAnimationOnce();
         }
     }
 

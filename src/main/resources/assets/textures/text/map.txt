@@ -10,24 +10,28 @@
 1 0 0 0 0 0 0 0 0 0 0 0 1 0 1 1 0 1 0 1 1 0 0 0 1 0 0 0 1 1 0 1
 1 1 1 0 1 0 0 1 0 1 1 0 1 0 1 0 0 0 0 0 0 1 1 0 0 0 1 0 0 0 0 1
 1 0 0 0 1 1 0 0 0 0 1 0 0 0 0 0 1 0 1 0 0 0 1 0 1 1 1 1 0 1 0 1
-1 0 1 0 0 0 0 1 1 0 1 0 1 0 1 0 0 0 0 0 1 0 1 0 1 0 0 0 0 1 0 1
-1 0 1 0 1 1 0 0 1 0 0 0 0 0 1 1 0 1 1 0 1 0 1 0 0 0 1 1 0 0 0 1
-1 1 1 0 0 0 1 0 0 0 1 0 1 1 1 0 0 1 0 0 1 0 0 0 1 1 1 0 0 1 0 1
-1 0 1 0 1 0 1 0 1 1 1 0 0 0 0 0 1 1 0 1 1 0 1 1 1 0 0 0 1 1 0 1
-1 0 0 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 3 0 0 0 0 0 0 0 1 0 0 0 * 1
+1 0 1 0 0 0 0 1 1 0 1 0 1 V 1 0 0 0 0 0 1 0 1 0 1 0 0 0 0 1 0 1
+1 C 1 A 1 1 0 0 1 0 0 0 0 0 1 1 0 1 1 0 1 0 1 0 0 0 1 1 0 0 0 1
+1 B 1 D 0 0 1 0 0 0 1 0 1 1 1 0 0 1 0 0 1 0 0 0 1 1 1 0 0 1 0 1
+1 A 1 C 1 0 1 0 1 1 1 0 0 0 0 0 1 1 0 1 1 0 1 1 1 0 0 0 1 1 0 1
+1 B A B 1 0 0 0 0 0 0 0 1 1 1 P H 0 3 0 0 0 0 0 0 0 1 0 0 0 V 1
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 
-
+*** Entity Tinh ***
 P - portal
 0 - grass
 1 - wall
 2 - brick (soft wall)
+*** Special Entity Tinh ***
+A - [Power up Bomb's radius] Item
+B - [Power up Player's speed] Item
+C - [Increase Bomb's amount] Item
+D - [Increase Flame's "max brick can break"] Item
+*** Entity Dong ***
 3 - player
 R - enemy random
 V - enemy vertical
 H - enemy horizontal
 F - enemy with finding path
-A - [Power up Bomb's radius] Item
-B - [Power up Player's speed] Item
-C - [Increase Bomb's amount] Item
-D - [Increase Flame's "max brick can break"] Item
+S - enemy random can pass soft wall
+

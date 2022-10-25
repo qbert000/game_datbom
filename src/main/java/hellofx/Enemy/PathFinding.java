@@ -5,7 +5,7 @@ import java.util.*;
 
 import hellofx.Map.MyMap;
 import javafx.util.Duration;
-import hellofx.Map.MyMap;
+// import hellofx.Map.MyMap;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 
 public class PathFinding {
@@ -66,11 +66,11 @@ public class PathFinding {
     }
 
     public void seeMyStack() {
-        Stack<String> temp = st;
-//        while (!temp.empty()) {
-//            System.out.print(temp.pop() + " ");
-//        }
-//        System.out.print("\n");
+//         Stack<String> temp = st;
+// //        while (!temp.empty()) {
+// //            System.out.print(temp.pop() + " ");
+// //        }
+// //        System.out.print("\n");
     }
 
     public void resetPathFinding(int newX, int newY) {

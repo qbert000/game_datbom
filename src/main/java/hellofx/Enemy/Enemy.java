@@ -1,7 +1,10 @@
 package hellofx.Enemy;
 
-import com.almasb.fxgl.entity.component.Component;
+// import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimationChannel;
+
+import hellofx.GameEntity.DynamicEntity.DynamicEntity;
+
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.util.Duration;
@@ -9,15 +12,7 @@ import com.almasb.fxgl.entity.Entity;
 
 import static hellofx.Constant.GameConstant.ENEMY_SIZE;
 
-public class Enemy extends Component {
-
-    protected double speed = 0;
-
-    public boolean right_;
-    public boolean left_;
-    public boolean up_;
-    public boolean down_;
-    public boolean isDead = false;
+public class Enemy extends DynamicEntity {
     public boolean canLoop = true;
     public boolean canLoopWalkRight = true;
     public boolean canLoopWalkLeft = true;
@@ -28,14 +23,15 @@ public class Enemy extends Component {
     public int speedX;
     public int speedY;
     public AnimatedTexture texture;
-    public final AnimationChannel animDead = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 5, ENEMY_SIZE,
-            ENEMY_SIZE, Duration.seconds(0.7), 0, 4);
-    // anim right
-    public final AnimationChannel animation = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 3, ENEMY_SIZE,
-            ENEMY_SIZE, Duration.seconds(0.5), 6, 8);
-    // anim left
-    public final AnimationChannel animationLeft = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 3, ENEMY_SIZE,
-            ENEMY_SIZE, Duration.seconds(0.5), 3, 5);
+
+    public Enemy() {
+        animDead = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 6, ENEMY_SIZE,
+                ENEMY_SIZE, Duration.seconds(0.7), 0, 5);
+        animRight = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 3, ENEMY_SIZE,
+                ENEMY_SIZE, Duration.seconds(0.5), 6, 8);
+        animLeft = new AnimationChannel(FXGL.image("enemy/balloon36.png"), 3, ENEMY_SIZE,
+                ENEMY_SIZE, Duration.seconds(0.5), 3, 5);
+    }
 
     public boolean isRight_() {
         return right_;
@@ -75,48 +71,26 @@ public class Enemy extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        if(!isDead) {
-            // Luu vi tri cu cua Enemy
-            //entity.translateX(speedX * tpf);
+        if (!isDead) {
             if (right_) {
-                if(canLoopWalkRight) {
-                    texture.loopAnimationChannel(animation);
-                    canLoopWalkRight = false;
-                    canLoopWalkLeft = true;
-                }
+                setRightAnimationOnce();
                 entity.translateX(1);
             } else if (left_) {
-                if(canLoopWalkLeft) {
-                    texture.loopAnimationChannel(animationLeft);
-                    canLoopWalkLeft = false;
-                    canLoopWalkRight = true;
-                }
+                setLeftAnimationOnce();
                 entity.translateX(-1);
             }
             currentPosX = entity.getPosition().getX() - speedX * tpf;
-            //entity.translateY(speedY * tpf);
+            // entity.translateY(speedY * tpf);
             if (up_) {
-                if(canLoopWalkRight) {
-                    texture.loopAnimationChannel(animation);
-                    canLoopWalkRight = false;
-                    canLoopWalkLeft = true;
-                }
+                setRightAnimationOnce();
                 entity.translateY(-1);
             } else if (down_) {
-                if(canLoopWalkLeft) {
-                    texture.loopAnimationChannel(animationLeft);
-                    canLoopWalkLeft = false;
-                    canLoopWalkRight = true;
-                }
+                setLeftAnimationOnce();
                 entity.translateY(1);
             }
             currentPosY = entity.getPosition().getY() - speedY * tpf;
-        }
-        else {
-            if(canLoop) {
-                texture.playAnimationChannel(animDead);
-                canLoop = false;
-            }
+        } else {
+            setDeadAnimationOnce();
         }
     }
 
@@ -156,7 +130,8 @@ public class Enemy extends Component {
         down_ = true;
     }
 
-    public void turnBack() {};
+    public void turnBack() {
+    };
 
     public double getCurrentPosX() {
         return currentPosX;
@@ -164,5 +139,28 @@ public class Enemy extends Component {
 
     public double getCurrentPosY() {
         return currentPosY;
+    }
+
+    public void setRightAnimationOnce() {
+        if(canLoopWalkRight) {
+            texture.loopAnimationChannel(animRight);
+            canLoopWalkRight = false;
+            canLoopWalkLeft = true;
+        }
+    }
+
+    public void setLeftAnimationOnce() {
+        if(canLoopWalkLeft) {
+            texture.loopAnimationChannel(animLeft);
+            canLoopWalkLeft = false;
+            canLoopWalkRight = true;
+        }
+    }
+
+    public void setDeadAnimationOnce() {
+        if(canLoop) {
+            texture.playAnimationChannel(animDead);
+            canLoop = false;
+        }
     }
 }

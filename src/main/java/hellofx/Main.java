@@ -1,5 +1,9 @@
 package hellofx;
 
+import java.util.Map;
+import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
+import javafx.geometry.Point2D;
 import com.almasb.fxgl.app.CursorInfo;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -11,11 +15,15 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 
 import hellofx.Enemy.*;
+import hellofx.GameEntity.DynamicEntity.Player;
 import hellofx.SmartMap.Position;
 import hellofx.SmartMap.SmartMap;
-import javafx.scene.input.KeyCode;
-import javafx.geometry.Point2D;
-import java.util.Map;
+import hellofx.Menu.GameMenu;
+import hellofx.Menu.MainMenu;
+import hellofx.Bomb_Flame.*;
+import hellofx.Animation.*;
+import hellofx.SpawnSystem.Factory;
+import hellofx.Map.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static hellofx.SpawnSystem.Enum.*;
@@ -26,38 +34,16 @@ import static hellofx.SmartMap.SmartMap.g_smartMap;
 import static hellofx.Map.MyMap.updateMap;
 import static hellofx.Map.MyMap.spawnComponent;
 import static hellofx.Map.MyMap.getSignOfEntity;
-import hellofx.Menu.GameMenu;
-import hellofx.Menu.MainMenu;
-import hellofx.Bomb_Flame.*;
-import javafx.util.Duration;
 import static hellofx.Constant.GameConstant.*;
-import hellofx.Animation.*;
-import hellofx.SpawnSystem.Factory;
-import hellofx.Map.*;
-import static hellofx.Animation.AnimationComponent.currentXpos;
-import static hellofx.Animation.AnimationComponent.currentYpos;
+import static hellofx.GameEntity.DynamicEntity.Player.currentXpos;
+import static hellofx.GameEntity.DynamicEntity.Player.currentYpos;
+import static hellofx.GameEntity.DynamicEntity.Player.playerisAlive;
 
-/*
- * Ham main luon phai extends GameApplication.
- */
 public class Main extends GameApplication {
     private Entity g_player = new Entity();
-    public AnimationComponent g_playerComponent;
+    public Player g_playerComponent;
 
-    public boolean playerisAlive = true;
-
-    public Enum[] myFlameList = new Enum[] { FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
-    public Enum[] myItemList = new Enum[] { SPEED_ITEM, FLAME_POWER_ITEM, BOMB_ITEM, FLAME_ITEM };
-    public Enum[] enemyType = new Enum[] {ENEMYHORIZONTAL, ENEMYVERTICAL, ENEMYRANDOM, ENEMY1};
-
-
-    public double getPlayerX() {
-        return g_player.getPosition().getX();
-    }
-
-    public double getPlayerY() {
-        return g_player.getPosition().getY();
-    }
+    public int enemyDeadOnce = 1;
 
     /*
      * Overload Game Setting.
@@ -94,7 +80,6 @@ public class Main extends GameApplication {
      */
     @Override
     protected void initInput() {
-
         // Tang Bomb Radius (tester).
         onKeyDown(KeyCode.F, () -> {
             // play("drop.wav"); // play am thanh
@@ -103,7 +88,7 @@ public class Main extends GameApplication {
 
         // Tang toc do nguoi choi (tester).
         onKeyDown(KeyCode.G, () -> {
-            g_player.getComponent(AnimationComponent.class).increaseSpeed();
+            g_player.getComponent(Player.class).increaseSpeed();
         });
 
         // Tang flame Power (tester).
@@ -113,7 +98,7 @@ public class Main extends GameApplication {
 
         // Tang so luong Boom (tester).
         onKeyDown(KeyCode.T, () -> {
-            AnimationComponent.increaseBoomAmount();
+            Player.increaseBoomAmount();
         });
 
         // Xac dinh su kien di ben phai.
@@ -121,27 +106,27 @@ public class Main extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (playerisAlive) {
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    g_player.getComponent(AnimationComponent.class).setRight();
+                    // currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    // currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    g_player.getComponent(Player.class).setRight();
                 }
             }
 
             @Override
             protected void onAction() {
                 if (playerisAlive) {
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    g_player.getComponent(AnimationComponent.class).moveRight();
+                    currentYpos = g_player.getComponent(Player.class).getMyY;
+                    currentXpos = g_player.getComponent(Player.class).getMyX;
+                    g_player.getComponent(Player.class).moveRight();
                 }
             }
 
             @Override
             protected void onActionEnd() {
                 if (playerisAlive) {
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    g_player.getComponent(AnimationComponent.class).stay();
+                    currentYpos = g_player.getComponent(Player.class).getMyY;
+                    currentXpos = g_player.getComponent(Player.class).getMyX;
+                    g_player.getComponent(Player.class).stay();
                 }
             }
 
@@ -152,29 +137,27 @@ public class Main extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (playerisAlive) {
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    // de goi thuoc tinh co trong class voi "with" sau khi add
-                    // ta dung ham getComponent(ten.class).thuoctinh/method
-                    g_player.getComponent(AnimationComponent.class).setLeft();
+                    // currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    // currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    g_player.getComponent(Player.class).setLeft();
                 }
             }
 
             @Override
             protected void onAction() {
                 if (playerisAlive) {
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    g_player.getComponent(AnimationComponent.class).moveLeft();
+                    currentYpos = g_player.getComponent(Player.class).getMyY;
+                    currentXpos = g_player.getComponent(Player.class).getMyX;
+                    g_player.getComponent(Player.class).moveLeft();
                 }
             }
 
             @Override
             protected void onActionEnd() {
                 if (playerisAlive) {
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    g_player.getComponent(AnimationComponent.class).stay();
+                    currentYpos = g_player.getComponent(Player.class).getMyY;
+                    currentXpos = g_player.getComponent(Player.class).getMyX;
+                    g_player.getComponent(Player.class).stay();
                 }
             }
 
@@ -185,27 +168,27 @@ public class Main extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (playerisAlive) {
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    g_player.getComponent(AnimationComponent.class).setUp();
+                    // currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    // currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    g_player.getComponent(Player.class).setUp();
                 }
             }
 
             @Override
             protected void onAction() {
                 if (playerisAlive) {
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    g_player.getComponent(AnimationComponent.class).moveUp();
+                    currentXpos = g_player.getComponent(Player.class).getMyX;
+                    currentYpos = g_player.getComponent(Player.class).getMyY;
+                    g_player.getComponent(Player.class).moveUp();
                 }
             }
 
             @Override
             protected void onActionEnd() {
                 if (playerisAlive) {
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    g_player.getComponent(AnimationComponent.class).stay();
+                    currentXpos = g_player.getComponent(Player.class).getMyX;
+                    currentYpos = g_player.getComponent(Player.class).getMyY;
+                    g_player.getComponent(Player.class).stay();
                 }
             }
 
@@ -216,27 +199,26 @@ public class Main extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (playerisAlive) {
-                    // neu dao nguoc chieu cung di chuyen se di xuyen qua vat can :)))))
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    g_player.getComponent(AnimationComponent.class).setDown();
+                    // currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
+                    // currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    g_player.getComponent(Player.class).setDown();
                 }
             }
 
             @Override
             protected void onAction() {
                 if (playerisAlive) {
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    g_player.getComponent(AnimationComponent.class).moveDown();
+                    currentXpos = g_player.getComponent(Player.class).getMyX;
+                    currentYpos = g_player.getComponent(Player.class).getMyY;
+                    g_player.getComponent(Player.class).moveDown();
                 }
             }
 
             @Override
             protected void onActionEnd() {
                 if (playerisAlive) {
-                    currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
+                    currentXpos = g_player.getComponent(Player.class).getMyX;
+                    currentYpos = g_player.getComponent(Player.class).getMyY;
                 }
             }
 
@@ -270,7 +252,7 @@ public class Main extends GameApplication {
         playerisAlive = true;
         double playerPosX = starterPosX;
         double playerPosY = starterPosY;
-        AnimationComponent.amountBoomDown();
+        Player.amountBoomDown();
         try {
             g_map = new MyMap();
         } catch (Exception e) {
@@ -287,25 +269,19 @@ public class Main extends GameApplication {
                 }
             }
         }
-         g_smartMap = new SmartMap();
-         SmartMap.set();
+        g_smartMap = new SmartMap();
+        SmartMap.set();
         // //SmartMap.print();
-         for (Position position:SmartMap.smartPosition) {
-             position.findAround();
-         }
-
-        //SmartMap.smartPosition.get(0).print();
-
-
-
-
-        // spawn nhan vat sau cung de z-index >> / hien thi ben tren theo chieu Oz
+        for (Position position : SmartMap.smartPosition) {
+            position.findAround();
+        }
+        // SmartMap.smartPosition.get(0).print();
         g_player = spawn("player", playerPosX, playerPosY);
-        g_playerComponent = g_player.getComponent(AnimationComponent.class);
+        g_playerComponent = g_player.getComponent(Player.class);
         currentXpos = g_player.getPosition().getX();
         currentYpos = g_player.getPosition().getY();
-        g_player.getComponent(AnimationComponent.class).getMyX = g_player.getPosition().getX();
-        g_player.getComponent(AnimationComponent.class).getMyY = g_player.getPosition().getY();
+        g_player.getComponent(Player.class).getMyX = g_player.getPosition().getX();
+        g_player.getComponent(Player.class).getMyY = g_player.getPosition().getY();
         index = 0;
     }
 
@@ -321,13 +297,14 @@ public class Main extends GameApplication {
      * Reset lai nhung bien trong game khi nguoi choi chet / ve portal
      */
     private void replay() {
+        ENEMY_NUMBER = 0;
+        TOTAL_ENEMY = 0;
         Boom.resizePowerBoom();
         Boom.resetFlameSize();
-        AnimationComponent.amountBoomDown();
+        Player.amountBoomDown();
         playerisAlive = false;
-        if (g_player.hasComponent(AnimationComponent.class)) {
-            // System.out.println("has animation");
-            g_player.getComponent(AnimationComponent.class).loadDeadAnim();
+        if (g_player.hasComponent(Player.class)) {
+            g_player.getComponent(Player.class).loadDeadAnim();
         }
         getGameTimer().runOnceAfter(() -> {
             g_player.removeFromWorld();
@@ -342,16 +319,17 @@ public class Main extends GameApplication {
 
     /*
      * Dua nguoi choi den level tiep theo(neu lam :D) /ve man chinh khi di den
-     * Portal
      */
     private void nextLevel() {
+        ENEMY_NUMBER = 0;
+        TOTAL_ENEMY = 0;
         Boom.resizePowerBoom();
         Boom.resetFlameSize();
-        AnimationComponent.amountBoomDown();
+        Player.amountBoomDown();
         playerisAlive = false;
         getGameTimer().runOnceAfter(() -> {
             // if (g_player.hasComponent(AnimationComponent.class)) {
-                g_player.getComponent(AnimationComponent.class).loadWinAnim();
+            g_player.getComponent(Player.class).loadWinAnim();
             // }
         }, Duration.seconds(0.05));
 
@@ -389,48 +367,42 @@ public class Main extends GameApplication {
         for (Enum enemy : enemyType) {
             for (Enum myFlame : myFlameList) {
                 onCollisionBegin(enemy, myFlame, (enemyEntity, flame) -> {
-                    if(enemyEntity.hasComponent(EnemyRandom.class)) {
-                        enemyEntity.getComponent(EnemyRandom.class).dead();
+                    if (enemyEntity.hasComponent(EnemyRandom.class)) {
+                        if (!enemyEntity.getComponent(EnemyRandom.class).isDead) {
+                            enemyEntity.getComponent(EnemyRandom.class).dead();
+                            TOTAL_ENEMY--;
+                        }
                     }
-                    if(enemyEntity.hasComponent(EnemyVertical.class)) {
-                        enemyEntity.getComponent(EnemyVertical.class).dead();
+                    if (enemyEntity.hasComponent(EnemyVertical.class)) {
+                        if (!enemyEntity.getComponent(EnemyVertical.class).isDead) {
+                            enemyEntity.getComponent(EnemyVertical.class).dead();
+                            TOTAL_ENEMY--;
+                        }
                     }
-                    if(enemyEntity.hasComponent(EnemyHorizontal.class)) {
-                        enemyEntity.getComponent(EnemyHorizontal.class).dead();
+                    if (enemyEntity.hasComponent(EnemyHorizontal.class)) {
+                        if (!enemyEntity.getComponent(EnemyHorizontal.class).isDead) {
+                            enemyEntity.getComponent(EnemyHorizontal.class).dead();
+                            TOTAL_ENEMY--;
+                        }
                     }
-                    if(enemyEntity.hasComponent(Enemy1.class)) {
-                        enemyEntity.getComponent(Enemy1.class).dead();
+                    if (enemyEntity.hasComponent(Enemy1.class)) {
+                        if (!enemyEntity.getComponent(Enemy1.class).isDead) {
+                            enemyEntity.getComponent(Enemy1.class).dead();
+                            TOTAL_ENEMY--;
+                        }
                     }
                     getGameTimer().runOnceAfter(() -> {
                         enemyEntity.removeFromWorld();
+                        System.out.println("REMAINING ENEMY:" + TOTAL_ENEMY);
                     }, Duration.seconds(0.7));
                 });
             }
         }
 
-
-        // // Xu li enemy va Flame cua Bomb
-        // for (Enum myFlame : myFlameList) {
-        //     onCollisionBegin(ENEMYVERTICAL, myFlame, (enemy, flame) -> {
-        //         if (enemy.hasComponent(EnemyVertical.class)) {
-        //             enemy.getComponent(EnemyVertical.class).dead();
-        //         } else if (enemy.hasComponent(EnemyVertical.class)) {
-        //             enemy.getComponent(EnemyHorizontal.class).dead();
-        //         } else if (enemy.hasComponent(Enemy1.class)) {
-
-        //         }
-        //         getGameTimer().runOnceAfter(() -> {
-        //             enemy.removeFromWorld();
-        //         }, Duration.seconds(0.4));
-        //     });
-        // }
-
         // Xu li va cham giua cac item va Flame cua Bomb
         for (Enum myItem : myItemList) {
             for (Enum myFlame : myFlameList) {
                 onCollisionBegin(myItem, myFlame, (item, flame) -> {
-                    // String prevSign = getSignOfEntity(item);
-                    // System.out.println("Prev: " + prevSign);
                     String sign = getSignOfEntity(item);
                     getGameTimer().runOnceAfter(() -> {
                         if (sign.equals("c") || sign.equals("a") || sign.equals("d") || sign.equals("b")) {
@@ -447,21 +419,21 @@ public class Main extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, BOOM) {
             @Override
             protected void onCollisionBegin(Entity player, Entity boom) {
-                if (AnimationComponent.k) {
+                if (Player.k) {
                     player.setPosition(new Point2D(currentXpos, currentYpos));
                 }
             }
 
             @Override
             protected void onCollision(Entity player, Entity boom) {
-                if (AnimationComponent.k) {
+                if (Player.k) {
                     player.setPosition(new Point2D(currentXpos, currentYpos));
                 }
             }
 
             @Override
             protected void onCollisionEnd(Entity player, Entity boom) {
-                AnimationComponent.k = true;
+                Player.k = true;
             }
         });
 
@@ -470,8 +442,9 @@ public class Main extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity player, Entity portal) {
                 String sign = getSignOfEntity(portal);
+                // System.out.println(TOTAL_ENEMY  + " " + sign);
                 getGameTimer().runOnceAfter(() -> {
-                    if (sign.equals("p")) {
+                    if ((sign.equals("p") || sign.equals("0")) && TOTAL_ENEMY == 0) {
                         nextLevel();
                     }
                 }, Duration.seconds(0.6));
@@ -489,7 +462,7 @@ public class Main extends GameApplication {
                         updateMap(my_item, "item");
                         switch (item.name()) {
                             case "BOMB_ITEM":
-                                AnimationComponent.increaseBoomAmount();
+                                Player.increaseBoomAmount();
                                 break;
                             case "FLAME_POWER_ITEM":
                                 Boom.increaseFlameSize();
@@ -498,7 +471,7 @@ public class Main extends GameApplication {
                                 Boom.powerBoomUp();
                                 break;
                             case "SPEED_ITEM":
-                                player.getComponent(AnimationComponent.class).increaseSpeed();
+                                player.getComponent(Player.class).increaseSpeed();
                                 break;
                             default:
                                 break;
@@ -516,13 +489,13 @@ public class Main extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity player, Entity wall) {
                 player.setPosition(new Point2D(currentXpos, currentYpos));
-                player.getComponent(AnimationComponent.class).onCollision = true;
+                player.getComponent(Player.class).onCollision = true;
             }
 
             @Override
             protected void onCollision(Entity player, Entity wall) {
-                player.getComponent(AnimationComponent.class).onCollision = true;
-                String getStatus = player.getComponent(AnimationComponent.class).getStatus();
+                player.getComponent(Player.class).onCollision = true;
+                String getStatus = player.getComponent(Player.class).getStatus();
                 int wallTileY = (int) wall.getPosition().getX() / TITLE_SIZE;
                 int wallTileX = (int) wall.getPosition().getY() / TITLE_SIZE;
                 boolean hasLeftTile = false;
@@ -576,19 +549,19 @@ public class Main extends GameApplication {
                 }
                 switch (getStatus) {
                     case "LEFT":
-                        player.getComponent(AnimationComponent.class).supportMoveHorizontal(player, wall, hasUpTile,
+                        player.getComponent(Player.class).supportMoveHorizontal(player, wall, hasUpTile,
                                 hasDownTile);
                         break;
                     case "RIGHT":
-                        player.getComponent(AnimationComponent.class).supportMoveHorizontal(player, wall, hasUpTile,
+                        player.getComponent(Player.class).supportMoveHorizontal(player, wall, hasUpTile,
                                 hasDownTile);
                         break;
                     case "UP":
-                        player.getComponent(AnimationComponent.class).supportMoveVertical(player, wall, hasRightTile,
+                        player.getComponent(Player.class).supportMoveVertical(player, wall, hasRightTile,
                                 hasLeftTile);
                         break;
                     case "DOWN":
-                        player.getComponent(AnimationComponent.class).supportMoveVertical(player, wall, hasRightTile,
+                        player.getComponent(Player.class).supportMoveVertical(player, wall, hasRightTile,
                                 hasLeftTile);
                         break;
                     default:
@@ -599,7 +572,7 @@ public class Main extends GameApplication {
 
             @Override
             protected void onCollisionEnd(Entity player, Entity wall) {
-                player.getComponent(AnimationComponent.class).onCollision = false;
+                player.getComponent(Player.class).onCollision = false;
             }
 
         });

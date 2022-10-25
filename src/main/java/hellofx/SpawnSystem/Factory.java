@@ -9,6 +9,7 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import hellofx.Enemy.*;
+import hellofx.GameEntity.DynamicEntity.Player;
 import javafx.geometry.Point2D;
 // import javafx.scene.paint.Color;
 // import javafx.scene.shape.Rectangle;
@@ -26,7 +27,7 @@ public class Factory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(PLAYER)
                 // .at(200, 200)
-                .with(new AnimationComponent())
+                .with(new Player())
                 .zIndex(1000)
                 // .collidable()
                 // de va cham phai co ham nay
