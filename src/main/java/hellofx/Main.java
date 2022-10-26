@@ -367,7 +367,7 @@ public class Main extends GameApplication {
                 myLevel = 1;
             }
             String mapPath = "level" + myLevel + ".txt";
-            g_map = new MyMap(mapPath, "D");
+            g_map = new MyMap(mapPath, "Q");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -383,15 +383,15 @@ public class Main extends GameApplication {
             }
             set("enemies", TOTAL_ENEMY);
         }
-        System.out.println("ENEMY NUMBER: " + ENEMY_NUMBER);
-        System.out.println("TOTAL ENEMY: " + TOTAL_ENEMY);
+//        System.out.println("ENEMY NUMBER: " + ENEMY_NUMBER);
+//        System.out.println("TOTAL ENEMY: " + TOTAL_ENEMY);
+
         g_smartMap = new SmartMap();
         SmartMap.set();
-        // //SmartMap.print();
         for (Position position : SmartMap.smartPosition) {
             position.findAround();
         }
-        // SmartMap.smartPosition.get(0).print();
+        
         g_player = spawn("player", playerPosX, playerPosY);
         g_playerComponent = g_player.getComponent(Player.class);
         currentXpos = g_player.getPosition().getX();

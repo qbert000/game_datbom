@@ -42,7 +42,7 @@ public class GameMenu extends FXGLMenu {
         title.setEffect(dropShadow);
         centerTextBind(title, getAppWidth() / 2.0, 310);
 
-        MenuButton first = new MenuButton("RETURN", menuButtonFontSize, () -> fireResume());
+        MenuButton first = new MenuButton("CONTINUE", menuButtonFontSize, () -> fireResume());
         first.setEffect(dropShadow);
 
         MenuButton second = new MenuButton("MAIN MENU", menuButtonFontSize, () -> fireExitToMainMenu());
