@@ -49,44 +49,44 @@ public class Player extends DynamicEntity {
      * Khoi tao Animation.
      */
     public Player() {
-        animDead = new AnimationChannel(FXGL.image("character/gold_player_dead.png"), 6, TITLE_SIZE,
+        animDead = new AnimationChannel(FXGL.image("character/player_die.png"), 5, TITLE_SIZE,
                 TITLE_SIZE,
-                Duration.seconds(0.9),
-                0, 5);
-        animWin = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 3, TITLE_SIZE,
-                TITLE_SIZE,
-                Duration.seconds(0.4),
-                0, 2);
-        animUp = new AnimationChannel(FXGL.image("character/gold_player_up.png"), 4, TITLE_SIZE,
+                Duration.seconds(1.1),
+                0, 4);
+        animWin = new AnimationChannel(FXGL.image("character/player_down.png"), 3, TITLE_SIZE,
                 TITLE_SIZE,
                 Duration.seconds(0.4),
                 0, 2);
-        animLeft = new AnimationChannel(FXGL.image("character/gold_player_left_temp.png"), 4,
+        animUp = new AnimationChannel(FXGL.image("character/player_up.png"), 4, TITLE_SIZE,
+                TITLE_SIZE,
+                Duration.seconds(0.4),
+                0, 2);
+        animLeft = new AnimationChannel(FXGL.image("character/player_left.png"), 4,
                 TITLE_SIZE,
                 TITLE_SIZE,
                 Duration.seconds(0.4),
                 0, 2);
-        animDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, TITLE_SIZE,
+        animDown = new AnimationChannel(FXGL.image("character/player_down.png"), 4, TITLE_SIZE,
                 TITLE_SIZE,
                 Duration.seconds(0.4),
                 0, 2);
-        idleLeft = new AnimationChannel(FXGL.image("character/gold_player_left_temp.png"), 4,
+        idleLeft = new AnimationChannel(FXGL.image("character/player_left.png"), 4,
                 TITLE_SIZE,
                 TITLE_SIZE,
                 Duration.seconds(0.4),
                 2, 2);
-        idleRight = new AnimationChannel(FXGL.image("character/gold_player_right_temp.png"), 4, TITLE_SIZE, TITLE_SIZE,
+        idleRight = new AnimationChannel(FXGL.image("character/player_right.png"), 4, TITLE_SIZE, TITLE_SIZE,
                 Duration.seconds(0.4),
                 2, 2);
-        idleUp = new AnimationChannel(FXGL.image("character/gold_player_up.png"), 4, TITLE_SIZE,
+        idleUp = new AnimationChannel(FXGL.image("character/player_up.png"), 4, TITLE_SIZE,
                 TITLE_SIZE,
                 Duration.seconds(0.4),
                 2, 2);
-        idleDown = new AnimationChannel(FXGL.image("character/gold_player_down.png"), 4, TITLE_SIZE,
+        idleDown = new AnimationChannel(FXGL.image("character/player_down.png"), 4, TITLE_SIZE,
                 TITLE_SIZE,
                 Duration.seconds(0.4),
                 2, 2);
-        animRight = new AnimationChannel(FXGL.image("character/gold_player_right_temp.png"), 4, TITLE_SIZE, TITLE_SIZE,
+        animRight = new AnimationChannel(FXGL.image("character/player_right.png"), 4, TITLE_SIZE, TITLE_SIZE,
                 Duration.seconds(0.4),
                 0, 2);
         texture = new AnimatedTexture(idleRight);
