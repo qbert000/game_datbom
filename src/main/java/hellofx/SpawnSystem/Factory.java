@@ -53,7 +53,7 @@ public class Factory implements EntityFactory {
                 .zIndex(900)
                 .with(new CollidableComponent(true))
                 .with(new BalloonHorizontal())
-                .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
                 .build();
     }
 
@@ -64,7 +64,7 @@ public class Factory implements EntityFactory {
                 .zIndex(1000)
                 .with(new EnemyDahl())
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
                 .build();
     }
 
@@ -75,7 +75,7 @@ public class Factory implements EntityFactory {
                 .zIndex(800)
                 .with(new EnemyDoria())
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
                 .build();
     }
 
@@ -86,7 +86,7 @@ public class Factory implements EntityFactory {
                 .zIndex(900)
                 .with(new EnemyPontan())
                 .with(new CollidableComponent(true))
-                .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
                 .build();
     }
 
@@ -108,7 +108,7 @@ public class Factory implements EntityFactory {
                 .zIndex(900)
                 .with(new CollidableComponent(true))
                 .with(new BalloonVertical())
-                .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(38, 38)))
                 .build();
     }
 

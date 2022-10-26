@@ -24,14 +24,22 @@ public class BalloonVertical extends Enemy {
         entity.getViewComponent().addChild(texture);
     }
 
+
+
     @Override
     public void turnBack() {
-        if (up_) {
-            up_ = false;
-            down_ = true;
-        } else if (down_) {
-            up_ = true;
-            down_ = false;
+        if (down_ ) {
+            if (!turn_down_) {
+                turnUp();
+            } else {
+                turnDown();
+            }
+        } else if (up_) {
+            if (!turn_up_) {
+                turnDown();
+            } else {
+                turnUp();
+            }
         }
     }
 

@@ -36,26 +36,26 @@ public class EnemyPontan extends EnemyDahl {
         vir = new Position();
         texture = new AnimatedTexture(animRight);
     }
-    @Override
-    public void onUpdate(double tpf) {
-        if(!isDead) {
-            move();
-            if (right_) {
-                setRightAnimationOnce();
-                entity.translateX(1);
-            } else if (left_) {
-                setLeftAnimationOnce();
-                entity.translateX(-1);
-            } else if (up_) {
-                entity.translateY(-1);
-            } else if (down_) {
-                entity.translateY(1);
-            }
-        } else {
-            setDeadAnimationOnce();
-        }
-
-    }
+//    @Override
+//    public void onUpdate(double tpf) {
+//        if(!isDead) {
+//            move();
+//            if (right_) {
+//                setRightAnimationOnce();
+//                entity.translateX(speed);
+//            } else if (left_) {
+//                setLeftAnimationOnce();
+//                entity.translateX(speed);
+//            } else if (up_) {
+//                entity.translateY(speed);
+//            } else if (down_) {
+//                entity.translateY(speed);
+//            }
+//        } else {
+//            setDeadAnimationOnce();
+//        }
+//
+//    }
 
 
     @Override

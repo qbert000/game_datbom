@@ -93,12 +93,12 @@ public class MyMap {
 
         if (MyMap.myMap[i][j].equals("V")) {
             TOTAL_ENEMY++;
-            FXGL.spawn("balloonVertical", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
+            FXGL.spawn("balloonVertical", j * TITLE_SIZE, i * TITLE_SIZE );
         }
 
         if (MyMap.myMap[i][j].equals("H")) {
             TOTAL_ENEMY++;
-            FXGL.spawn("balloonHorizontal", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
+            FXGL.spawn("balloonHorizontal", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
         if (MyMap.myMap[i][j].equals("F")) {

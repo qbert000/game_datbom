@@ -12,6 +12,7 @@ public abstract class DynamicEntity extends GameEntity{
     public boolean right_ = true;
     public boolean isStay = true;
 
+
     public AnimationChannel animDead;
     public AnimationChannel animUp;
     public AnimationChannel animDown;

@@ -11,17 +11,23 @@ import javafx.util.Duration;
 import com.almasb.fxgl.entity.Entity;
 
 import static hellofx.Constant.GameConstant.ENEMY_SIZE;
+import static hellofx.Constant.GameConstant.TITLE_SIZE;
+import static hellofx.Map.MyMap.canGoThisWay;
 
 public class Enemy extends DynamicEntity {
     public boolean canLoop = true;
     public boolean canLoopWalkRight = true;
     public boolean canLoopWalkLeft = true;
 
-    protected double currentPosX;
-    protected double currentPosY;
+    public int index_x_;
+    public int index_y_;
 
-    public int speedX;
-    public int speedY;
+    public boolean turn_right_;
+    public boolean turn_left_;
+    public boolean turn_up_;
+    public boolean turn_down_;
+
+
     public AnimatedTexture texture;
 
     public Enemy() {
@@ -33,25 +39,6 @@ public class Enemy extends DynamicEntity {
                 ENEMY_SIZE, Duration.seconds(0.5), 3, 5);
     }
 
-    public boolean isRight_() {
-        return right_;
-    }
-
-    public boolean isLeft_() {
-        return left_;
-    }
-
-    public boolean isUp_() {
-        return up_;
-    }
-
-    public boolean isDown_() {
-        return down_;
-    }
-
-    public Entity getMyEntity() {
-        return entity;
-    }
 
     public void dead() {
         isDead = true;
@@ -61,42 +48,43 @@ public class Enemy extends DynamicEntity {
         left_ = false;
     }
 
-    public void setCurrentPosX(double currentPosX) {
-        this.currentPosX = currentPosX;
-    }
-
-    public void setCurrentPosY(double currentPosY) {
-        this.currentPosY = currentPosY;
-    }
-
     @Override
     public void onUpdate(double tpf) {
         if (!isDead) {
+            move();
             if (right_) {
                 setRightAnimationOnce();
-                entity.translateX(1);
+                entity.translateX(speed);
             } else if (left_) {
                 setLeftAnimationOnce();
-                entity.translateX(-1);
+                entity.translateX(speed);
             }
-            currentPosX = entity.getPosition().getX() - speedX * tpf;
             // entity.translateY(speedY * tpf);
             if (up_) {
-                setRightAnimationOnce();
-                entity.translateY(-1);
+                //setRightAnimationOnce();
+                entity.translateY(speed);
             } else if (down_) {
-                setLeftAnimationOnce();
-                entity.translateY(1);
+                //setLeftAnimationOnce();
+                entity.translateY(speed);
             }
-            currentPosY = entity.getPosition().getY() - speedY * tpf;
         } else {
             setDeadAnimationOnce();
         }
     }
 
+
+    public void move() {
+        if ((int) (entity.getY() % TITLE_SIZE) != 0 || (int) (entity.getX() % TITLE_SIZE) != 0) {
+            System.out.println((int) (entity.getY() % TITLE_SIZE) + " " + (int) (entity.getX() % TITLE_SIZE));
+            return;
+        }
+        //speed = 1;
+        setMap();
+        turnBack();
+    }
+
     public void turnRight() {
-        speedX = 70;
-        speedY = 0;
+        speed = 1;
         right_ = true;
         left_ = false;
         up_ = false;
@@ -104,8 +92,7 @@ public class Enemy extends DynamicEntity {
     }
 
     public void turnLeft() {
-        speedX = -70;
-        speedY = 0;
+        speed = -1;
         left_ = true;
         right_ = false;
         up_ = false;
@@ -113,8 +100,7 @@ public class Enemy extends DynamicEntity {
     }
 
     public void turnUp() {
-        speedY = -70;
-        speedX = 0;
+        speed = -1;
         right_ = false;
         left_ = false;
         up_ = true;
@@ -122,8 +108,7 @@ public class Enemy extends DynamicEntity {
     }
 
     public void turnDown() {
-        speedY = 70;
-        speedX = 0;
+        speed = 1;
         right_ = false;
         left_ = false;
         up_ = false;
@@ -131,15 +116,26 @@ public class Enemy extends DynamicEntity {
     }
 
     public void turnBack() {
+
     };
+    public void setMap() {
 
-    public double getCurrentPosX() {
-        return currentPosX;
+        index_x_ = (int) entity.getX() / TITLE_SIZE;
+        index_y_ = (int) entity.getY() / TITLE_SIZE;
+
+        // set ben trai
+        turn_left_ = canGoThisWay(index_x_ - 1, index_y_);
+        //set ben phai
+        turn_right_ = canGoThisWay(index_x_ + 1, index_y_);
+        //set ben tren
+        turn_up_ = canGoThisWay(index_x_, index_y_ - 1);
+        //set ben duoi
+        turn_down_ = canGoThisWay(index_x_, index_y_ + 1);
+
+        //System.out.println(index_x_ + " " +index_y_ + " " + turn_right_ + " " + turn_left_ + " " + turn_down_ + " " + turn_up_ );
+
     }
 
-    public double getCurrentPosY() {
-        return currentPosY;
-    }
 
     public void setRightAnimationOnce() {
         if(canLoopWalkRight) {

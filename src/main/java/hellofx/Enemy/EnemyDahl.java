@@ -17,14 +17,7 @@ public class EnemyDahl extends Enemy {
 
     private int corner;
 
-    public int index_x_;
-    public int index_y_;
 
-
-    public boolean turn_right_;
-    public boolean turn_left_;
-    public boolean turn_up_;
-    public boolean turn_down_;
     public EnemyDahl() {
         animLeft = new AnimationChannel(FXGL.image("enemy/enemyDahl.png"), 3, TITLE_SIZE, TITLE_SIZE,
                 Duration.seconds(0.4), 3, 5);
@@ -45,26 +38,27 @@ public class EnemyDahl extends Enemy {
         entity.getViewComponent().addChild(texture);
     }
 
-    @Override
-    public void onUpdate(double tpf) {
-        if(!isDead) {
-            move();
-            if (right_) {
-                setRightAnimationOnce();
-                entity.translateX(1);
-            } else if (left_) {
-                setLeftAnimationOnce();
-                entity.translateX(-1);
-            } else if (up_) {
-                entity.translateY(-1);
-            } else if (down_) {
-                entity.translateY(1);
-            }
-        } else {
-            setDeadAnimationOnce();
-        }
-    }
+//    @Override
+//    public void onUpdate(double tpf) {
+//        if(!isDead) {
+//            move();
+//            if (right_) {
+//                setRightAnimationOnce();
+//                entity.translateX(speed);
+//            } else if (left_) {
+//                setLeftAnimationOnce();
+//                entity.translateX(speed);
+//            } else if (up_) {
+//                entity.translateY(speed);
+//            } else if (down_) {
+//                entity.translateY(speed);
+//            }
+//        } else {
+//            setDeadAnimationOnce();
+//        }
+//    }
 
+    @Override
     public void move() {
         if ((int) (entity.getY() % TITLE_SIZE) != 0 || (int) (entity.getX() % TITLE_SIZE) != 0) {
             return;
@@ -77,23 +71,7 @@ public class EnemyDahl extends Enemy {
         setTurnRandom();
     }
 
-    public void setMap() {
 
-        index_x_ = (int) entity.getX() / TITLE_SIZE;
-        index_y_ = (int) entity.getY() / TITLE_SIZE;
-
-        // set ben trai
-        turn_left_ = canGoThisWay(index_x_ - 1, index_y_);
-        //set ben phai
-        turn_right_ = canGoThisWay(index_x_ + 1, index_y_);
-        //set ben tren
-        turn_up_ = canGoThisWay(index_x_, index_y_ - 1);
-        //set ben duoi
-        turn_down_ = canGoThisWay(index_x_, index_y_ + 1);
-
-        //System.out.println(index_x_ + " " +index_y_ + " " + turn_right_ + " " + turn_left_ + " " + turn_down_ + " " + turn_up_ );
-
-    }
 
     public void setCorner() {
         corner = 0;

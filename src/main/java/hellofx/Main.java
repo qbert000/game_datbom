@@ -648,39 +648,39 @@ public class Main extends GameApplication {
 
         });
 
-        // Xu li va cham Enemy doc va tuong
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONVERTICAL, WALL) {
-            @Override
-            protected void onCollisionBegin(Entity enemyVertical, Entity wall) {
-                enemyVertical.getComponent(BalloonVertical.class).turnBack();
-                enemyVertical.setPosition(new Point2D(
-                        enemyVertical.getPosition().getX(),
-                        enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
-            }
-
-            @Override
-            protected void onCollision(Entity enemyVertical, Entity wall) {
-                enemyVertical.setPosition(new Point2D(enemyVertical.getPosition().getX(),
-                        enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
-            }
-        });
+//        // Xu li va cham Enemy doc va tuong
+//        getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONVERTICAL, WALL) {
+//            @Override
+//            protected void onCollisionBegin(Entity enemyVertical, Entity wall) {
+//                enemyVertical.getComponent(BalloonVertical.class).turnBack();
+//                enemyVertical.setPosition(new Point2D(
+//                        enemyVertical.getPosition().getX(),
+//                        enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
+//            }
+//
+//            @Override
+//            protected void onCollision(Entity enemyVertical, Entity wall) {
+//                enemyVertical.setPosition(new Point2D(enemyVertical.getPosition().getX(),
+//                        enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
+//            }
+//        });
         // Xu li va cham Enemy ngang va tuong
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONHORIZONTAL, WALL) {
-            @Override
-            protected void onCollisionBegin(Entity enemyHorizontal, Entity wall) {
-                enemyHorizontal.getComponent(BalloonHorizontal.class).turnBack();
-                enemyHorizontal.setPosition(new Point2D(
-                        enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
-                        enemyHorizontal.getPosition().getY()));
-            }
-
-            @Override
-            protected void onCollision(Entity enemyHorizontal, Entity wall) {
-                enemyHorizontal
-                        .setPosition(new Point2D(enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
-                                enemyHorizontal.getPosition().getY()));
-            }
-        });
+//        getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONHORIZONTAL, WALL) {
+//            @Override
+//            protected void onCollisionBegin(Entity enemyHorizontal, Entity wall) {
+//                enemyHorizontal.getComponent(BalloonHorizontal.class).turnBack();
+//                enemyHorizontal.setPosition(new Point2D(
+//                        enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
+//                        enemyHorizontal.getPosition().getY()));
+//            }
+//
+//            @Override
+//            protected void onCollision(Entity enemyHorizontal, Entity wall) {
+//                enemyHorizontal
+//                        .setPosition(new Point2D(enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
+//                                enemyHorizontal.getPosition().getY()));
+//            }
+//        });
     }
 
     /*
