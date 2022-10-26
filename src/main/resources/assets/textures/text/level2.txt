@@ -17,3 +17,21 @@
 1 D 2 0 2 2 0 1 0 2 C 1 0 0 2 2 0 1 0 2 2 0 X 2 2 1 0 0 F 2 2 1
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 
+*** Entity Tinh ***
+P - portal
+0 - grass
+1 - wall
+2 - brick (soft wall)
+*** Special Entity Tinh ***
+A - [Power up Bomb's radius] Item
+B - [Power up Player's speed] Item
+C - [Increase Bomb's amount] Item
+D - [Increase Flame's "max brick can break"] + [Can pass through Flame] Item
+*** Entity Dong ***
+3 - player
+R - enemy random
+V - enemy vertical
+H - enemy horizontal
+F - enemy with finding path
+S - enemy find can pass soft wall and lure player(not directly find player)
+X - enemy doria random pass soft wall
