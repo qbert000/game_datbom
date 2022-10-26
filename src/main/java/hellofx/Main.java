@@ -22,6 +22,7 @@ import hellofx.SmartMap.Position;
 import hellofx.SmartMap.SmartMap;
 import hellofx.Menu.GameMenu;
 import hellofx.Menu.MainMenu;
+import hellofx.Music.SoundEffect;
 import hellofx.Bomb_Flame.*;
 import hellofx.SpawnSystem.Factory;
 import hellofx.GameUI.StartScene;
@@ -43,9 +44,10 @@ import static hellofx.Constant.GameConstant.*;
 import static hellofx.GameEntity.DynamicEntity.Player.currentXpos;
 import static hellofx.GameEntity.DynamicEntity.Player.currentYpos;
 import static hellofx.GameEntity.DynamicEntity.Player.playerisAlive;
+import static hellofx.Music.SoundEffect.*;
 
 public class Main extends GameApplication {
-    public static int myLevel = 0;
+    public static int myLevel = 1;
     public boolean isLoading = false;
     private Entity g_player = new Entity();
     public Player g_playerComponent;
@@ -242,9 +244,19 @@ public class Main extends GameApplication {
         getInput().addAction(new UserAction("Place boom") {
             @Override
             protected void onActionBegin() {
-                    g_playerComponent.placeBoom();
+                play("place_bomb.wav");
+                g_playerComponent.placeBoom();
+                getGameTimer().runOnceAfter(()->  {
+                    play("explosion.wav");
+                }, Duration.seconds(1.4));
             }
         }, KeyCode.SPACE);
+    }
+
+    @Override
+    protected void onPreInit() {
+        unmute();
+        loopBGM("stage_theme.mp3");
     }
 
     /*
@@ -280,9 +292,10 @@ public class Main extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
         if (isLoading) {
+            turnOffMusic();
             getSceneService().pushSubScene(new StartScene());
             isLoading = false;
-        }
+        } 
         inc("levelTime", -tpf);
         if (g_player.hasComponent(Player.class)) {
             set("bombAmount", Player.getAmountBoom());
@@ -301,23 +314,14 @@ public class Main extends GameApplication {
         }
     }
 
-    public void loadNextLevel() {
-        if (myLevel == 1) {
-            getSceneService().pushSubScene(new StartScene());
-        }
-    }
-
     /*
      * Khoi tao nhung Enity(thuc the) trong Game.
      */
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
-        // nextLevel();
-        // setFirstScene();
         isLoading = true;
         setLevel();
-        // getSceneService().pushSubScene(new EndingScene("TEST"));
         spawn("background", 0, 720);
     }
 
@@ -326,7 +330,8 @@ public class Main extends GameApplication {
      */
     private void replay() {
         g_player.getComponent(Player.class).flamePass = false;
-        myLevel = 0;
+        turnOffMusic();
+        play("player_die.wav");
         ENEMY_NUMBER = 0;
         TOTAL_ENEMY = 0;
         Boom.resizePowerBoom();
@@ -346,25 +351,19 @@ public class Main extends GameApplication {
         // }, Duration.seconds(2));
         index = 0;
         getGameTimer().runOnceAfter(() -> {
+            turnOffMusic();
             getSceneService().pushSubScene(new EndingScene("GAME OVER\n   TRY AGAIN"));
-        }, Duration.seconds(2));
-    }
-
-    public void setFirstScene() {
-        getSceneService().pushSubScene(new StartScene());
+        }, Duration.seconds(2.7));
     }
 
     public void setLevel() {
-        myLevel++;
-        if (myLevel == 1) {
-            // System.out.println("SETTING UP LEVEL !!");
-        }
+        System.out.println("SETTING UP LEVEL: " + myLevel);
         playerisAlive = true;
         double playerPosX = starterPosX;
         double playerPosY = starterPosY;
         Player.amountBoomDown();
         try {
-            if(myLevel > 2) {
+            if (myLevel > 2) {
                 myLevel = 1;
             }
             String mapPath = "level" + myLevel + ".txt";
@@ -406,12 +405,11 @@ public class Main extends GameApplication {
      * Dua nguoi choi den level tiep theo(neu lam :D) /ve man chinh khi di den
      */
     private void nextLevel() {
-        // myLevel ++;
-        // if(myLevel == 1) {
-        // getSceneService().pushSubScene(new StartScene());
-        // return ;
-        // }
-        // isLoading = false;
+        myLevel ++;
+        System.out.println("NEXT LEVEL IS: " + myLevel);
+        turnOffMusic();
+        System.out.println(SoundEffect.isMusicEnabled + " " + SoundEffect.isSoundEnabled);
+        play("next_level.wav");
         g_player.getComponent(Player.class).flamePass = false;
         ENEMY_NUMBER = 0;
         TOTAL_ENEMY = 0;
@@ -430,22 +428,18 @@ public class Main extends GameApplication {
         }, Duration.seconds(1.5));
 
         CONST_SPEED = CONST_SPEED_BEGIN;
-        // getGameTimer().runOnceAfter(() -> {
-        // FXGL.getGameController().gotoMainMenu();
-        // }, Duration.seconds(2));
         index = 0;
-        // loadNextLevel();
-        System.out.println("SETTING UP LEVEL NEWS  " + myLevel);
-        if (myLevel >= MAX_LEVEL) {
-            myLevel = 0;
+        if (myLevel > MAX_LEVEL) {
+            myLevel = 1;
             getGameTimer().runOnceAfter(() -> {
-                getSceneService().pushSubScene(new EndingScene("CONGRATULATIONS\n\n    ALL STAGE CLEAR"));
-            }, Duration.seconds(1));
+                getSceneService().pushSubScene(new EndingScene("CONGRATULATIONS\n    ALL STAGE CLEAR"));
+            }, Duration.seconds(2.7));
         } else {
             getGameTimer().runOnceAfter(() -> {
-                getSceneService().pushSubScene(new StartScene());
+                turnOffMusic();
                 FXGL.getGameController().gotoMainMenu();
-            }, Duration.seconds(1));
+                turnOnMusic();
+            }, Duration.seconds(2.7));
         }
     }
 
@@ -567,13 +561,14 @@ public class Main extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, PORTAL) {
             @Override
             protected void onCollisionBegin(Entity player, Entity portal) {
-                    String sign = getSignOfEntity(portal);
-                    // System.out.println(TOTAL_ENEMY + " " + sign);
-                    getGameTimer().runOnceAfter(() -> {
-                        if ((sign.equals("p") || sign.equals("0")) && TOTAL_ENEMY == 0) {
-                            nextLevel();
-                        }
-                    }, Duration.seconds(0.6));
+                String sign = getSignOfEntity(portal);
+                // System.out.println(TOTAL_ENEMY + " " + sign);
+                getGameTimer().runOnceAfter(() -> {
+                    if ((sign.equals("p") || sign.equals("0")) && TOTAL_ENEMY == 0) {
+                        System.out.println("PLAYYYY");
+                        nextLevel();
+                    }
+                }, Duration.seconds(0.6));
             }
         });
 
@@ -586,6 +581,7 @@ public class Main extends GameApplication {
                     if (prevSolve.equals("a") || prevSolve.equals("b") || prevSolve.equals("c")
                             || prevSolve.equals("d")) {
                         updateMap(my_item, "item");
+                        play("powerup.wav");
                         switch (item.name()) {
                             case "BOMB_ITEM":
                                 Player.increaseBoomAmount();

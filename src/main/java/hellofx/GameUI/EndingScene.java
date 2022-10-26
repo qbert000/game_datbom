@@ -27,10 +27,13 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.geometry.Pos;
+import static hellofx.Music.SoundEffect.*;
 import com.almasb.fxgl.dsl.FXGLForKtKt;
 
 public class EndingScene extends SubScene {
     public EndingScene(String title) {
+        turnOffMusic();
+        play("ending.wav");
         Font myFont = FXGLForKtKt.getUIFactoryService().newFont(FontType.GAME, 80);
         var background = new Rectangle(TITLE_SIZE * 32, TITLE_SIZE * 19, Color.color(0, 0, 0, 1));
         Label titleText = new Label();
@@ -66,5 +69,6 @@ public class EndingScene extends SubScene {
     public void popSubScene() {
         getSceneService().popSubScene();
         getGameController().gotoMainMenu();
+        turnOnMusic();
     }
 }

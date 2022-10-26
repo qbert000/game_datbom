@@ -17,10 +17,12 @@ import javafx.scene.control.Label;
 import com.almasb.fxgl.ui.FontType;
 import static hellofx.Constant.GameConstant.*;
 import static hellofx.Main.myLevel;
+import static hellofx.Music.SoundEffect.*;
 
 public class StartScene extends SubScene{
     public StartScene() {
-         Font myFont = FXGLForKtKt.getUIFactoryService().newFont(FontType.GAME, 80);
+        play("stage_start.wav");
+        Font myFont = FXGLForKtKt.getUIFactoryService().newFont(FontType.GAME, 80);
         var background = new Rectangle(TITLE_SIZE * 32, TITLE_SIZE * 19, Color.color(0, 0, 0, 1));
         Label title = new Label();
         title.setTextFill(Color.WHITESMOKE);
@@ -47,6 +49,9 @@ public class StartScene extends SubScene{
     }
 
     public void popSubScene() {
+        getGameTimer().runOnceAfter(() ->{
+            turnOnMusic();
+        }, Duration.seconds(1.5));
         getSceneService().popSubScene();
     }
 }
