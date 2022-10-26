@@ -6,7 +6,7 @@ import com.almasb.fxgl.entity.Entity;
 // import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
-import hellofx.Enemy.Enemy1;
+import hellofx.Enemy.EnemyPass;
 // import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import static hellofx.Constant.GameConstant.*;
@@ -236,9 +236,9 @@ public class Player extends DynamicEntity {
                 if (!g_map.updatePlayerPosition((int) tempX, (int) tempY)) {
                     // System.out.println("Update player position");
                     for (int i = 0; i < ENEMY_NUMBER; i++) {
-                        if (enemy[i].hasComponent(Enemy1.class)) {
-                            if (!enemy[i].getComponent(Enemy1.class).isDead) {
-                                enemy[i].getComponent(Enemy1.class).findPlayer.resetFinding = true;
+                        if (enemy[i].hasComponent(EnemyPass.class)) {
+                            if (!enemy[i].getComponent(EnemyPass.class).isDead) {
+                                enemy[i].getComponent(EnemyPass.class).findPlayer.resetFinding = true;
                             }
                         }
                     }

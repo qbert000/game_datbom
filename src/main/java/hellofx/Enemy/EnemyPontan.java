@@ -1,25 +1,34 @@
 package hellofx.Enemy;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
 import hellofx.Map.MyMap;
 import hellofx.SmartMap.Position;
 import hellofx.SmartMap.SmartMap;
+import javafx.util.Duration;
 // import hellofx.SmartMap.Street;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static hellofx.Constant.GameConstant.ENEMY_SIZE;
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
 // import static hellofx.Constant.GameConstant.starterPosX;
 import static hellofx.Map.MyMap.canGoThisWay;
 
-public class Enemy8 extends EnemyRandom {
+public class EnemyPontan extends EnemyDahl {
 
     private List<Integer> check = new ArrayList<>();
     private Position vir;
-    public Enemy8() {
-        super();
+    public EnemyPontan() {
+        animDead = new AnimationChannel(FXGL.image("enemy/enemyPontan.png"), 6, TITLE_SIZE,
+                TITLE_SIZE, Duration.seconds(0.7), 0, 5);
+        animRight = new AnimationChannel(FXGL.image("enemy/enemyPontan.png"), 3, TITLE_SIZE,
+                TITLE_SIZE, Duration.seconds(0.5), 6, 8);
+        animLeft = new AnimationChannel(FXGL.image("enemy/enemyPontan.png"), 3, TITLE_SIZE,
+                TITLE_SIZE, Duration.seconds(0.5), 3, 5);
         right_ = true;
         left_ = false;
         up_ = false;
@@ -29,15 +38,21 @@ public class Enemy8 extends EnemyRandom {
     }
     @Override
     public void onUpdate(double tpf) {
-        move();
-        if (right_) {
-            entity.translateX(1);
-        } else if (left_) {
-            entity.translateX(-1);
-        } else if (up_) {
-            entity.translateY(-1);
-        } else if (down_) {
-            entity.translateY(1);
+        if(!isDead) {
+            move();
+            if (right_) {
+                setRightAnimationOnce();
+                entity.translateX(2);
+            } else if (left_) {
+                setLeftAnimationOnce();
+                entity.translateX(-2);
+            } else if (up_) {
+                entity.translateY(-2);
+            } else if (down_) {
+                entity.translateY(2);
+            }
+        } else {
+            setDeadAnimationOnce();
         }
 
     }

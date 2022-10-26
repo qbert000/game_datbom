@@ -9,8 +9,8 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 // import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 // import static hellofx.Constant.GameConstant.ENEMY_SIZE;
 
-public class EnemyHorizontal extends Enemy {
-    public EnemyHorizontal() {
+public class BalloonHorizontal extends Enemy {
+    public BalloonHorizontal() {
         super();
         right_ = true;
         left_ = false;

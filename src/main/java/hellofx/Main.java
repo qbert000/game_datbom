@@ -1,12 +1,8 @@
 package hellofx;
 
-import java.util.List;
 import java.util.Map;
 
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 import javafx.geometry.Point2D;
 import com.almasb.fxgl.app.CursorInfo;
@@ -14,7 +10,6 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.physics.CollisionHandler;
-import com.fasterxml.jackson.databind.jsontype.impl.AsDeductionTypeDeserializer;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.app.scene.FXGLMenu;
@@ -28,7 +23,6 @@ import hellofx.SmartMap.SmartMap;
 import hellofx.Menu.GameMenu;
 import hellofx.Menu.MainMenu;
 import hellofx.Bomb_Flame.*;
-import hellofx.Animation.*;
 import hellofx.SpawnSystem.Factory;
 import hellofx.Map.*;
 import static com.almasb.fxgl.dsl.FXGL.addUINode;
@@ -46,7 +40,6 @@ import static hellofx.Map.MyMap.getSignOfEntity;
 import static hellofx.Constant.GameConstant.*;
 import static hellofx.GameEntity.DynamicEntity.Player.currentXpos;
 import static hellofx.GameEntity.DynamicEntity.Player.currentYpos;
-import static com.almasb.fxgl.dsl.FXGL.*;
 import static hellofx.GameEntity.DynamicEntity.Player.playerisAlive;
 
 public class Main extends GameApplication {
@@ -327,6 +320,8 @@ public class Main extends GameApplication {
             }
             set("enemies", TOTAL_ENEMY);
         }
+        System.out.println("ENEMY NUMBER: " + ENEMY_NUMBER);
+        System.out.println("TOTAL ENEMY: " + TOTAL_ENEMY);
         g_smartMap = new SmartMap();
         SmartMap.set();
         // //SmartMap.print();
@@ -405,6 +400,7 @@ public class Main extends GameApplication {
         // Xu li va cham Player va cac Enemy trong game
         for (Enum enemy : enemyType) {
             onCollisionBegin(PLAYER, enemy, (player, myEnemy) -> {
+                set("life", 0);
                 replay();
             });
         }
@@ -412,8 +408,8 @@ public class Main extends GameApplication {
         // Xu li va cham Player va Flame
         for (Enum flame : myFlameList) {
             onCollisionBegin(PLAYER, flame, (player, myFlame) -> {
-                if (!g_player.getComponent(Player.class).flamePass)
-                    replay();
+                set("life", 0);
+                if (!g_player.getComponent(Player.class).flamePass) replay();
             });
         }
 
@@ -421,30 +417,44 @@ public class Main extends GameApplication {
         for (Enum enemy : enemyType) {
             for (Enum myFlame : myFlameList) {
                 onCollisionBegin(enemy, myFlame, (enemyEntity, flame) -> {
-                    if (enemyEntity.hasComponent(EnemyRandom.class)) {
-                        if (!enemyEntity.getComponent(EnemyRandom.class).isDead) {
-                            enemyEntity.getComponent(EnemyRandom.class).dead();
+                    if (enemyEntity.hasComponent(EnemyDahl.class)) {
+                        if (!enemyEntity.getComponent(EnemyDahl.class).isDead) {
+                            enemyEntity.getComponent(EnemyDahl.class).dead();
                             inc("enemies", -1);
                             TOTAL_ENEMY--;
                         }
                     }
-                    if (enemyEntity.hasComponent(EnemyVertical.class)) {
-                        if (!enemyEntity.getComponent(EnemyVertical.class).isDead) {
-                            enemyEntity.getComponent(EnemyVertical.class).dead();
+                    if (enemyEntity.hasComponent(BalloonVertical.class)) {
+                        if (!enemyEntity.getComponent(BalloonVertical.class).isDead) {
+                            enemyEntity.getComponent(BalloonVertical.class).dead();
                             inc("enemies", -1);
                             TOTAL_ENEMY--;
                         }
                     }
-                    if (enemyEntity.hasComponent(EnemyHorizontal.class)) {
-                        if (!enemyEntity.getComponent(EnemyHorizontal.class).isDead) {
-                            enemyEntity.getComponent(EnemyHorizontal.class).dead();
+                    if (enemyEntity.hasComponent(BalloonHorizontal.class)) {
+                        if (!enemyEntity.getComponent(BalloonHorizontal.class).isDead) {
+                            enemyEntity.getComponent(BalloonHorizontal.class).dead();
                             inc("enemies", -1);
                             TOTAL_ENEMY--;
                         }
                     }
-                    if (enemyEntity.hasComponent(Enemy1.class)) {
-                        if (!enemyEntity.getComponent(Enemy1.class).isDead) {
-                            enemyEntity.getComponent(Enemy1.class).dead();
+                    if (enemyEntity.hasComponent(EnemyPass.class)) {
+                        if (!enemyEntity.getComponent(EnemyPass.class).isDead) {
+                            enemyEntity.getComponent(EnemyPass.class).dead();
+                            inc("enemies", -1);
+                            TOTAL_ENEMY--;
+                        }
+                    }
+                    if (enemyEntity.hasComponent(EnemyDoria.class)) {
+                        if (!enemyEntity.getComponent(EnemyDoria.class).isDead) {
+                            enemyEntity.getComponent(EnemyDoria.class).dead();
+                            inc("enemies", -1);
+                            TOTAL_ENEMY--;
+                        }
+                    }
+                    if (enemyEntity.hasComponent(EnemyPontan.class)) {
+                        if (!enemyEntity.getComponent(EnemyPontan.class).isDead) {
+                            enemyEntity.getComponent(EnemyPontan.class).dead();
                             inc("enemies", -1);
                             TOTAL_ENEMY--;
                         }
@@ -637,35 +647,35 @@ public class Main extends GameApplication {
         });
 
         // Xu li va cham Enemy doc va tuong
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(ENEMYVERTICAL, WALL) {
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONVERTICAL, WALL) {
             @Override
             protected void onCollisionBegin(Entity enemyVertical, Entity wall) {
-                enemyVertical.getComponent(EnemyVertical.class).turnBack();
+                enemyVertical.getComponent(BalloonVertical.class).turnBack();
                 enemyVertical.setPosition(new Point2D(
                         enemyVertical.getPosition().getX(),
-                        enemyVertical.getComponent(EnemyVertical.class).getCurrentPosY()));
+                        enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
             }
 
             @Override
             protected void onCollision(Entity enemyVertical, Entity wall) {
                 enemyVertical.setPosition(new Point2D(enemyVertical.getPosition().getX(),
-                        enemyVertical.getComponent(EnemyVertical.class).getCurrentPosY()));
+                        enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
             }
         });
         // Xu li va cham Enemy ngang va tuong
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(ENEMYHORIZONTAL, WALL) {
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONHORIZONTAL, WALL) {
             @Override
             protected void onCollisionBegin(Entity enemyHorizontal, Entity wall) {
-                enemyHorizontal.getComponent(EnemyHorizontal.class).turnBack();
+                enemyHorizontal.getComponent(BalloonHorizontal.class).turnBack();
                 enemyHorizontal.setPosition(new Point2D(
-                        enemyHorizontal.getComponent(EnemyHorizontal.class).getCurrentPosX(),
+                        enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
                         enemyHorizontal.getPosition().getY()));
             }
 
             @Override
             protected void onCollision(Entity enemyHorizontal, Entity wall) {
                 enemyHorizontal
-                        .setPosition(new Point2D(enemyHorizontal.getComponent(EnemyHorizontal.class).getCurrentPosX(),
+                        .setPosition(new Point2D(enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
                                 enemyHorizontal.getPosition().getY()));
             }
         });

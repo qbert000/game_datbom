@@ -9,19 +9,19 @@ import javafx.util.Duration;
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
 // import static hellofx.Main.g_map;
 
-public class Enemy1 extends Enemy {
+public class EnemyPass extends Enemy {
     public PathFinding findPlayer;
 
     public int firstX;
     public int firstY;
 
-    public Enemy1() {
+    public EnemyPass() {
         // di chuyen ben trai
-        animLeft = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 3, TITLE_SIZE, TITLE_SIZE,
+        animLeft = new AnimationChannel(FXGL.image("enemy/enemyPass.png"), 3, TITLE_SIZE, TITLE_SIZE,
                 Duration.seconds(0.5), 3, 5);
-        animRight = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 3, TITLE_SIZE, TITLE_SIZE,
+        animRight = new AnimationChannel(FXGL.image("enemy/enemyPass.png"), 3, TITLE_SIZE, TITLE_SIZE,
                 Duration.seconds(0.5), 6, 8);
-        animDead = new AnimationChannel(FXGL.image("enemy/oneal40.png"), 6, TITLE_SIZE, TITLE_SIZE,
+        animDead = new AnimationChannel(FXGL.image("enemy/enemyPass.png"), 6, TITLE_SIZE, TITLE_SIZE,
                 Duration.seconds(0.7), 0, 5);
         texture = new AnimatedTexture(animLeft);
     }

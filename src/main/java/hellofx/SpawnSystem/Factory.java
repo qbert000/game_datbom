@@ -46,57 +46,68 @@ public class Factory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("enemyHorizontal")
+    @Spawns("balloonHorizontal")
     public Entity newEnemyHorizon(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .type(ENEMYHORIZONTAL)
+                .type(BALLOONHORIZONTAL)
                 .zIndex(900)
                 .with(new CollidableComponent(true))
-                .with(new EnemyHorizontal())
+                .with(new BalloonHorizontal())
                 .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
                 .build();
     }
 
-    @Spawns("enemyRandom")
+    @Spawns("enemyPontan")
     public Entity newEnemyRandom(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .type(ENEMYRANDOM)
+                .type(ENEMYPONTAN)
                 .zIndex(1000)
-                .with(new EnemyRandom())
+                .with(new EnemyDahl())
                 .with(new CollidableComponent(true))
                 .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
                 .build();
     }
 
-    @Spawns("enemy8")
+    @Spawns("enemyDoria")
+    public Entity newEnemyDoria(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(ENEMYDORIA)
+                .zIndex(800)
+                .with(new EnemyDoria())
+                .with(new CollidableComponent(true))
+                .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
+                .build();
+    }
+
+    @Spawns("enemyDahl")
     public Entity newEnemy8(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .type(ENEMY8)
+                .type(ENEMYDAHL)
                 .zIndex(900)
-                .with(new Enemy8())
+                .with(new EnemyPontan())
                 .with(new CollidableComponent(true))
                 .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
                 .build();
     }
 
-    @Spawns("enemy1")
+    @Spawns("enemyPass")
     public Entity newEnemy1(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .type(ENEMY1)
+                .type(ENEMYPASS)
                 .zIndex(900)
                 .with(new CollidableComponent(true))
-                .with(new Enemy1())
+                .with(new EnemyPass())
                 .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(40, 40)))
                 .build();
     }
 
-    @Spawns("enemyVertical")
+    @Spawns("balloonVertical")
     public Entity newEnemyVertical(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .type(ENEMYVERTICAL)
+                .type(BALLOONVERTICAL)
                 .zIndex(900)
                 .with(new CollidableComponent(true))
-                .with(new EnemyVertical())
+                .with(new BalloonVertical())
                 .bbox(new HitBox(new Point2D(-1, -1), BoundingShape.box(38, 38)))
                 .build();
     }

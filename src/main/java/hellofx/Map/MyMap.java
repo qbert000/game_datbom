@@ -16,7 +16,7 @@ import java.util.Scanner;
 import com.almasb.fxgl.dsl.FXGL;
 
 // import hellofx.Enemy.Enemy;
-import hellofx.Enemy.Enemy1;
+import hellofx.Enemy.EnemyPass;
 import javafx.util.Duration;
 import com.almasb.fxgl.entity.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
@@ -37,11 +37,11 @@ public class MyMap {
         /*
          * Comment lai dong duoi khi dung tren may Quyen.
          */
-        File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\map.txt");
+        //File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\map.txt");
         /*
          * Comment lai dong duoi khi dung tren may Dung.
          */
-        //File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
+        File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
         Scanner sc = new Scanner(file);
 
         int i = 0;
@@ -93,29 +93,34 @@ public class MyMap {
 
         if (MyMap.myMap[i][j].equals("V")) {
             TOTAL_ENEMY++;
-            FXGL.spawn("enemyVertical", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
+            FXGL.spawn("balloonVertical", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
         }
 
         if (MyMap.myMap[i][j].equals("H")) {
             TOTAL_ENEMY++;
-            FXGL.spawn("enemyHorizontal", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
+            FXGL.spawn("balloonHorizontal", j * TITLE_SIZE + 2, i * TITLE_SIZE + 2);
         }
 
         if (MyMap.myMap[i][j].equals("F")) {
             TOTAL_ENEMY++;
-            enemy[index] = FXGL.spawn("enemy1", j * TITLE_SIZE, i * TITLE_SIZE);
-            enemy[index].getComponent(Enemy1.class).setUp();
+            enemy[index] = FXGL.spawn("enemyPass", j * TITLE_SIZE, i * TITLE_SIZE);
+            enemy[index].getComponent(EnemyPass.class).setUp();
             index++;
         }
 
         if (MyMap.myMap[i][j].equals("R")) {
             TOTAL_ENEMY++;
-            FXGL.spawn("enemyRandom", j * TITLE_SIZE, i * TITLE_SIZE);
+            FXGL.spawn("enemyPontan", j * TITLE_SIZE, i * TITLE_SIZE);
         }
 
         if (MyMap.myMap[i][j].equals("S")) {
             TOTAL_ENEMY++;
-            FXGL.spawn("enemy8", j * TITLE_SIZE, i * TITLE_SIZE);
+            FXGL.spawn("enemyDahl", j * TITLE_SIZE, i * TITLE_SIZE);
+        }
+
+        if (MyMap.myMap[i][j].equals("X")) {
+            TOTAL_ENEMY++;
+            FXGL.spawn("enemyDoria", j * TITLE_SIZE, i * TITLE_SIZE);
         }
     }
 
@@ -136,10 +141,10 @@ public class MyMap {
 
     public static void updateEnemy() {
         for (int i = 0; i < ENEMY_NUMBER; i++) {
-            if (enemy[i].hasComponent(Enemy1.class)) {
-                if (!enemy[i].getComponent(Enemy1.class).isDead) {
-                    enemy[i].getComponent(Enemy1.class).findPlayer.resetFinding = true;
-                    enemy[i].getComponent(Enemy1.class).findPlayer.resetMap();
+            if (enemy[i].hasComponent(EnemyPass.class)) {
+                if (!enemy[i].getComponent(EnemyPass.class).isDead) {
+                    enemy[i].getComponent(EnemyPass.class).findPlayer.resetFinding = true;
+                    enemy[i].getComponent(EnemyPass.class).findPlayer.resetMap();
                 }
             }
         }

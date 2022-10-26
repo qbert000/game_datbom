@@ -1,6 +1,9 @@
 package hellofx.Enemy;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
 import static hellofx.Map.MyMap.canGoThisWay;
-public class EnemyRandom extends Enemy {
+public class EnemyDahl extends Enemy {
 
     private final List<Integer> turn_ = new ArrayList<Integer>();
 
@@ -22,8 +25,14 @@ public class EnemyRandom extends Enemy {
     public boolean turn_left_;
     public boolean turn_up_;
     public boolean turn_down_;
-    public EnemyRandom() {
-        super();
+    public EnemyDahl() {
+        animLeft = new AnimationChannel(FXGL.image("enemy/enemyDahl.png"), 3, TITLE_SIZE, TITLE_SIZE,
+                Duration.seconds(0.4), 3, 5);
+        animRight = new AnimationChannel(FXGL.image("enemy/enemyDahl.png"), 3, TITLE_SIZE, TITLE_SIZE,
+                Duration.seconds(0.4), 6, 8);
+        animDead = new AnimationChannel(FXGL.image("enemy/enemyDahl.png"), 6, TITLE_SIZE, TITLE_SIZE,
+                Duration.seconds(0.7), 0, 5);
+        texture = new AnimatedTexture(animRight);
         right_ = false;
         left_ = false;
         up_ = false;
