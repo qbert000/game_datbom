@@ -42,14 +42,14 @@ public class EnemyPontan extends EnemyDahl {
             move();
             if (right_) {
                 setRightAnimationOnce();
-                entity.translateX(2);
+                entity.translateX(1);
             } else if (left_) {
                 setLeftAnimationOnce();
-                entity.translateX(-2);
+                entity.translateX(-1);
             } else if (up_) {
-                entity.translateY(-2);
+                entity.translateY(-1);
             } else if (down_) {
-                entity.translateY(2);
+                entity.translateY(1);
             }
         } else {
             setDeadAnimationOnce();

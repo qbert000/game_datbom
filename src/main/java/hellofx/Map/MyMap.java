@@ -41,7 +41,7 @@ public class MyMap {
         /*
          * Comment lai dong duoi khi dung tren may Dung.
          */
-        File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\map.txt");
+        File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\level2.txt");
         Scanner sc = new Scanner(file);
 
         int i = 0;

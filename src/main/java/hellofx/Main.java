@@ -57,6 +57,8 @@ public class Main extends GameApplication {
         settings.setHeight(TITLE_SIZE * 19);
         settings.setTitle("Bomberman");
         settings.setAppIcon("icon/icon.png");
+        settings.setFullScreenAllowed(true);
+        settings.setFullScreenFromStart(true);
         // settings.setFontUI("font/game_font.ttf");
         // to chuc file mac dinh la assets/textures/ --> them duong dan dc
         settings.setVersion("1.0");
