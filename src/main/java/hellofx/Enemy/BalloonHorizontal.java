@@ -32,29 +32,6 @@ public class BalloonHorizontal extends Enemy {
         entity.getViewComponent().addChild(texture);
     }
 
-//    @Override
-//    public void onUpdate(double tpf) {
-//        if(!isDead) {
-//            move();
-//            System.out.println(speed);
-//            if (right_) {
-//                setRightAnimationOnce();
-//                entity.translateX(speed);
-//            } else if (left_) {
-//                setLeftAnimationOnce();
-//                entity.translateX(speed);
-//            } else if (up_) {
-//                entity.translateY(speed);
-//            } else if (down_) {
-//                entity.translateY(speed);
-//            }
-//        } else {
-//            setDeadAnimationOnce();
-//        }
-//
-//    }
-
-
     @Override
     public void turnBack() {
         if (right_ ) {

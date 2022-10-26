@@ -37,11 +37,11 @@ public class MyMap {
         /*
          * Comment lai dong duoi khi dung tren may Quyen.
          */
-        File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\level1.txt");
+        //File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\level1.txt");
         /*
          * Comment lai dong duoi khi dung tren may Dung.
          */
-        //File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\level2.txt");
+        File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\level2.txt");
         Scanner sc = new Scanner(file);
 
         int i = 0;

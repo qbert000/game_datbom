@@ -35,6 +35,7 @@ public class EnemyPontan extends EnemyDahl {
         down_ = false;
         vir = new Position();
         texture = new AnimatedTexture(animRight);
+        setRightAnimationOnce();
     }
 //    @Override
 //    public void onUpdate(double tpf) {

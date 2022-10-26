@@ -17,6 +17,7 @@ public class EnemyDoria extends EnemyDahl {
         animDead = new AnimationChannel(FXGL.image("enemy/enemyDoria40.png"), 6, TITLE_SIZE, TITLE_SIZE,
                 Duration.seconds(0.7), 0, 5);
         texture = new AnimatedTexture(animRight);
+        setRightAnimationOnce();
     }
 
     @Override

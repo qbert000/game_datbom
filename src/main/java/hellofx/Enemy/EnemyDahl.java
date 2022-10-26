@@ -30,7 +30,7 @@ public class EnemyDahl extends Enemy {
         left_ = false;
         up_ = false;
         down_ = false;
-        texture = new AnimatedTexture(animRight);
+       setLeftAnimationOnce();
     }
 
     @Override
