@@ -24,6 +24,8 @@ import hellofx.Menu.GameMenu;
 import hellofx.Menu.MainMenu;
 import hellofx.Bomb_Flame.*;
 import hellofx.SpawnSystem.Factory;
+import hellofx.GameUI.StartScene;
+import hellofx.GameUI.EndingScene;
 import hellofx.Map.*;
 import static com.almasb.fxgl.dsl.FXGL.addUINode;
 import hellofx.GameUI.GameUIComponent;
@@ -43,6 +45,8 @@ import static hellofx.GameEntity.DynamicEntity.Player.currentYpos;
 import static hellofx.GameEntity.DynamicEntity.Player.playerisAlive;
 
 public class Main extends GameApplication {
+    public static int myLevel = 0;
+    public boolean isLoading = false;
     private Entity g_player = new Entity();
     public Player g_playerComponent;
 
@@ -68,7 +72,7 @@ public class Main extends GameApplication {
         settings.setFontGame("font2.ttf");
         // settings.setFontMono("font/font2.ttf");
         // settings.setFontText("font/font3.ttf");
-        // settings.setFontUI("font/font4.ttf");
+        // settings.setFontUI("font/font2.ttf");
         settings.setGameMenuEnabled(true);
         settings.setMainMenuEnabled(true);
         settings.setSceneFactory(new SceneFactory() {
@@ -238,9 +242,7 @@ public class Main extends GameApplication {
         getInput().addAction(new UserAction("Place boom") {
             @Override
             protected void onActionBegin() {
-                if (playerisAlive) {
                     g_playerComponent.placeBoom();
-                }
             }
         }, KeyCode.SPACE);
     }
@@ -251,7 +253,7 @@ public class Main extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("bombAmount", 1);
-        vars.put("speed", (int)CONST_SPEED * 10);
+        vars.put("speed", (int) CONST_SPEED * 10);
         vars.put("flameRadius", Boom.getSizeBoom());
         vars.put("flamePass", 0);
         vars.put("life", 1);
@@ -277,10 +279,14 @@ public class Main extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
+        if (isLoading) {
+            getSceneService().pushSubScene(new StartScene());
+            isLoading = false;
+        }
         inc("levelTime", -tpf);
         if (g_player.hasComponent(Player.class)) {
             set("bombAmount", Player.getAmountBoom());
-            set("speed", (int)CONST_SPEED * 100);
+            set("speed", (int) CONST_SPEED * 100);
             if (g_player.getComponent(Player.class).flamePass) {
                 set("flamePass", 1);
             }
@@ -295,18 +301,74 @@ public class Main extends GameApplication {
         }
     }
 
+    public void loadNextLevel() {
+        if (myLevel == 1) {
+            getSceneService().pushSubScene(new StartScene());
+        }
+    }
+
     /*
      * Khoi tao nhung Enity(thuc the) trong Game.
      */
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
+        // nextLevel();
+        // setFirstScene();
+        isLoading = true;
+        setLevel();
+        // getSceneService().pushSubScene(new EndingScene("TEST"));
+        spawn("background", 0, 720);
+    }
+
+    /*
+     * Reset lai nhung bien trong game khi nguoi choi chet / ve portal
+     */
+    private void replay() {
+        g_player.getComponent(Player.class).flamePass = false;
+        myLevel = 0;
+        ENEMY_NUMBER = 0;
+        TOTAL_ENEMY = 0;
+        Boom.resizePowerBoom();
+        Boom.resetFlameSize();
+        Player.amountBoomDown();
+        playerisAlive = false;
+        if (g_player.hasComponent(Player.class)) {
+            g_player.getComponent(Player.class).loadDeadAnim();
+        }
+        getGameTimer().runOnceAfter(() -> {
+            g_player.removeFromWorld();
+        }, Duration.seconds(1.1));
+
+        CONST_SPEED = CONST_SPEED_BEGIN;
+        // getGameTimer().runOnceAfter(() -> {
+        // FXGL.getGameController().gotoMainMenu();
+        // }, Duration.seconds(2));
+        index = 0;
+        getGameTimer().runOnceAfter(() -> {
+            getSceneService().pushSubScene(new EndingScene("GAME OVER\n   TRY AGAIN"));
+        }, Duration.seconds(2));
+    }
+
+    public void setFirstScene() {
+        getSceneService().pushSubScene(new StartScene());
+    }
+
+    public void setLevel() {
+        myLevel++;
+        if (myLevel == 1) {
+            // System.out.println("SETTING UP LEVEL !!");
+        }
         playerisAlive = true;
         double playerPosX = starterPosX;
         double playerPosY = starterPosY;
         Player.amountBoomDown();
         try {
-            g_map = new MyMap();
+            if(myLevel > 2) {
+                myLevel = 1;
+            }
+            String mapPath = "level" + myLevel + ".txt";
+            g_map = new MyMap(mapPath, "D");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -338,38 +400,18 @@ public class Main extends GameApplication {
         g_player.getComponent(Player.class).getMyX = g_player.getPosition().getX();
         g_player.getComponent(Player.class).getMyY = g_player.getPosition().getY();
         index = 0;
-        spawn("background", 0, 720);
-    }
-
-    /*
-     * Reset lai nhung bien trong game khi nguoi choi chet / ve portal
-     */
-    private void replay() {
-        g_player.getComponent(Player.class).flamePass = false;
-        ENEMY_NUMBER = 0;
-        TOTAL_ENEMY = 0;
-        Boom.resizePowerBoom();
-        Boom.resetFlameSize();
-        Player.amountBoomDown();
-        playerisAlive = false;
-        if (g_player.hasComponent(Player.class)) {
-            g_player.getComponent(Player.class).loadDeadAnim();
-        }
-        getGameTimer().runOnceAfter(() -> {
-            g_player.removeFromWorld();
-        }, Duration.seconds(1.1));
-
-        CONST_SPEED = CONST_SPEED_BEGIN;
-        getGameTimer().runOnceAfter(() -> {
-            FXGL.getGameController().gotoMainMenu();
-        }, Duration.seconds(2));
-        index = 0;
     }
 
     /*
      * Dua nguoi choi den level tiep theo(neu lam :D) /ve man chinh khi di den
      */
     private void nextLevel() {
+        // myLevel ++;
+        // if(myLevel == 1) {
+        // getSceneService().pushSubScene(new StartScene());
+        // return ;
+        // }
+        // isLoading = false;
         g_player.getComponent(Player.class).flamePass = false;
         ENEMY_NUMBER = 0;
         TOTAL_ENEMY = 0;
@@ -388,10 +430,23 @@ public class Main extends GameApplication {
         }, Duration.seconds(1.5));
 
         CONST_SPEED = CONST_SPEED_BEGIN;
-        getGameTimer().runOnceAfter(() -> {
-            FXGL.getGameController().gotoMainMenu();
-        }, Duration.seconds(2));
+        // getGameTimer().runOnceAfter(() -> {
+        // FXGL.getGameController().gotoMainMenu();
+        // }, Duration.seconds(2));
         index = 0;
+        // loadNextLevel();
+        System.out.println("SETTING UP LEVEL NEWS  " + myLevel);
+        if (myLevel >= MAX_LEVEL) {
+            myLevel = 0;
+            getGameTimer().runOnceAfter(() -> {
+                getSceneService().pushSubScene(new EndingScene("CONGRATULATIONS\n\n    ALL STAGE CLEAR"));
+            }, Duration.seconds(1));
+        } else {
+            getGameTimer().runOnceAfter(() -> {
+                getSceneService().pushSubScene(new StartScene());
+                FXGL.getGameController().gotoMainMenu();
+            }, Duration.seconds(1));
+        }
     }
 
     /*
@@ -411,7 +466,8 @@ public class Main extends GameApplication {
         for (Enum flame : myFlameList) {
             onCollisionBegin(PLAYER, flame, (player, myFlame) -> {
                 set("life", 0);
-                if (!g_player.getComponent(Player.class).flamePass) replay();
+                if (!g_player.getComponent(Player.class).flamePass)
+                    replay();
             });
         }
 
@@ -511,13 +567,13 @@ public class Main extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, PORTAL) {
             @Override
             protected void onCollisionBegin(Entity player, Entity portal) {
-                String sign = getSignOfEntity(portal);
-                // System.out.println(TOTAL_ENEMY + " " + sign);
-                getGameTimer().runOnceAfter(() -> {
-                    if ((sign.equals("p") || sign.equals("0")) && TOTAL_ENEMY == 0) {
-                        nextLevel();
-                    }
-                }, Duration.seconds(0.6));
+                    String sign = getSignOfEntity(portal);
+                    // System.out.println(TOTAL_ENEMY + " " + sign);
+                    getGameTimer().runOnceAfter(() -> {
+                        if ((sign.equals("p") || sign.equals("0")) && TOTAL_ENEMY == 0) {
+                            nextLevel();
+                        }
+                    }, Duration.seconds(0.6));
             }
         });
 
@@ -648,39 +704,42 @@ public class Main extends GameApplication {
 
         });
 
-//        // Xu li va cham Enemy doc va tuong
-//        getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONVERTICAL, WALL) {
-//            @Override
-//            protected void onCollisionBegin(Entity enemyVertical, Entity wall) {
-//                enemyVertical.getComponent(BalloonVertical.class).turnBack();
-//                enemyVertical.setPosition(new Point2D(
-//                        enemyVertical.getPosition().getX(),
-//                        enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
-//            }
-//
-//            @Override
-//            protected void onCollision(Entity enemyVertical, Entity wall) {
-//                enemyVertical.setPosition(new Point2D(enemyVertical.getPosition().getX(),
-//                        enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
-//            }
-//        });
+        // // Xu li va cham Enemy doc va tuong
+        // getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONVERTICAL,
+        // WALL) {
+        // @Override
+        // protected void onCollisionBegin(Entity enemyVertical, Entity wall) {
+        // enemyVertical.getComponent(BalloonVertical.class).turnBack();
+        // enemyVertical.setPosition(new Point2D(
+        // enemyVertical.getPosition().getX(),
+        // enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
+        // }
+        //
+        // @Override
+        // protected void onCollision(Entity enemyVertical, Entity wall) {
+        // enemyVertical.setPosition(new Point2D(enemyVertical.getPosition().getX(),
+        // enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
+        // }
+        // });
         // Xu li va cham Enemy ngang va tuong
-//        getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONHORIZONTAL, WALL) {
-//            @Override
-//            protected void onCollisionBegin(Entity enemyHorizontal, Entity wall) {
-//                enemyHorizontal.getComponent(BalloonHorizontal.class).turnBack();
-//                enemyHorizontal.setPosition(new Point2D(
-//                        enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
-//                        enemyHorizontal.getPosition().getY()));
-//            }
-//
-//            @Override
-//            protected void onCollision(Entity enemyHorizontal, Entity wall) {
-//                enemyHorizontal
-//                        .setPosition(new Point2D(enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
-//                                enemyHorizontal.getPosition().getY()));
-//            }
-//        });
+        // getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONHORIZONTAL,
+        // WALL) {
+        // @Override
+        // protected void onCollisionBegin(Entity enemyHorizontal, Entity wall) {
+        // enemyHorizontal.getComponent(BalloonHorizontal.class).turnBack();
+        // enemyHorizontal.setPosition(new Point2D(
+        // enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
+        // enemyHorizontal.getPosition().getY()));
+        // }
+        //
+        // @Override
+        // protected void onCollision(Entity enemyHorizontal, Entity wall) {
+        // enemyHorizontal
+        // .setPosition(new
+        // Point2D(enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
+        // enemyHorizontal.getPosition().getY()));
+        // }
+        // });
     }
 
     /*

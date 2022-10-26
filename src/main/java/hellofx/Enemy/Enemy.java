@@ -75,7 +75,7 @@ public class Enemy extends DynamicEntity {
 
     public void move() {
         if ((int) (entity.getY() % TITLE_SIZE) != 0 || (int) (entity.getX() % TITLE_SIZE) != 0) {
-            System.out.println((int) (entity.getY() % TITLE_SIZE) + " " + (int) (entity.getX() % TITLE_SIZE));
+           // System.out.println((int) (entity.getY() % TITLE_SIZE) + " " + (int) (entity.getX() % TITLE_SIZE));
             return;
         }
         //speed = 1;

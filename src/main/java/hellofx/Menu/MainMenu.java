@@ -40,21 +40,21 @@ public class MainMenu extends FXGLMenu {
         title.setEffect(dropShadow);
         centerTextBind(title, getAppWidth() / 2.0, 300);
 
-        MenuButton first = new MenuButton("NEW GAME", fontSize, () -> newGame());
+        MenuButton first = new MenuButton("NEW GAME", menuButtonFontSize, () -> newGame());
         first.setEffect(dropShadow);
 
-        MenuButton second = new MenuButton("CONTROL", fontSize, () -> instruct());
+        MenuButton second = new MenuButton("CONTROL", menuButtonFontSize, () -> instruct());
         second.setEffect(dropShadow);
 
-        MenuButton third = new MenuButton("EXIT", fontSize, () -> fireExit());
+        MenuButton third = new MenuButton("EXIT", menuButtonFontSize, () -> fireExit());
         third.setEffect(dropShadow);
 
         var menuBox = new VBox(first, second, third);
 
-        menuBox.setAlignment(Pos.CENTER_LEFT);
-        menuBox.setTranslateX(getAppWidth() * 0.42);
+        menuBox.setAlignment(Pos.CENTER);
+        menuBox.setMinWidth(getAppWidth());
         menuBox.setTranslateY(getAppHeight() / 2.0);
-        menuBox.setSpacing(20);
+        menuBox.setSpacing(50);
         getContentRoot().getChildren().addAll(background, title, menuBox);
     }
 

@@ -11,7 +11,9 @@ public class GameConstant {
     public static final int starterPosX = 200;
     public static final int starterPosY = 200;
     public static final int flame4dirSize = 38;
+    public static final int MAX_LEVEL = 2;
     public static final int fontSize = 36;
+    public static final int menuButtonFontSize = 45;
     public static final int ENEMY_SIZE = 36;
     public static final double FONT_SIZE = 36.0;
     public static final double GAME_TIME = 180.0;

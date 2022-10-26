@@ -33,15 +33,18 @@ public class MyMap {
     public static int playerX;
     public static int playerY;
 
-    public MyMap() throws Exception {
-        /*
-         * Comment lai dong duoi khi dung tren may Quyen.
-         */
-        //File file = new File("C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\level1.txt");
-        /*
-         * Comment lai dong duoi khi dung tren may Dung.
-         */
-        File file = new File("E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\level2.txt");
+    public File file;
+
+    public MyMap(String myLevelMapText, String owner) throws Exception {
+        if(owner.equals("Q")) {
+            String filePath = "E:\\space_java\\Game\\game_datbom\\src\\main\\resources\\assets\\textures\\text\\" + myLevelMapText;
+            file = new File(filePath);
+        }
+        if(owner.equals("D")) {
+            String filePath = "C:\\Users\\Admin\\Documents\\Bomberman\\src\\assets\\textures\\text\\" +myLevelMapText;
+            file = new File(filePath);
+        }
+
         Scanner sc = new Scanner(file);
 
         int i = 0;
