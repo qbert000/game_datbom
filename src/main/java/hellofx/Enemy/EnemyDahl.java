@@ -10,13 +10,11 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
-import static hellofx.Map.MyMap.canGoThisWay;
 public class EnemyDahl extends Enemy {
 
     private final List<Integer> turn_ = new ArrayList<Integer>();
 
     private int corner;
-
 
     public EnemyDahl() {
         animLeft = new AnimationChannel(FXGL.image("enemy/enemyDahl.png"), 3, TITLE_SIZE, TITLE_SIZE,
@@ -37,26 +35,6 @@ public class EnemyDahl extends Enemy {
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
     }
-
-//    @Override
-//    public void onUpdate(double tpf) {
-//        if(!isDead) {
-//            move();
-//            if (right_) {
-//                setRightAnimationOnce();
-//                entity.translateX(speed);
-//            } else if (left_) {
-//                setLeftAnimationOnce();
-//                entity.translateX(speed);
-//            } else if (up_) {
-//                entity.translateY(speed);
-//            } else if (down_) {
-//                entity.translateY(speed);
-//            }
-//        } else {
-//            setDeadAnimationOnce();
-//        }
-//    }
 
     @Override
     public void move() {
@@ -79,18 +57,12 @@ public class EnemyDahl extends Enemy {
         if (turn_left_) {corner++;}
         if (turn_up_) {corner++;}
         if (turn_down_) {corner++;}
-        //System.out.println(corner);
     }
     public void setTurnRandom() {
         if (turn_right_ && !left_) {turn_.add(0);}
         if (turn_left_ && !right_) {turn_.add(1);}
         if (turn_up_ && !down_) {turn_.add(2);}
         if (turn_down_ && !up_) {turn_.add(3);}
-
-//        for (int i =0; i< turn_.size(); i++) {
-//            System.out.print(turn_.get(i) + "  ");
-//        }
-//        System.out.println();
 
         int ranNum = ThreadLocalRandom.current().nextInt(0,turn_.size());
         switch (turn_.get(ranNum)) {

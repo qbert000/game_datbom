@@ -1,15 +1,10 @@
 package hellofx.Enemy;
 
-// import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimationChannel;
-
 import hellofx.GameEntity.DynamicEntity.DynamicEntity;
-
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.util.Duration;
-import com.almasb.fxgl.entity.Entity;
-
 import static hellofx.Constant.GameConstant.ENEMY_SIZE;
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
 import static hellofx.Map.MyMap.canGoThisWay;
@@ -59,12 +54,9 @@ public class Enemy extends DynamicEntity {
                 setLeftAnimationOnce();
                 entity.translateX(speed);
             }
-            // entity.translateY(speedY * tpf);
             if (up_) {
-                //setRightAnimationOnce();
                 entity.translateY(speed);
             } else if (down_) {
-                //setLeftAnimationOnce();
                 entity.translateY(speed);
             }
         } else {
@@ -75,7 +67,6 @@ public class Enemy extends DynamicEntity {
 
     public void move() {
         if ((int) (entity.getY() % TITLE_SIZE) != 0 || (int) (entity.getX() % TITLE_SIZE) != 0) {
-           // System.out.println((int) (entity.getY() % TITLE_SIZE) + " " + (int) (entity.getX() % TITLE_SIZE));
             return;
         }
         //speed = 1;
@@ -119,10 +110,8 @@ public class Enemy extends DynamicEntity {
 
     };
     public void setMap() {
-
         index_x_ = (int) entity.getX() / TITLE_SIZE;
         index_y_ = (int) entity.getY() / TITLE_SIZE;
-
         // set ben trai
         turn_left_ = canGoThisWay(index_x_ - 1, index_y_);
         //set ben phai
@@ -131,9 +120,6 @@ public class Enemy extends DynamicEntity {
         turn_up_ = canGoThisWay(index_x_, index_y_ - 1);
         //set ben duoi
         turn_down_ = canGoThisWay(index_x_, index_y_ + 1);
-
-        //System.out.println(index_x_ + " " +index_y_ + " " + turn_right_ + " " + turn_left_ + " " + turn_down_ + " " + turn_up_ );
-
     }
 
 

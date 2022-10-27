@@ -3,18 +3,15 @@ package hellofx.GameEntity.DynamicEntity;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-// import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import hellofx.Enemy.EnemyPass;
-// import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import static hellofx.Constant.GameConstant.*;
 import static hellofx.Map.MyMap.g_map;
 import static hellofx.Map.MyMap.enemy;
 import static hellofx.Constant.GameConstant.ENEMY_NUMBER;
 import java.util.Vector;
-
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static hellofx.Map.MyMap.updateMap;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
@@ -45,9 +42,6 @@ public class Player extends DynamicEntity {
     public final AnimationChannel idleRight;
     public final AnimationChannel animWin;
 
-    /*
-     * Khoi tao Animation.
-     */
     public Player() {
         animDead = new AnimationChannel(FXGL.image("character/player_die.png"), 5, TITLE_SIZE,
                 TITLE_SIZE,
@@ -234,7 +228,6 @@ public class Player extends DynamicEntity {
             double tempY = Math.round(getYPos() / 40);
             if (Math.abs(tempX - getXPos() / 40) < 0.7 && Math.abs(tempY - getYPos() / 40) < 0.7) {
                 if (!g_map.updatePlayerPosition((int) tempX, (int) tempY)) {
-                    // System.out.println("Update player position");
                     for (int i = 0; i < ENEMY_NUMBER; i++) {
                         if (enemy[i].hasComponent(EnemyPass.class)) {
                             if (!enemy[i].getComponent(EnemyPass.class).isDead) {

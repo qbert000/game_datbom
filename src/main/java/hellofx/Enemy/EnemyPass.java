@@ -1,13 +1,11 @@
 package hellofx.Enemy;
 
-// import com.almasb.fxgl.animation.Animation;
 import com.almasb.fxgl.dsl.FXGL;
-// import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
+import static hellofx.Map.MyMap.canGoThisWay;
 import static hellofx.Constant.GameConstant.TITLE_SIZE;
-// import static hellofx.Main.g_map;
 
 public class EnemyPass extends Enemy {
     public PathFinding findPlayer;
@@ -16,7 +14,6 @@ public class EnemyPass extends Enemy {
     public int firstY;
 
     public EnemyPass() {
-        // di chuyen ben trai
         animLeft = new AnimationChannel(FXGL.image("enemy/enemyPass.png"), 3, TITLE_SIZE, TITLE_SIZE,
                 Duration.seconds(0.5), 3, 5);
         animRight = new AnimationChannel(FXGL.image("enemy/enemyPass.png"), 3, TITLE_SIZE, TITLE_SIZE,
@@ -42,13 +39,11 @@ public class EnemyPass extends Enemy {
     }
 
     public void findAgain() {
-        // System.out.println(findPlayer.resetFinding);
         if (findPlayer.resetFinding) {
             double tileX = this.entity.getPosition().getX();
             double tileY = this.entity.getPosition().getY();
             findPlayer.resetPathFinding((int) (tileY / TITLE_SIZE), (int) (tileX / TITLE_SIZE));
             setUp();
-            // System.out.println("RESET MAP !!!");
             findPlayer.resetFinding = false;
         }
     }
@@ -56,8 +51,6 @@ public class EnemyPass extends Enemy {
     @Override
     public void onUpdate(double tpf) {
         if (!isDead) {
-            // findPlayer.seeMyStack();
-            // System.out.println(findPlayer.resetFinding)
             String direction = "";
             if (!findPlayer.st.empty()) {
                 direction = findPlayer.st.peek();
@@ -97,10 +90,23 @@ public class EnemyPass extends Enemy {
             } else {
                 findAgain();
             }
-
-        } else {
+        }  else {
             setDeadAnimationOnce();
         }
+    }
+
+    @Override
+    public void setMap() {
+        index_x_ = (int) entity.getX() / TITLE_SIZE;
+        index_y_ = (int) entity.getY() / TITLE_SIZE;
+        // set ben trai
+        turn_left_ = canGoThisWay(index_x_ - 1, index_y_, "1");
+        //set ben phai
+        turn_right_ = canGoThisWay(index_x_ + 1, index_y_, "1");
+        //set ben tren
+        turn_up_ = canGoThisWay(index_x_, index_y_ - 1, "1");
+        //set ben duoi
+        turn_down_ = canGoThisWay(index_x_, index_y_ + 1, "1");
     }
 
     @Override

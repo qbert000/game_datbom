@@ -14,21 +14,17 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
-// import static com.almasb.fxgl.dsl.FXGL.*;
-
 import hellofx.Enemy.*;
 import hellofx.GameEntity.DynamicEntity.Player;
 import hellofx.SmartMap.Position;
 import hellofx.SmartMap.SmartMap;
 import hellofx.Menu.GameMenu;
 import hellofx.Menu.MainMenu;
-import hellofx.Music.SoundEffect;
 import hellofx.Bomb_Flame.*;
 import hellofx.SpawnSystem.Factory;
 import hellofx.GameUI.StartScene;
 import hellofx.GameUI.EndingScene;
 import hellofx.Map.*;
-import static com.almasb.fxgl.dsl.FXGL.addUINode;
 import hellofx.GameUI.GameUIComponent;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
@@ -50,31 +46,24 @@ public class Main extends GameApplication {
     public static int myLevel = 1;
     public boolean isLoading = false;
     private Entity g_player = new Entity();
-    public Player g_playerComponent;
-
+    public Player g_playerComponent;                    
+    public Entity myScore;
     public int enemyDeadOnce = 1;
 
-    /*
-     * Overload Game Setting.
-     */
     @Override
     protected void initSettings(GameSettings settings) {
+        // to chuc file mac dinh la assets/textures/ --> them duong dan dc
         settings.setWidth(TITLE_SIZE * WIDTH_TITLE);
         settings.setHeight(TITLE_SIZE * 19);
         settings.setTitle("Bomberman");
         settings.setAppIcon("icon/icon.png");
         settings.setFullScreenAllowed(true);
         settings.setFullScreenFromStart(true);
-        // settings.setFontUI("font/game_font.ttf");
-        // to chuc file mac dinh la assets/textures/ --> them duong dan dc
         settings.setVersion("1.0");
         settings.setDeveloperMenuEnabled(true);
         settings.setIntroEnabled(false);
         settings.setIntroEnabled(false);
-        settings.setFontGame("font2.ttf");
-        // settings.setFontMono("font/font2.ttf");
-        // settings.setFontText("font/font3.ttf");
-        // settings.setFontUI("font/font2.ttf");
+        settings.setFontGame("game_font.ttf");
         settings.setGameMenuEnabled(true);
         settings.setMainMenuEnabled(true);
         settings.setSceneFactory(new SceneFactory() {
@@ -91,14 +80,10 @@ public class Main extends GameApplication {
         settings.setDefaultCursor(new CursorInfo("cursor/cursor1.png", 0.0, 0.0));
     }
 
-    /*
-     * Handle User's Input.
-     */
     @Override
     protected void initInput() {
         // Tang Bomb Radius (tester).
         onKeyDown(KeyCode.F, () -> {
-            // play("drop.wav"); // play am thanh
             Boom.powerBoomUp();
         });
 
@@ -122,8 +107,6 @@ public class Main extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (playerisAlive) {
-                    // currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    // currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
                     g_player.getComponent(Player.class).setRight();
                 }
             }
@@ -153,8 +136,6 @@ public class Main extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (playerisAlive) {
-                    // currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
-                    // currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
                     g_player.getComponent(Player.class).setLeft();
                 }
             }
@@ -184,8 +165,6 @@ public class Main extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (playerisAlive) {
-                    // currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    // currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
                     g_player.getComponent(Player.class).setUp();
                 }
             }
@@ -215,8 +194,6 @@ public class Main extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (playerisAlive) {
-                    // currentXpos = g_player.getComponent(AnimationComponent.class).getMyX;
-                    // currentYpos = g_player.getComponent(AnimationComponent.class).getMyY;
                     g_player.getComponent(Player.class).setDown();
                 }
             }
@@ -259,9 +236,6 @@ public class Main extends GameApplication {
         loopBGM("stage_theme.mp3");
     }
 
-    /*
-     * Dua nhung UI vao trong Game.
-     */
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("bombAmount", 1);
@@ -269,24 +243,21 @@ public class Main extends GameApplication {
         vars.put("flameRadius", Boom.getSizeBoom());
         vars.put("flamePass", 0);
         vars.put("life", 1);
-        vars.put("score", 0);
+        vars.put("score", TOTAL_SCORE);
         vars.put("enemies", TOTAL_ENEMY);
         vars.put("levelTime", GAME_TIME);
     }
 
-    /**
-     * Khoi tao nhung UI cua game nhu text, node, hinh anh, ....
-     */
     @Override
     protected void initUI() {
-        GameUIComponent.addILabelUI("bombAmount", "%d", 45, TITLE_SIZE * 18);
-        GameUIComponent.addILabelUI("speed", "%d", 206, TITLE_SIZE * 18);
-        GameUIComponent.addILabelUI("flameRadius", "%d", 367, TITLE_SIZE * 18);
-        GameUIComponent.addILabelUI("flamePass", "%d", 528, TITLE_SIZE * 18);
-        GameUIComponent.addILabelUI("life", "%d", 689, TITLE_SIZE * 18);
-        GameUIComponent.addILabelUI("score", "%d", 850, TITLE_SIZE * 18);
-        GameUIComponent.addILabelUI("enemies", "%d", 1011, TITLE_SIZE * 18);
-        GameUIComponent.addDLabelUI("levelTime", "%.0f", 1172, TITLE_SIZE * 18);
+        GameUIComponent.addILabelUI("bombAmount", "%d", 45, TITLE_SIZE * 18 - 5);
+        GameUIComponent.addILabelUI("speed", "%d", 206, TITLE_SIZE * 18 - 5);
+        GameUIComponent.addILabelUI("flameRadius", "%d", 367, TITLE_SIZE * 18 - 5);
+        GameUIComponent.addILabelUI("flamePass", "%d", 528, TITLE_SIZE * 18 - 5);
+        GameUIComponent.addILabelUI("life", "%d", 689, TITLE_SIZE * 18 - 5);
+        GameUIComponent.addILabelUI("score", "%d", 850, TITLE_SIZE * 18 - 5);
+        GameUIComponent.addILabelUI("enemies", "%d", 1011, TITLE_SIZE * 18 - 5);
+        GameUIComponent.addDLabelUI("levelTime", "%.0f", 1172, TITLE_SIZE * 18 - 5);
     }
 
     @Override
@@ -314,9 +285,6 @@ public class Main extends GameApplication {
         }
     }
 
-    /*
-     * Khoi tao nhung Enity(thuc the) trong Game.
-     */
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
@@ -325,9 +293,6 @@ public class Main extends GameApplication {
         spawn("background", 0, 720);
     }
 
-    /*
-     * Reset lai nhung bien trong game khi nguoi choi chet / ve portal
-     */
     private void replay() {
         g_player.getComponent(Player.class).flamePass = false;
         turnOffMusic();
@@ -346,18 +311,15 @@ public class Main extends GameApplication {
         }, Duration.seconds(1.1));
 
         CONST_SPEED = CONST_SPEED_BEGIN;
-        // getGameTimer().runOnceAfter(() -> {
-        // FXGL.getGameController().gotoMainMenu();
-        // }, Duration.seconds(2));
         index = 0;
         getGameTimer().runOnceAfter(() -> {
             turnOffMusic();
-            getSceneService().pushSubScene(new EndingScene("GAME OVER\n   TRY AGAIN"));
+            getSceneService().pushSubScene(new EndingScene("GAME OVER\nTOTAL SCORE: " + TOTAL_SCORE));
         }, Duration.seconds(2.7));
+        if(myLevel == 1) TOTAL_SCORE = 0;
     }
 
     public void setLevel() {
-        System.out.println("SETTING UP LEVEL: " + myLevel);
         playerisAlive = true;
         double playerPosX = starterPosX;
         double playerPosY = starterPosY;
@@ -367,6 +329,7 @@ public class Main extends GameApplication {
                 myLevel = 1;
             }
             String mapPath = "level" + myLevel + ".txt";
+            // String mapPath = "level2.txt";
             g_map = new MyMap(mapPath, "D");
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -383,8 +346,6 @@ public class Main extends GameApplication {
             }
             set("enemies", TOTAL_ENEMY);
         }
-        System.out.println("ENEMY NUMBER: " + ENEMY_NUMBER);
-        System.out.println("TOTAL ENEMY: " + TOTAL_ENEMY);
         g_smartMap = new SmartMap();
         SmartMap.set();
         // //SmartMap.print();
@@ -401,14 +362,9 @@ public class Main extends GameApplication {
         index = 0;
     }
 
-    /*
-     * Dua nguoi choi den level tiep theo(neu lam :D) /ve man chinh khi di den
-     */
     private void nextLevel() {
         myLevel ++;
-        System.out.println("NEXT LEVEL IS: " + myLevel);
         turnOffMusic();
-        System.out.println(SoundEffect.isMusicEnabled + " " + SoundEffect.isSoundEnabled);
         play("next_level.wav");
         g_player.getComponent(Player.class).flamePass = false;
         ENEMY_NUMBER = 0;
@@ -432,7 +388,8 @@ public class Main extends GameApplication {
         if (myLevel > MAX_LEVEL) {
             myLevel = 1;
             getGameTimer().runOnceAfter(() -> {
-                getSceneService().pushSubScene(new EndingScene("CONGRATULATIONS\n    ALL STAGE CLEAR"));
+                TOTAL_SCORE = 0;
+                getSceneService().pushSubScene(new EndingScene("CONGRATULATIONS\nALL STAGE CLEAR"));
             }, Duration.seconds(2.7));
         } else {
             getGameTimer().runOnceAfter(() -> {
@@ -443,9 +400,6 @@ public class Main extends GameApplication {
         }
     }
 
-    /*
-     * Ham xu li va cham 2 vat the bat ki trong Game
-     */
     @Override
     protected void initPhysics() {
         // Xu li va cham Player va cac Enemy trong game
@@ -471,49 +425,62 @@ public class Main extends GameApplication {
                 onCollisionBegin(enemy, myFlame, (enemyEntity, flame) -> {
                     if (enemyEntity.hasComponent(EnemyDahl.class)) {
                         if (!enemyEntity.getComponent(EnemyDahl.class).isDead) {
+                            myScore = spawn("scoreDahl", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(EnemyDahl.class).dead();
                             inc("enemies", -1);
+                            inc("score", DAHL_SCORE);
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(BalloonVertical.class)) {
                         if (!enemyEntity.getComponent(BalloonVertical.class).isDead) {
+                            myScore = spawn("scoreBalloon", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(BalloonVertical.class).dead();
                             inc("enemies", -1);
+                            inc("score", BALLOON_SCORE);
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(BalloonHorizontal.class)) {
                         if (!enemyEntity.getComponent(BalloonHorizontal.class).isDead) {
+                            myScore = spawn("scoreBalloon", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(BalloonHorizontal.class).dead();
                             inc("enemies", -1);
+                            inc("score", BALLOON_SCORE);
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(EnemyPass.class)) {
                         if (!enemyEntity.getComponent(EnemyPass.class).isDead) {
+                            myScore = spawn("scorePass", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(EnemyPass.class).dead();
                             inc("enemies", -1);
+                            inc("score", PASS_SCORE);
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(EnemyDoria.class)) {
                         if (!enemyEntity.getComponent(EnemyDoria.class).isDead) {
+                            myScore = spawn("scoreDoria", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(EnemyDoria.class).dead();
                             inc("enemies", -1);
+                            inc("score", DORIA_SCORE);
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(EnemyPontan.class)) {
                         if (!enemyEntity.getComponent(EnemyPontan.class).isDead) {
+                            myScore = spawn("scoreDori", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(EnemyPontan.class).dead();
                             inc("enemies", -1);
+                            inc("score", PONTAN_SCORE);
                             TOTAL_ENEMY--;
                         }
                     }
                     getGameTimer().runOnceAfter(() -> {
+                        myScore.removeFromWorld();
                         enemyEntity.removeFromWorld();
-                        System.out.println("REMAINING ENEMY:" + TOTAL_ENEMY);
+                        // System.out.println("REMAINING ENEMY:" + TOTAL_ENEMY);
                     }, Duration.seconds(0.7));
                 });
             }
@@ -562,7 +529,6 @@ public class Main extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity player, Entity portal) {
                 String sign = getSignOfEntity(portal);
-                // System.out.println(TOTAL_ENEMY + " " + sign);
                 getGameTimer().runOnceAfter(() -> {
                     if ((sign.equals("p") || sign.equals("0")) && TOTAL_ENEMY == 0) {
                         System.out.println("PLAYYYY");
@@ -625,7 +591,6 @@ public class Main extends GameApplication {
                 boolean hasRightTile = false;
                 boolean hasUpTile = false;
                 boolean hasDownTile = false;
-                // System.out.println(wallTileX + " WALL " + wallTileY);
                 if (wallTileX >= 0 && wallTileX < HEIGHT_TITLE
                         && wallTileY - 1 >= 0 && wallTileY - 1 < WIDTH_TITLE) {
                     if (myMap[wallTileX][wallTileY - 1].equals("1")
@@ -695,52 +660,14 @@ public class Main extends GameApplication {
 
             @Override
             protected void onCollisionEnd(Entity player, Entity wall) {
-                player.getComponent(Player.class).onCollision = false;
+                if(player.hasComponent(Player.class)) {
+                    player.getComponent(Player.class).onCollision = false;
+                }
             }
 
         });
-
-        // // Xu li va cham Enemy doc va tuong
-        // getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONVERTICAL,
-        // WALL) {
-        // @Override
-        // protected void onCollisionBegin(Entity enemyVertical, Entity wall) {
-        // enemyVertical.getComponent(BalloonVertical.class).turnBack();
-        // enemyVertical.setPosition(new Point2D(
-        // enemyVertical.getPosition().getX(),
-        // enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
-        // }
-        //
-        // @Override
-        // protected void onCollision(Entity enemyVertical, Entity wall) {
-        // enemyVertical.setPosition(new Point2D(enemyVertical.getPosition().getX(),
-        // enemyVertical.getComponent(BalloonVertical.class).getCurrentPosY()));
-        // }
-        // });
-        // Xu li va cham Enemy ngang va tuong
-        // getPhysicsWorld().addCollisionHandler(new CollisionHandler(BALLOONHORIZONTAL,
-        // WALL) {
-        // @Override
-        // protected void onCollisionBegin(Entity enemyHorizontal, Entity wall) {
-        // enemyHorizontal.getComponent(BalloonHorizontal.class).turnBack();
-        // enemyHorizontal.setPosition(new Point2D(
-        // enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
-        // enemyHorizontal.getPosition().getY()));
-        // }
-        //
-        // @Override
-        // protected void onCollision(Entity enemyHorizontal, Entity wall) {
-        // enemyHorizontal
-        // .setPosition(new
-        // Point2D(enemyHorizontal.getComponent(BalloonHorizontal.class).getCurrentPosX(),
-        // enemyHorizontal.getPosition().getY()));
-        // }
-        // });
     }
 
-    /*
-     * Ham Launch(khoi dong) Game
-     */
     public static void main(String[] args) {
         launch(args);
     }

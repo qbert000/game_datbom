@@ -75,7 +75,6 @@ public class Position {
         }
         index_x_vir = x;
         index_y_vir = y;
-        //System.out.println(direction.get(0) + " " +direction.get(1) + " " + direction.get(2) + " " + direction.get(3));
     }
 
     public void findAround() {
@@ -93,10 +92,6 @@ public class Position {
         index_x_vir += step_x;
         index_y_vir += step_y;
         street.get(i).weight++;
-//        System.out.println(index_x_vir + " " + index_y_vir);
-//        if ( index_x_vir < 1 || index_y_vir < 1) {
-//            return;
-//        }
         if (SmartMap.smartMap[index_y_vir][index_x_vir]) {
             street.get(i).position1 = newPosition(index_x_vir, index_y_vir);
             connectPosition(i);
@@ -165,8 +160,6 @@ public class Position {
                 } else {
                     System.out.println(street.get(i).position1.index_x + " " + street.get(i).position1.index_y + " " + street.get(i).weight);
                 }
-
-
 //                System.out.println(street.get(i).position1.index_x + " " + street.get(i).position1.index_y + " " + street.get(i).weight);
             }
         }

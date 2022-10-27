@@ -1,11 +1,8 @@
 package hellofx.Enemy;
 
-// import static hellofx.Map.MyMap.myMap;
 import java.util.*;
-
 import hellofx.Map.MyMap;
 import javafx.util.Duration;
-// import hellofx.Map.MyMap;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 
 public class PathFinding {
@@ -34,20 +31,11 @@ public class PathFinding {
     }
 
     public void setUpPath() {
-//        System.out.println("I'm setting up Path !!!!" + );
         myDistance[enemyPosX][enemyPosY] = 0;
         getMinimum(enemyPosX, enemyPosY);
-        // System.out.println("Player's Position is: " + playerX + " " + playerY);
-        // for (int i = 0; i < 18; i++) {
-        //     for (int j = 0; j < 32; j++) {
-        //         System.out.print(myEnemyMap[i][j] + " ");
-        //     }
-        //     System.out.print("\n");
-        // }
         if(playerX >= 1 && playerX <= 16 && playerY >=1 && playerY <= 30) {
             moving(playerX, playerY);
         } else {
-//            System.out.println("HUHUHUH BUGGG KHONG FIX NUA " + enemyPosX + " " + enemyPosY);
             getGameTimer().runOnceAfter(() -> {
                 myEnemyMap = MyMap.myMap;
                 for (int i = 0; i < 18; i++) {
@@ -59,18 +47,9 @@ public class PathFinding {
                 getMinimum(enemyPosX, enemyPosY);
                 playerX = MyMap.playerX;
                 playerY = MyMap.playerY;
-//                System.out.println(playerX + " " + playerY);
                 moving(playerX, playerY);
             }, Duration.seconds(0.3));
         }
-    }
-
-    public void seeMyStack() {
-//         Stack<String> temp = st;
-// //        while (!temp.empty()) {
-// //            System.out.print(temp.pop() + " ");
-// //        }
-// //        System.out.print("\n");
     }
 
     public void resetPathFinding(int newX, int newY) {
@@ -83,7 +62,6 @@ public class PathFinding {
         enemyPosX = newX;
         enemyPosY = newY;
         myDistance[newX][newY] = 0;
-        // st = new Stack<>();
     }
 
     public void getMinimum(int k, int j) {
@@ -93,7 +71,7 @@ public class PathFinding {
                     && !myEnemyMap[k - 1][j].equals("B")
                     && !myEnemyMap[k - 1][j].equals("C")
                     && !myEnemyMap[k - 1][j].equals("D")
-
+                    && !myEnemyMap[k - 1][j].equals("E")
                     && myDistance[k - 1][j] > myDistance[k][j] + 1) {
                 myDistance[k - 1][j] = myDistance[k][j] + 1;
                 getMinimum(k - 1, j);
@@ -110,7 +88,7 @@ public class PathFinding {
                     && !myEnemyMap[k + 1][j].equals("B")
                     && !myEnemyMap[k + 1][j].equals("C")
                     && !myEnemyMap[k + 1][j].equals("D")
-
+                    && !myEnemyMap[k + 1][j].equals("E")
                     && myDistance[k + 1][j] > myDistance[k][j] + 1) {
                 myDistance[k + 1][j] = myDistance[k][j] + 1;
                 getMinimum(k + 1, j);
@@ -127,7 +105,7 @@ public class PathFinding {
                     && !myEnemyMap[k][j + 1].equals("B")
                     && !myEnemyMap[k][j + 1].equals("C")
                     && !myEnemyMap[k][j + 1].equals("D")
-
+                    && !myEnemyMap[k][j + 1].equals("E")
                     && myDistance[k][j + 1] > myDistance[k][j] + 1) {
                 myDistance[k][j + 1] = myDistance[k][j] + 1;
                 getMinimum(k, j + 1);
@@ -144,7 +122,7 @@ public class PathFinding {
                     && !myEnemyMap[k][j - 1].equals("B")
                     && !myEnemyMap[k][j - 1].equals("C")
                     && !myEnemyMap[k][j - 1].equals("D")
-
+                    && !myEnemyMap[k][j - 1].equals("E")
                     && myDistance[k][j - 1] > myDistance[k][j] + 1) {
                 myDistance[k][j - 1] = myDistance[k][j] + 1;
                 getMinimum(k, j - 1);
@@ -159,7 +137,6 @@ public class PathFinding {
     }
 
     public void moving(int x, int y) {
-        // System.out.println(x + " " + y);
         if (myDistance[x][y] == 0) {
             return;
         }

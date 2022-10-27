@@ -1,7 +1,6 @@
 package hellofx.Music;
 
 import static com.almasb.fxgl.dsl.FXGL.getSettings;
-import static com.almasb.fxgl.dsl.FXGL.showMessage;
 
 public class SoundEffect {
     public static boolean isSoundEnabled = true;

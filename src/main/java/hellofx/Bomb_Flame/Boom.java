@@ -2,25 +2,11 @@ package hellofx.Bomb_Flame;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
-// import javafx.scene.paint.Color;
 import javafx.util.Duration;
-
-// import java.awt.*;
 import java.util.Vector;
-
 import static com.almasb.fxgl.dsl.FXGL.onCollisionBegin;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
-
-// import com.almasb.fxgl.entity.Entity;
-// import com.almasb.fxgl.entity.component.Component;
-// import javafx.util.Duration;
-
-// import java.util.Vector;
-// import java.util.concurrent.atomic.AtomicInteger;
-
-// import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
-// import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 import static hellofx.SpawnSystem.Enum.*;
 import static hellofx.Constant.GameConstant.*;
 import static hellofx.Map.MyMap.updateMap;
@@ -102,11 +88,11 @@ public class Boom extends Component {
                 wall.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
                     wall.removeFromWorld();
+                    updateMap(wall, "brick");
                 }, Duration.seconds(0.7));
                 if (rightBreak == size_break) {
                     right = size;
                 }
-                updateMap(wall, "brick");
             });
             getGameTimer().runOnceAfter(() -> {
                 moveRight(tex, size, size_break);

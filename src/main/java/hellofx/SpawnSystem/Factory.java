@@ -9,12 +9,12 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import hellofx.Enemy.*;
+import javafx.scene.control.Label;
 import hellofx.GameEntity.DynamicEntity.Player;
+import hellofx.GameUI.GameUIComponent;
 import javafx.geometry.Point2D;
-// import javafx.scene.paint.Color;
-// import javafx.scene.shape.Rectangle;
-// import javax.imageio.plugins.tiff.TIFFDirectory;
-// import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
+import static hellofx.GameUI.GameUIComponent.*;
+
 import static hellofx.SpawnSystem.Enum.*;
 import static hellofx.Constant.GameConstant.*;
 import hellofx.Bomb_Flame.*;
@@ -26,15 +26,9 @@ public class Factory implements EntityFactory {
     public Entity newPlayer(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(PLAYER)
-                // .at(200, 200)
                 .with(new Player())
                 .zIndex(1000)
-                // .collidable()
-                // de va cham phai co ham nay
                 .with(new CollidableComponent(true))
-                // point2d la chinh vi tri box so vs vi tri ban dau
-                // Point la vi tri cua hop so vs ban dau la (0,0)
-                // chieu cao vs chieu rong cua hop
                 .bbox(new HitBox(new Point2D(6, 1), BoundingShape.box(26, 36)))
                 .build();
     }
@@ -116,7 +110,6 @@ public class Factory implements EntityFactory {
     public Entity newCoin(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(WALL)
-                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("mapTexture/wall2.png")
                 .with(new CollidableComponent(true))
                 .build();
@@ -126,8 +119,6 @@ public class Factory implements EntityFactory {
     public Entity newBrick(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(WALL)
-                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
-                // .viewWithBBox("")
                 .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TITLE_SIZE, TITLE_SIZE)))
                 .with(new CollidableComponent(true))
                 .with(new BrickBreakAnimation())
@@ -138,9 +129,7 @@ public class Factory implements EntityFactory {
     public Entity newGrass(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(GRASS)
-                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("mapTexture/grass.png")
-                // .with(new CollidableComponent(true))
                 .build();
     }
 
@@ -159,7 +148,6 @@ public class Factory implements EntityFactory {
     public Entity newPortal(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(PORTAL)
-                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("mapTexture/portal.png")
                 .collidable()
                 .build();
@@ -169,7 +157,6 @@ public class Factory implements EntityFactory {
     public Entity newSpeedIem(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(SPEED_ITEM)
-                // .viewWithBBox(new Rectangle(TITLE_SIZE, TITLE_SIZE, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_speed.png")
                 .with(new CollidableComponent(true))
                 .bbox(new HitBox(new Point2D(10, 10), BoundingShape.box(TITLE_SIZE - 20, TITLE_SIZE - 20)))
@@ -180,7 +167,6 @@ public class Factory implements EntityFactory {
     public Entity newFlameItem(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAME_ITEM)
-                // .viewWithBBox(new Rectangle(TITLE_SIZE - 20, TITLE_SIZE - 20, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_flames.png")
                 .with(new CollidableComponent(true))
                 .bbox(new HitBox(new Point2D(10, 10), BoundingShape.box(TITLE_SIZE - 20, TITLE_SIZE - 20)))
@@ -191,7 +177,6 @@ public class Factory implements EntityFactory {
     public Entity newBombItem(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(BOMB_ITEM)
-                // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_bombs.png")
                 .with(new CollidableComponent(true))
                 .bbox(new HitBox(new Point2D(10, 10), BoundingShape.box(TITLE_SIZE - 20, TITLE_SIZE - 20)))
@@ -202,7 +187,6 @@ public class Factory implements EntityFactory {
     public Entity newFlamePowerItem(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(FLAME_POWER_ITEM)
-                // .viewWithBBox(new Rectangle(TITLE_SIZE - 2, TITLE_SIZE - 2, Color.BLACK))
                 .viewWithBBox("gameItem/powerup_flamepass.png")
                 .with(new CollidableComponent(true))
                 .bbox(new HitBox(new Point2D(10, 10), BoundingShape.box(TITLE_SIZE - 20, TITLE_SIZE - 20)))
@@ -215,7 +199,6 @@ public class Factory implements EntityFactory {
                 .type(FLAME)
                 .collidable()
                 .with(new FlameAnimation())
-                // .viewWithBBox(new Rectangle(40, 40, Color.BLACK))
                 .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TITLE_SIZE, TITLE_SIZE)))
                 .build();
     }
@@ -226,7 +209,6 @@ public class Factory implements EntityFactory {
                 .type(FLAMERIGHT)
                 .collidable()
                 .with(new FlameAnimation())
-                // .viewWithBBox(new Rectangle(40, 40, Color.BLACK))
                 .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
@@ -237,7 +219,6 @@ public class Factory implements EntityFactory {
                 .type(FLAMELEFT)
                 .collidable()
                 .with(new FlameAnimation())
-                // .viewWithBBox(new Rectangle(40, 40, Color.BLACK))
                 .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
@@ -248,7 +229,6 @@ public class Factory implements EntityFactory {
                 .type(FLAMEUP)
                 .collidable()
                 .with(new FlameAnimation())
-                // .viewWithBBox(new Rectangle(40, 40, Color.BLACK))
                 .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
@@ -259,8 +239,52 @@ public class Factory implements EntityFactory {
                 .type(FLAMEDOWN)
                 .collidable()
                 .with(new FlameAnimation())
-                // .viewWithBBox(new Rectangle(40, 40, Color.BLACK))
                 .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
+                .build();
+    }
+
+    @Spawns("scoreBalloon")
+    public Entity newBScore(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .collidable()
+                .view(GameUIComponent.scoreOnScreen(BALLOON_SCORE))
+                .zIndex(100000)
+                .build();
+    }
+
+    @Spawns("scoreDahl")
+    public Entity newDScore(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .collidable()
+                .view(GameUIComponent.scoreOnScreen(DAHL_SCORE))
+                .zIndex(100000)
+                .build();
+    }
+
+    @Spawns("scoreDoria")
+    public Entity newDRScore(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .collidable()
+                .view(GameUIComponent.scoreOnScreen(DORIA_SCORE))
+                .zIndex(100000)
+                .build();
+    }
+
+    @Spawns("scorePass")
+    public Entity newPassScore(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .collidable()
+                .view(GameUIComponent.scoreOnScreen(PASS_SCORE))
+                .zIndex(100000)
+                .build();
+    }
+
+    @Spawns("scorePontan")
+    public Entity newPontanScore(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .collidable()
+                .view(GameUIComponent.scoreOnScreen(PONTAN_SCORE))
+                .zIndex(100000)
                 .build();
     }
 

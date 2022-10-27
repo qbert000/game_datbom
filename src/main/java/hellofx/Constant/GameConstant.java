@@ -22,4 +22,10 @@ public class GameConstant {
     public static Enum[] myFlameList = new Enum[] { FLAME, FLAMERIGHT, FLAMELEFT, FLAMEUP, FLAMEDOWN };
     public static Enum[] myItemList = new Enum[] { SPEED_ITEM, FLAME_POWER_ITEM, BOMB_ITEM, FLAME_ITEM };
     public static Enum[] enemyType = new Enum[] {BALLOONHORIZONTAL, BALLOONVERTICAL, ENEMYPONTAN, ENEMYPASS, ENEMYDAHL, ENEMYDORIA };
+    public static final int BALLOON_SCORE = 10;
+    public static final int DAHL_SCORE = 20;
+    public static final int DORIA_SCORE = 40;
+    public static final int PONTAN_SCORE = 200;
+    public static final int PASS_SCORE = 400;
+    public static int TOTAL_SCORE = 0;
 }

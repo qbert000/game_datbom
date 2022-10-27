@@ -157,36 +157,26 @@ public class MyMap {
         int tileY = (int) updateTile.getPosition().getX() / TITLE_SIZE;
         int tileX = (int) updateTile.getPosition().getY() / TITLE_SIZE;
         if (tileType.equals("item")) {
-            // System.out.println(myMap[tileX][tileY]);
             myMap[tileX][tileY] = "0";
-            // System.out.println(myMap[tileX][tileY]);
             updateEnemy();
         }
         if (tileType.equals("brick")) {
             if (!myMap[tileX][tileY].equals("2")) {
-                // System.out.println("There's Item inside");
                 myMap[tileX][tileY] = myMap[tileX][tileY].toLowerCase();
             } else {
-                // System.out.println("No item inside");
                 myMap[tileX][tileY] = "0";
             }
             updateEnemy();
         }
         if (tileType.equals("bomb")) {
-            // System.out.println("HAS BOMBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-            // System.out.println("Prev");
-            // printMap();
             getGameTimer().runOnceAfter(() -> {
                 myMap[tileX][tileY] = "1";
                 updateEnemy();
             }, Duration.seconds(0.4));
             getGameTimer().runOnceAfter(() -> {
                 myMap[tileX][tileY] = "0";
-//                printMap();
             }, Duration.seconds(0.2));
         }
-        // printMap();
-
     }
 
     public static void printMap() {

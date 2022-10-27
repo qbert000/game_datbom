@@ -1,21 +1,14 @@
 package hellofx.Menu;
 
-// import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.input.view.KeyView;
 import javafx.geometry.Pos;
-// import javafx.scene.Node;
-// import javafx.scene.control.Menu;
-// import javafx.scene.effect.Bloom;
-// import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-// import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-// import javafx.util.Duration;
 import static hellofx.Constant.GameConstant.*;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
