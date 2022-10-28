@@ -242,13 +242,12 @@ public class Factory implements EntityFactory {
                 .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(flame4dirSize, flame4dirSize)))
                 .build();
     }
-
     @Spawns("scoreBalloon")
     public Entity newBScore(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .collidable()
                 .view(GameUIComponent.scoreOnScreen(BALLOON_SCORE))
-                .zIndex(100000)
+                .zIndex(60000)
                 .build();
     }
 
@@ -266,7 +265,7 @@ public class Factory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .collidable()
                 .view(GameUIComponent.scoreOnScreen(DORIA_SCORE))
-                .zIndex(100000)
+                .zIndex(90000)
                 .build();
     }
 
@@ -275,7 +274,7 @@ public class Factory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .collidable()
                 .view(GameUIComponent.scoreOnScreen(PASS_SCORE))
-                .zIndex(100000)
+                .zIndex(80000)
                 .build();
     }
 
@@ -284,7 +283,7 @@ public class Factory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .collidable()
                 .view(GameUIComponent.scoreOnScreen(PONTAN_SCORE))
-                .zIndex(100000)
+                .zIndex(70000)
                 .build();
     }
 

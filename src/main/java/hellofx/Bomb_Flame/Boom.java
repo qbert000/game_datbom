@@ -99,7 +99,6 @@ public class Boom extends Component {
             }, Duration.seconds(seconds));
         }
     }
-
     public void moveLeft(Vector<Entity> tex, int size, int size_break) {
         if (left == size) {
             setLeft();
@@ -118,18 +117,17 @@ public class Boom extends Component {
                 wall.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
                     wall.removeFromWorld();
+                    updateMap(wall, "brick");
                 }, Duration.seconds(0.7));
                 if (leftBreak == size_break) {
                     left = size;
                 }
-                updateMap(wall, "brick");
             });
             getGameTimer().runOnceAfter(() -> {
                 moveLeft(tex, size, size_break);
             }, Duration.seconds(seconds));
         }
     }
-
     public void moveUp(Vector<Entity> tex, int size, int size_break) {
         if (up == size) {
             setUp();
@@ -148,18 +146,17 @@ public class Boom extends Component {
                 wall.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
                     wall.removeFromWorld();
+                    updateMap(wall, "brick");
                 }, Duration.seconds(0.7));
                 if (upBreak == size_break) {
                     up = size;
                 }
-                updateMap(wall, "brick");
             });
             getGameTimer().runOnceAfter(() -> {
                 moveUp(tex, size, size_break);
             }, Duration.seconds(seconds));
         }
     }
-
     public void moveDown(Vector<Entity> tex, int size, int size_break) {
         if (down == size) {
             setDown();
@@ -178,18 +175,17 @@ public class Boom extends Component {
                 wall.getComponent(BrickBreakAnimation.class).BrickBreak();
                 getGameTimer().runOnceAfter(() -> {
                     wall.removeFromWorld();
+                    updateMap(wall, "brick");
                 }, Duration.seconds(0.7));
                 if (downBreak == size_break) {
                     down = size;
                 }
-                updateMap(wall, "brick");
             });
             getGameTimer().runOnceAfter(() -> {
                 moveDown(tex, size, size_break);
             }, Duration.seconds(seconds));
         }
     }
-
     public void explodeBoom(Vector<Entity> tex, int size, int size_break) {
         Entity center = spawn("flame", entity.getX(), entity.getY());
         center.getComponent(FlameAnimation.class).AnimationWingCentral();

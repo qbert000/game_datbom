@@ -172,10 +172,11 @@ public class MyMap {
             getGameTimer().runOnceAfter(() -> {
                 myMap[tileX][tileY] = "1";
                 updateEnemy();
+                getGameTimer().runOnceAfter(() -> {
+                    myMap[tileX][tileY] = "0";
+                }, Duration.seconds(1));
             }, Duration.seconds(0.4));
-            getGameTimer().runOnceAfter(() -> {
-                myMap[tileX][tileY] = "0";
-            }, Duration.seconds(0.2));
+
         }
     }
 

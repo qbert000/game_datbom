@@ -1,5 +1,7 @@
 package hellofx;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javafx.scene.input.KeyCode;
@@ -28,6 +30,7 @@ import hellofx.Map.*;
 import hellofx.GameUI.GameUIComponent;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameTimer;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 import static hellofx.SpawnSystem.Enum.*;
 import static hellofx.Map.MyMap.g_map;
 import static hellofx.Map.MyMap.index;
@@ -48,6 +51,7 @@ public class Main extends GameApplication {
     private Entity g_player = new Entity();
     public Player g_playerComponent;                    
     public Entity myScore;
+    public List<Entity> listScore = new ArrayList<>();
     public int enemyDeadOnce = 1;
 
     @Override
@@ -315,8 +319,9 @@ public class Main extends GameApplication {
         getGameTimer().runOnceAfter(() -> {
             turnOffMusic();
             getSceneService().pushSubScene(new EndingScene("GAME OVER\nTOTAL SCORE: " + TOTAL_SCORE));
+            if(myLevel == 1) TOTAL_SCORE = 0;
         }, Duration.seconds(2.7));
-        if(myLevel == 1) TOTAL_SCORE = 0;
+
     }
 
     public void setLevel() {
@@ -329,8 +334,8 @@ public class Main extends GameApplication {
                 myLevel = 1;
             }
             String mapPath = "level" + myLevel + ".txt";
-            // String mapPath = "level2.txt";
-            g_map = new MyMap(mapPath, "D");
+            //String mapPath = "level2.txt";
+            g_map = new MyMap(mapPath, "Q");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -425,66 +430,84 @@ public class Main extends GameApplication {
                 onCollisionBegin(enemy, myFlame, (enemyEntity, flame) -> {
                     if (enemyEntity.hasComponent(EnemyDahl.class)) {
                         if (!enemyEntity.getComponent(EnemyDahl.class).isDead) {
-                            myScore = spawn("scoreDahl", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
+                            listScore.add(spawn("scoreDahl", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY()));
+                            //myScore = spawn("scoreDahl", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(EnemyDahl.class).dead();
                             inc("enemies", -1);
                             inc("score", DAHL_SCORE);
+                            TOTAL_SCORE+= DAHL_SCORE;
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(BalloonVertical.class)) {
                         if (!enemyEntity.getComponent(BalloonVertical.class).isDead) {
-                            myScore = spawn("scoreBalloon", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
+                            listScore.add(spawn("scoreBalloon", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY()));
+                            //myScore = spawn("scoreBalloon", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(BalloonVertical.class).dead();
                             inc("enemies", -1);
                             inc("score", BALLOON_SCORE);
+                            TOTAL_SCORE += BALLOON_SCORE;
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(BalloonHorizontal.class)) {
                         if (!enemyEntity.getComponent(BalloonHorizontal.class).isDead) {
-                            myScore = spawn("scoreBalloon", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
+                            listScore.add(spawn("scoreBalloon", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY()));
+                            //myScore = spawn("scoreBalloon", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(BalloonHorizontal.class).dead();
                             inc("enemies", -1);
                             inc("score", BALLOON_SCORE);
+                            TOTAL_SCORE += BALLOON_SCORE;
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(EnemyPass.class)) {
                         if (!enemyEntity.getComponent(EnemyPass.class).isDead) {
-                            myScore = spawn("scorePass", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
+                            listScore.add(spawn("scorePass", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY()));
+                            //myScore = spawn("scorePass", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(EnemyPass.class).dead();
                             inc("enemies", -1);
                             inc("score", PASS_SCORE);
+                            TOTAL_SCORE += PASS_SCORE;
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(EnemyDoria.class)) {
                         if (!enemyEntity.getComponent(EnemyDoria.class).isDead) {
-                            myScore = spawn("scoreDoria", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
+                            listScore.add(spawn("scoreDoria", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY()));
+                            //myScore = spawn("scoreDoria", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(EnemyDoria.class).dead();
                             inc("enemies", -1);
                             inc("score", DORIA_SCORE);
+                            TOTAL_SCORE += DORIA_SCORE;
                             TOTAL_ENEMY--;
                         }
                     }
                     if (enemyEntity.hasComponent(EnemyPontan.class)) {
                         if (!enemyEntity.getComponent(EnemyPontan.class).isDead) {
-                            myScore = spawn("scoreDori", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
+                            listScore.add(spawn("scorePontan", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY()));
+                            //myScore = spawn("scorePontan", enemyEntity.getPosition().getX(), enemyEntity.getPosition().getY());
                             enemyEntity.getComponent(EnemyPontan.class).dead();
                             inc("enemies", -1);
                             inc("score", PONTAN_SCORE);
+                            TOTAL_SCORE += PONTAN_SCORE;
                             TOTAL_ENEMY--;
                         }
                     }
+                    //myScore.removeFromWorld();
+                    // System.out.println("REMAINING ENEMY:" + TOTAL_ENEMY);
+                    getGameTimer().runOnceAfter(enemyEntity::removeFromWorld, Duration.seconds(0.7));
                     getGameTimer().runOnceAfter(() -> {
-                        myScore.removeFromWorld();
-                        enemyEntity.removeFromWorld();
-                        // System.out.println("REMAINING ENEMY:" + TOTAL_ENEMY);
+                        //myScore.removeFromWorld();
+                        for (Entity entity : listScore) {
+                            entity.removeFromWorld();
+                        }
                     }, Duration.seconds(0.7));
                 });
             }
         }
+
+
 
         // Xu li va cham giua cac item va Flame cua Bomb
         for (Enum myItem : myItemList) {
